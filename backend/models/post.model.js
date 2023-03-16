@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema({
     postedBy: String,
     date: { type: Date, default: Date.now },
     image: String,
-    Category: Category,
+    category: Category,
     address: String,
     country: String,
     city: String,
