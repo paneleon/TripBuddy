@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const Category = {
-    Restaurant,
-    Residence,
-    Attractions,
-    Educational,
-    Outdoors,
-    Cultural,
-    Religious,
-    Other
+    Restaurant: "Restaurant",
+    Residence: "Residence",
+    Attractions: "Attractions",
+    Educational: "Educational",
+    Outdoors: "Outdoors",
+    Cultural: "Cultural",
+    Religious: "Religious",
+    Other: "Other"
 }
 
 const postSchema = new mongoose.Schema({
@@ -21,7 +21,10 @@ const postSchema = new mongoose.Schema({
     postedBy: String,
     date: { type: Date, default: Date.now },
     image: String,
-    category: Category,
+    category: {
+        type: String,
+        enum: Category
+    },
     address: String,
     country: String,
     city: String,
