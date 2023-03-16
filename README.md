@@ -1,6 +1,8 @@
 # TripBuddy
 
 ## React Frontend
+
+cd ./frontend
 ### install node modules:
 npm install
 
@@ -10,6 +12,8 @@ npm install
 npm start
 
 ## Express Backend
+
+cd ./backend
 ### install node modules:
 npm install
 
