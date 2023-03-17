@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
-import Post from './NewPost';
+import Post from './Post';
 import Profile from './Profile';
 import Browse from './Browse';
 import Payment from './Payment';
@@ -24,7 +24,7 @@ const App = () => {
         <Route path="/home" element={<Home /> } />
         <Route path="/login" exact Component={Login} />
         <Route path="/register" exact Component={Register} />
-        <Route path="/new-post" element={<Post /> } />
+        <Route path="/new-post" element={<NewPost /> } />
         <Route path="/profile" element={<Profile /> } />
         <Route path="/browse" element={<Browse /> } />
         <Route path="/payment" element={<Payment /> } />
