@@ -10,7 +10,6 @@ exports.UserDisplayName = (req, res) => {
 }
 exports.UserId = (req) => {
   if (req.user) {
-    //console.log("user id here:"+req.user._id)
     return req.user._id;
   }
   return "";
