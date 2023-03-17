@@ -12,7 +12,7 @@ import Subscription from './Subscription';
 import NavigationBar from '../components/NavigationBar';
 import Sample from './Sample';
 import MyPosts from './MyPosts'
-import Post from './NewPost';
+import NewPost from './NewPost';
 
 const App = () => {
   return (
