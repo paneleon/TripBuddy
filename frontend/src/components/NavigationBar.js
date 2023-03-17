@@ -18,6 +18,7 @@ const NavigationBar = () => {
 
           <Nav className="me-auto">
             <Nav.Link href="/home">Home</Nav.Link>
+            <Nav.Link href="/myposts">My Posts</Nav.Link>
             <Nav.Link href="/browse">Browse Destinations</Nav.Link>
             <Nav.Link href="#">+ New Post</Nav.Link>
             
