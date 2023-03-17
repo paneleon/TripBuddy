@@ -21,7 +21,7 @@ require('dotenv').config()
 // import routers
 const sampleRoute = require('../routes/sample.route');
 const userRote = require('../routes/user.route');
-
+const postsRoute = require('../routes/posts.route')
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -86,6 +86,7 @@ module.exports = () => {
   // configure and use routes
   app.use('/api/sample', sampleRoute);
   app.use('/api/user', userRote);
+  app.use('/api/posts', postsRoute)
 
   return app;
 }

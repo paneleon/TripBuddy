@@ -10,6 +10,7 @@ import Browse from './Browse';
 import Payment from './Payment';
 import Subscription from './Subscription';
 import NavigationBar from '../components/NavigationBar';
+import Sample from './Sample';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/browse" element={<Browse /> } />
         <Route path="/payment" element={<Payment /> } />
         <Route path="/subscription" element={<Subscription /> } />
+        <Route path="/sample" element={<Sample /> } />
        </Routes>
     </>
   );
