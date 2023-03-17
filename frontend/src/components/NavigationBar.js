@@ -21,7 +21,6 @@ const NavigationBar = () => {
             <Nav.Link href="/browse">Browse Destinations</Nav.Link>
             <Nav.Link href="/post">Add New Post</Nav.Link>
             
-
           </Nav>
           <Nav>
             <Nav.Link href="#"></Nav.Link>

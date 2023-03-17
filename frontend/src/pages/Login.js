@@ -32,7 +32,7 @@ function App() {
 
 	return (
 		<div>
-			<form onSubmit={loginUser}>
+			<form method='POST' onSubmit={loginUser}>
 			<h1>Login</h1>
 				<input
 					className= {styles.usernameInput}

@@ -4,6 +4,8 @@ import styles from '../styles/Register.module.css';
 
 function Register() {
 	const navigate = useNavigate()
+	const [firstName, setFirstName] = useState('')
+	const [lastName, setLastName] = useState('')
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -32,8 +34,24 @@ function Register() {
 
 	return (
 		<div>
-			<form onSubmit={registerUser}>
+			<form method='POST' onSubmit={registerUser}>
 			<h1>Register</h1>
+				<input
+					className={styles.firstNameInput}
+					value={firstName}
+					onChange={(e) => setFirstName(e.target.value)}
+					type="text"
+					placeholder="First Name"
+				/>
+				<br />
+				<input
+					className={styles.lastNameInput}
+					value={lastName}
+					onChange={(e) => setLastName(e.target.value)}
+					type="text"
+					placeholder="Last Name"
+				/>
+				<br />
 				<input
 					className={styles.usernameInput}
 					value={username}
