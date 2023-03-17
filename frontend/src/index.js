@@ -4,6 +4,7 @@ import './styles/index.css';
 import App from './pages/App';
 import { BrowserRouter } from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import { IKContext } from 'imagekitio-react'; // for using image upload
 
 const IMAGE_UPLOAD_URL = process.env.REACT_APP_IMAGE_KIT_URL
