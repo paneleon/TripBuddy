@@ -9,6 +9,7 @@ const methodOverride = require('method-override');
 
 // import routers
 const sampleRoute = require('../routes/sample.route')
+const postsRoute = require('../routes/posts.route')
 
 require('dotenv').config()
 
@@ -45,6 +46,7 @@ module.exports = () => {
 
   // configure and use routes
   app.use('/api/sample', sampleRoute)
+  app.use('/api/posts', postsRoute)
 
   return app;
 }
