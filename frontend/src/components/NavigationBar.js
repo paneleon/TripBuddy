@@ -19,19 +19,18 @@ const NavigationBar = () => {
           <Nav className="me-auto">
             <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/browse">Browse Destinations</Nav.Link>
-            <Nav.Link href="#">+ New Post</Nav.Link>
+            <Nav.Link href="/post">Add New Post</Nav.Link>
             
-
           </Nav>
           <Nav>
             <Nav.Link href="#"></Nav.Link>
             <NavDropdown title="Settings" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#">Profile</NavDropdown.Item>
-              <NavDropdown.Item href="#">Subscriptions</NavDropdown.Item>
-              <NavDropdown.Item href="#">Payment Methods</NavDropdown.Item>
+              <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+              <NavDropdown.Item href="/subscription">Subscriptions</NavDropdown.Item>
+              <NavDropdown.Item href="/payment">Payment Methods</NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link href="#">Logout</Nav.Link>
+            <Nav.Link href="/login">Login/Register</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
