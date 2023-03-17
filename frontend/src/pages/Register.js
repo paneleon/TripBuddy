@@ -1,0 +1,67 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styles from '../styles/Register.module.css';
+
+function Register() {
+	const navigate = useNavigate()
+	const [username, setUsername] = useState('')
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
+	async function registerUser(event) {
+		event.preventDefault()
+
+		const response = await fetch('http://localhost:3000/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				username,
+				email,
+				password,
+			}),
+		})
+
+		const data = await response.json()
+
+		if (data.status === 'ok') {
+			navigate.push('/login')
+		}
+	}
+
+	return (
+		<div>
+			<form onSubmit={registerUser}>
+			<h1>Register</h1>
+				<input
+					className={styles.usernameInput}
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+					type="text"
+					placeholder="Username"
+				/>
+				<br />
+				<input
+					className={styles.emailInput}
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					type="email"
+					placeholder="Email"
+				/>
+				<br />
+				<input
+					className={styles.passwordInput}
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					type="password"
+					placeholder="Password"
+				/>
+				<br />
+				<input type="submit" value="Register" className={styles.registerButton} />
+			</form>
+		</div>
+	)
+}
+
+export default Register
