@@ -1,0 +1,50 @@
+form {
+    background-color: rgb(227, 227, 227);
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    padding: 30px;
+    border: 1px solid #000;
+}
+
+.usernameInput{
+    font-size: 18px;
+    width: 50%;
+    height: 35px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #000;
+}
+
+.usernameInput:hover {
+    border-bottom: 1px solid #2eff4a;
+}
+
+.passwordInput {
+    font-size: 18px;
+    width: 50%;
+    height: 35px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #000;
+}
+
+.passwordInput:hover {
+    border-bottom: 1px solid #2eff4a;
+}
+
+.loginButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
