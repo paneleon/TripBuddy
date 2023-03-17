@@ -12,18 +12,21 @@ const flash = require('flash');
 const session = require('express-session');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const User = require('../models/user.model');
-const mongoose = require('mongoose');
-const Secret = "SECRET";
-
-
-const localStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
+const User = require('../models/user.model')
 
+// load env variables
+require('dotenv').config()
+
+// import routers
+const sampleRoute = require('../routes/sample.route');
+const userRote = require('../routes/user.route');
+
+
+const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
-  jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  jwtOptions.secretOrKey = "Secret";
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = process.env.JWT_SECRET;
 
 let strategy = new JWTStrategy(jwtOptions, (jwt_payload, done) =>{
   User.findById(jwt_payload.id)
@@ -41,20 +44,11 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-// import routers
-const sampleRoute = require('../routes/sample.route');
-const userRoute = require('../routes/user.route');
-
-const userAPIRoute = require('../routes/api/user.api.route');
-const request = require('../server');
-
-require('dotenv').config()
-
 module.exports = () => {
   const app = express();
 
   app.use(session({
-    secret: "secret",
+    secret: secret,
     saveUninitialized: false, 
     resave: false
   }));
@@ -91,8 +85,7 @@ module.exports = () => {
 
   // configure and use routes
   app.use('/api/sample', sampleRoute);
-  app.use('/', userRoute);
-  app.use('/api/user', userAPIRoute);
+  app.use('/api/user', userRote);
 
   return app;
 }

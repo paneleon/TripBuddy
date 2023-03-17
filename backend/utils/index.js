@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const secret = process.env.JWT_SECRET;
+
 exports.UserDisplayName = (req, res) => {
   if (req.user) {
     return req.user.displayName;
@@ -33,5 +35,5 @@ exports.GenerateToken = (user) => {
     expiresIn: 60004800, //1 Week
   };
 
-  return jwt.sign(payload, Secret, jwtOptions);
+  return jwt.sign(payload, secret, jwtOptions);
 }
