@@ -26,3 +26,16 @@ exports.createNewPost = async (req, res) => {
         return res.status(500).send({message: `Server error: ${error.message}`})
     }
 }
+
+exports.getPostDetails = async (req, res) =>{
+    try {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        let id = req.params.id;
+        postFound = await Post.findById(id);
+        //console.log(postFound);
+        return res.end(JSON.stringify(res.postFound));
+    } catch (error) {
+        return res.status(500).send({message: `Server error: ${error.message}`})
+    }
+}
