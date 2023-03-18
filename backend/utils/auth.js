@@ -17,19 +17,16 @@ exports.UserId = (req) => {
 exports.isAuthenticated = (req, res, next) => {
   const authHeader = req.get('authorization')
   if (!authHeader){
-    return res.status(403).json({ error: 'Token is not provided' });
+    return res.status(403).json({ success: false, message: 'Token is not provided' });
   }
   const token = authHeader.split(' ')[1]
-  
-  console.log("token", token)
   try {
     jwt.verify(token, secret)
   } catch (error){
-    return res.status(401).json({ error: 'Token is invalid' });
+    return res.status(401).json({ success: false, message: 'Token is invalid' });
   }
   return next();
 }
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTRiNTdkYzA2YjQ1MDhmNmJhNzUxMiIsImlhdCI6MTY3OTE1ODY0NywiZXhwIjoxNzM5MTYzNDQ3fQ.7DFhwvUqpo7dDc9DS_R1oLuNaK4ED_dn9t28DUPUcVo
 
 exports.GenerateToken = (user) => {
   const payload = {
