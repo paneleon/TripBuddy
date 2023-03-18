@@ -167,3 +167,18 @@
 .image-date-div {
     align-content: space-between;
 }
+
+.rating-tag {
+    font-size: 3rem;
+    text-align: end;
+    display: flex;
+    justify-items: center;
+    justify-content: end;
+}
+
+.rating-tag img {
+    width: 3rem;
+    height: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}

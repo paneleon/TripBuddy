@@ -12,6 +12,7 @@ const samplePost = {
     category: "Restaurant",
     country: "USA",
     city: "New York",
+    rating: 4.2,
     createdAt:"2016-05-18T16:00:00Z",
     image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011",
     comments: [
@@ -74,7 +75,7 @@ const Post = () => {
                 <span className={cn(styles['cat-tag'], 'd-block')}>{post?.category}</span>
                 <span className={cn(styles['date-tag'], 'd-block')}>Posted on {post?.createdAt}</span>
                 <span className={cn(styles['location-tag'], 'd-block')}>{post?.country}, {post?.city}</span>
-                <span></span>
+                <span className={styles['rating-tag']}><img src='/star.png'/>{post?.rating} </span>
 
             </div>
             
