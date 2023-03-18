@@ -1,5 +1,5 @@
 const passport = require('passport');
-const Utils = require('../utils/index.js');
+const authUtils = require('../utils/auth.js');
 const User = require('../models/user.model')
 
 exports.processLogin = (req, res, next) => {
@@ -22,7 +22,7 @@ exports.processLogin = (req, res, next) => {
         res.end(err);
       }
 
-      const authToken = Utils.GenerateToken(user);
+      const authToken = authUtils.GenerateToken(user);
       return res.json({
         success: true,
         msg: "User Logged In Successfully",
