@@ -1,14 +1,15 @@
 import React from 'react'
 import {Button, Card, Row, Col} from 'react-bootstrap';
 import styles from '../styles/Posts.module.css'
+import { IKImage } from 'imagekitio-react';
 
 const PostCardHorizontal = ({post}) => {
 
   return (
     <div className={styles['horizontal-card-wrapper']}>
         <div className={styles['horizontal-card']}>
-            <div>
-                <img variant="top" src={post?.image || '/tripbuddy_icon_lg.png'}/>
+            <div className={styles['image-date-div']}>
+                {post?.image ? (<IKImage path={post?.image}/> || <img src="/no-image.jpg"/>) : <img src="/no-image.jpg"/> }
                 <Card.Subtitle className={styles['date-tag']}>Posted on {post?.createdAt}</Card.Subtitle>
             </div>
             <div>

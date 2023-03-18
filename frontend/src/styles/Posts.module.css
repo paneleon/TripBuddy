@@ -20,6 +20,7 @@
 
 .date-tag {
     color: #CFD2CF;
+    align-self: baseline;
 }
 
 .post-preview {
@@ -161,4 +162,8 @@
     border:#FDD36A 1px;
     margin-bottom: 5px;
     width: 100px;
+}
+
+.image-date-div {
+    align-content: space-between;
 }
