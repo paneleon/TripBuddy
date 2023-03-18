@@ -1,5 +1,5 @@
 form {
-    background-color: rgb(227, 227, 227);
+    /* background-color: rgb(227, 227, 227); */
     margin-left: auto;
     margin-right: auto;
     width: 50%;
@@ -46,5 +46,12 @@ form {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
+    border: 1px solid #000;
+    background-color: #290dce;
+    color: #d3ef35;
 }
 
+button {
+    width: 80px;
+    height: 40px;
+}

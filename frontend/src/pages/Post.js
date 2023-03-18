@@ -1,31 +1,21 @@
 import React, { useState }  from 'react';
 import { Formik, Field, Form } from 'formik';
 import styles from '../styles/Post.module.css';
-import Select from 'react-select'
-
-const options = [
-  { value: 'Restaurant', label: 'Restaurant' },
-  { value: 'Residence', label: 'Residence' },
-  { value: 'Attractions', label: 'Attractions' },
-  { value: 'Educational', label: 'Educational' },
-  { value: 'Outdoors', label: 'Outdoors' },
-  { value: 'Cultural', label: 'Cultural' },
-  { value: 'Religious', label: 'Religious' },
-  { value: 'Other', label: 'Other' }
-]
 
 const Post = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+
   return (
     <Formik
       initialValues={{
-        photo: '',
-        description: '',
-        date: '',
+				photoURL: '',
+        title: '',
+        categories: '',
         country: '',
         city: '',
+        date: '',
         rating: '',
-        categories: '',
+        description: '',
       }}
       onSubmit={async (values) => {
         await new Promise((r) => setTimeout(r, 500));
@@ -33,33 +23,60 @@ const Post = () => {
       }}
     >
       <Form>
+      <h1>Add New Post</h1>
       <div>
         {selectedImage && (
           <div>
             <img
               alt="not found"
-              width={"400px"}
-              height={"300px"}
+              width={"100%"}
+              height={"400px"}
               src={URL.createObjectURL(selectedImage)}
             />
             <br />
-            <button onClick={() => setSelectedImage(null)}>Remove</button>
+            <button className={styles.removeButton} onClick={() => setSelectedImage(null)}>Remove</button>
           </div>
         )}
       <br />
         <input
+          className={styles.photoArea}
           type="file"
           name="myImage"
           onChange={(event) => {
-            console.log(event.target.files[0]);
+            console.log(event.target.files[0]);          
             setSelectedImage(event.target.files[0]);
           }}
         />
       </div>
       
         <br />
-        <Select options={options} />
-        <br />
+
+      <div className={styles.wrap}>
+        <div className={styles.title}>
+              <Field 
+              id="title" 
+              name="title" 
+              placeholder="Title" />
+            <br/>
+          </div>
+
+        <div className={styles.categories}>
+        <Field 
+        align="center" 
+        name="categories" 
+        as="select">
+          <option value="" selected disabled hidden>Select a Category</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Residence">Residence</option>
+          <option value="Attractions">Attractions</option>
+          <option value="Educational">Educational</option>
+          <option value="Outdoors">Outdoors</option>
+          <option value="Cultural">Cultural</option>
+          <option value="Religious">Religious</option>
+          <option value="Other">Other</option>
+        </Field>
+        </div>
+      </div>
 
         <div className={styles.wrap}>
           <div className={styles.country}>
@@ -82,6 +99,7 @@ const Post = () => {
         <div className={styles.wrap}>
           <div className={styles.date}>
             <Field 
+            type="date"
             id="date" 
             name="date" 
             placeholder="MM/DD/YYYY" />
@@ -96,12 +114,18 @@ const Post = () => {
           <br/>
           </div>
         </div>
-
-        <textarea name="description" rows={6} cols={50} />
-
+          <div align="center">
+          <div className={styles.description}>
+          <Field 
+          id="description" 
+          name="description" 
+          component="textarea" 
+          rows="4" />
+          </div>
+          </div>
         <br/>
-        <button type="Add Post" className={styles.addPostButton}>Add Post</button>
-        <button type="Cancel Post" className={styles.cancelButton}>Cancel</button>
+        <button className={styles.addPostButton}>Add Post</button>
+        <button type="button" className={styles.cancelButton} onClick={event =>  window.location.href='/home'} >Cancel</button>
 
       </Form>
     </Formik>

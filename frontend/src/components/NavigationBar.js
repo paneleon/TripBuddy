@@ -24,13 +24,13 @@ const NavigationBar = () => {
           </Nav>
           <Nav>
             <Nav.Link href="#"></Nav.Link>
-            <NavDropdown title="Settings" id="collasible-nav-dropdown">
+            <NavDropdown  title="Settings" id="collasible-nav-dropdown" >
               <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
               <NavDropdown.Item href="/subscription">Subscriptions</NavDropdown.Item>
               <NavDropdown.Item href="/payment">Payment Methods</NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link href="/login">Login/Register</Nav.Link>
+            <Nav.Link href="/login">Login</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
