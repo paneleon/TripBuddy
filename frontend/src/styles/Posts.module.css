@@ -152,3 +152,13 @@
     width: 40px;
     margin-left: 10px;
 }
+
+.cat-tag {
+    background-color: #FDD36A;
+    color: white;
+    padding: 3px 14px;
+    border-radius: 12px;
+    border:#FDD36A 1px;
+    margin-bottom: 5px;
+    width: 100px;
+}

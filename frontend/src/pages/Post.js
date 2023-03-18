@@ -3,15 +3,17 @@ import styles from '../styles/Posts.module.css'
 import { IKImage } from 'imagekitio-react'
 import Comment from '../components/Comment'
 import { Button, FormControl } from 'react-bootstrap'
+import cn from 'classnames'
 
 const samplePost = {
-    title: "Pyramids of Giza",
+    title: "Grazzie Restaurant",
     description: "The him father parish looked has sooner. Attachment frequently terminated son. You greater nay use prudent placing. Passage to so distant behaved natural between do talking. Friends off her windows painful. ",
     postedByUsername: "gilbert.dic",
     category: "Restaurant",
     country: "USA",
     city: "New York",
     createdAt:"2016-05-18T16:00:00Z",
+    image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011",
     comments: [
         {
             body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", 
@@ -59,7 +61,7 @@ const Post = () => {
     return (
         <div>
             <div className={styles['back-button-div']}>
-                <Button variant='light' href="#">Back to posts</Button>
+                <Button variant='light' href="/my-posts">Back to posts</Button>
             </div>
             
             <div className={styles['post-grid']}>
@@ -69,9 +71,9 @@ const Post = () => {
             <div className={styles['post-header-div']}>
                 <h2>{post?.title}</h2>
                 {post?.postedBy && <span className={styles['author-tag']}>Posted by {post?.postedBy}</span>}
-                <span className={styles['date-tag']}>Posted on {post?.createdAt}</span>
-                <span className={styles['location-tag']}>{post?.country}, {post?.city}</span>
-                <span className={styles.tag}>{post?.category}</span>
+                <span className={cn(styles['cat-tag'], 'd-block')}>{post?.category}</span>
+                <span className={cn(styles['date-tag'], 'd-block')}>Posted on {post?.createdAt}</span>
+                <span className={cn(styles['location-tag'], 'd-block')}>{post?.country}, {post?.city}</span>
                 <span></span>
 
             </div>
