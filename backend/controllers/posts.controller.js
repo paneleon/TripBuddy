@@ -4,7 +4,7 @@ exports.createNewPost = async (req, res) => {
 
     try {
         if (!req.body.title){
-            return res.status(400).send({message: "Post title is required"})
+            return res.status(400).send({success: false, message: "Post title is required"})
         }
 
         const userId = "user id placeholder" // TODO: get user id from authentication middleware
@@ -23,6 +23,21 @@ exports.createNewPost = async (req, res) => {
         await post.save()
         return res.status(200).json(post);
     } catch (error) {
-        return res.status(500).send({message: `Server error: ${error.message}`})
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
     }
-}
+};
+
+exports.fetchPostById = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while fetching the post', error });
+  }
+};

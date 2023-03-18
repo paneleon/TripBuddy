@@ -1,6 +1,7 @@
 const passport = require('passport');
-const Utils = require('../utils/index.js');
-const User = require('../models/user.model')
+const authUtils = require('../utils/auth.js');
+const User = require('../models/user.model');
+const imageUpload = require('../config/imageUpload.config');
 
 exports.processLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -11,7 +12,7 @@ exports.processLogin = (req, res, next) => {
     }
     // are there any login errors?
     if (!user) {
-      return res.json({ success: false, msg: "ERROR: Authentication Failed" });
+      return res.json({ success: false, message: "ERROR: Authentication Failed" });
     }
 
     // no problems -  we have a good username and password
@@ -22,10 +23,10 @@ exports.processLogin = (req, res, next) => {
         res.end(err);
       }
 
-      const authToken = Utils.GenerateToken(user);
+      const authToken = authUtils.GenerateToken(user);
       return res.json({
         success: true,
-        msg: "User Logged In Successfully",
+        message: "User Logged In Successfully",
         user: {
           id: user._id,
           displayName: user.firstName,
@@ -53,11 +54,11 @@ exports.processRegistration = (req, res, next) => {
 
       console.log(err);
 
-      return res.json({ success: false, msg: "ERROR: Registration Failed!" });
+      return res.json({ success: false, message: "ERROR: Registration Failed!" });
     }
 
     // all ok - user has been registered
-    return res.json({ success: true, msg: "User Registered Successfully" });
+    return res.json({ success: true, message: "User Registered Successfully" });
   });
 }
 
@@ -71,5 +72,10 @@ exports.processLogout = (req, res, next) => {
     console.log("User Logged Out");
   });
 
-  res.json({ success: true, msg: "User logged out successfully" });
+  res.json({ success: true, message: "User logged out successfully" });
+}
+
+exports.getAuthImageUploadData = (req, res) => { // function for uploading images
+  const result = imageUpload.getAuthenticationParameters()
+  res.send(result);
 }

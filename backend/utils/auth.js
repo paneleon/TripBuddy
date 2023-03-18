@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const secret = process.env.JWT_SECRET;
 
 exports.UserDisplayName = (req, res) => {
@@ -14,12 +13,18 @@ exports.UserId = (req) => {
   }
   return "";
 }
-
-exports.AuthGuard = (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/login");
+exports.isAuthenticated = (req, res, next) => {
+  const authHeader = req.get('authorization')
+  if (!authHeader){
+    return res.status(403).json({ success: false, message: 'Token is not provided' });
   }
-  next();
+  const token = authHeader.split(' ')[1]
+  try {
+    jwt.verify(token, secret)
+  } catch (error){
+    return res.status(401).json({ success: false, message: 'Token is invalid' });
+  }
+  return next();
 }
 
 exports.GenerateToken = (user) => {
