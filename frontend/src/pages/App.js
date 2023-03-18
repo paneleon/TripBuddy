@@ -11,6 +11,8 @@ import Payment from './Payment';
 import Subscription from './Subscription';
 import NavigationBar from '../components/NavigationBar';
 import Sample from './Sample';
+import MyPosts from './MyPosts'
+import NewPost from './NewPost';
 
 const App = () => {
   return (
@@ -22,12 +24,14 @@ const App = () => {
         <Route path="/home" element={<Home /> } />
         <Route path="/login" exact Component={Login} />
         <Route path="/register" exact Component={Register} />
-        <Route path="/post" element={<Post /> } />
+        <Route path="/new-post" element={<NewPost /> } />
         <Route path="/profile" element={<Profile /> } />
         <Route path="/browse" element={<Browse /> } />
         <Route path="/payment" element={<Payment /> } />
         <Route path="/subscription" element={<Subscription /> } />
         <Route path="/sample" element={<Sample /> } />
+        <Route path="/my-posts" element={<MyPosts /> } />
+        <Route path="/my-posts/:id" element={<Post /> } />
        </Routes>
     </>
   );

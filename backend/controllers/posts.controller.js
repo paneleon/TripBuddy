@@ -4,7 +4,7 @@ exports.createNewPost = async (req, res) => {
 
     try {
         if (!req.body.title){
-            return res.status(400).send({message: "Post title is required"})
+            return res.status(400).send({success: false, message: "Post title is required"})
         }
 
         const userId = "user id placeholder" // TODO: get user id from authentication middleware
@@ -23,7 +23,7 @@ exports.createNewPost = async (req, res) => {
         await post.save()
         return res.status(200).json(post);
     } catch (error) {
-        return res.status(500).send({message: `Server error: ${error.message}`})
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
     }
 }
 
