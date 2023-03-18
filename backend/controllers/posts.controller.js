@@ -26,3 +26,13 @@ exports.createNewPost = async (req, res) => {
         return res.status(500).send({message: `Server error: ${error.message}`})
     }
 }
+
+exports.getPostDetails = async (req, res) =>{
+    try {
+        let id = req.params.id;
+        postFound = await Post.findById(id);
+        return res.status(200).json(postFound);
+    } catch (error) {
+        return res.status(500).send({message: `Server error: ${error.message}`})
+    }
+}
