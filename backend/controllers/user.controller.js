@@ -1,6 +1,7 @@
 const passport = require('passport');
 const authUtils = require('../utils/auth.js');
 const User = require('../models/user.model')
+const imageUpload = require('../config/imageUpload.config')
 
 exports.processLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -72,4 +73,9 @@ exports.processLogout = (req, res, next) => {
   });
 
   res.json({ success: true, message: "User logged out successfully" });
+}
+
+exports.getAuthImageUploadData = (req, res) => { // function for uploading images
+  const result = imageUpload.getAuthenticationParameters()
+  res.send(result);
 }

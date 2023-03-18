@@ -9,8 +9,7 @@ import { IKContext } from 'imagekitio-react'; // for using image upload
 
 const IMAGE_UPLOAD_URL = process.env.REACT_APP_IMAGE_KIT_URL
 const IMAGE_UPLOAD_KEY = process.env.REACT_APP_IMAGE_KIT_PUBLIC_KEY;
-const AUTH_ENPOINT = "http://localhost:5000/auth" // TODO: add actual endpoint
-
+const AUTH_ENPOINT = `${process.env.REACT_APP_SERVER_URL}/user/auth`
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
