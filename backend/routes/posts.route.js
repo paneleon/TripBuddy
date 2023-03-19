@@ -9,7 +9,7 @@ router.post('/', authUtils.isAuthenticated, PostsController.createNewPost)
 router.get('/getById/:id', PostsController.getPostDetails) //get post detail by post id
 router.get('/getByUser', authUtils.isAuthenticated, PostsController.getUsersPosts) // get posts of authenticated user
 router.get('/getByUser/:id', authUtils.isAuthenticated, PostsController.getOtherUsersPosts) // get posts of another user
-router.get('/deleteById/:id', authUtils.isAuthenticated, PostsController.deletePost) // get to delete post by id
-router.post('/editById/:id',authUtils.isAuthenticated, PostsController.editPost)// post route to edit post by id
+router.delete('/deleteById/:id', authUtils.isAuthenticated, PostsController.deletePost) // get to delete post by id
+router.put('/editById/:id',authUtils.isAuthenticated, PostsController.editPost)// post route to edit post by id
 
 module.exports = router;

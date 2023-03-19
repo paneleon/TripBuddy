@@ -63,9 +63,10 @@ exports.getOtherUsersPosts = async (req, res) =>{
 exports.deletePost = async (req, res) =>{
     try{
         const postId = req.params.id;
-        const postBy = Post.findById(postId).postBy;
+        const oldPost = await Post.findById(postId)
+        const postedBy = oldPost.postedBy;
         const userId = res.locals.userId // get user id from authentication middleware
-        if(userId == postBy)
+        if(userId == postedBy)
         {
             const result = await Post.findByIdAndRemove(postId);          
             return res.status(200).json(result); 
@@ -83,24 +84,24 @@ exports.deletePost = async (req, res) =>{
 exports.editPost = async (req, res) => {
 
     try {
-        const postID = req.params.id;
-        const postBy = Post.findById(postId).postBy;
+        const postId = req.params.id;
+        const oldPost = await Post.findById(postId)
+        const postedBy = oldPost.postedBy;
         const userId = res.locals.userId // get user id from authentication middleware
-        if(userId == postBy)
+        if(userId == postedBy)
         {
-        const updatedPost = new Post({
-            id: postID,
-            title: req.body.title,
-            description: req.body.description,
-            rating: req.body.rating,
-            postedBy: userId,
-            image: req.body.image,
-            category: req.body.category,
-            address: req.body.address,
-            country: req.body.country,
-            city: req.body.city,
-        })
-        await Post.updateOne({_id:postID}, updatedPost);
+        const updatedPost = {
+            "title": req.body.title,
+            "description": req.body.description,
+            "rating": req.body.rating,
+            "postedBy": postedBy,
+            "image": req.body.image,
+            "category": req.body.category,
+            "address": req.body.address,
+            "country": req.body.country,
+            "city": req.body.city
+        }
+        await Post.updateOne({_id:postId}, updatedPost);
         return res.status(200).json(updatedPost);
         }
         else
