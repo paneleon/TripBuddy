@@ -34,3 +34,23 @@ exports.getPostDetails = async (req, res) =>{
         return res.status(500).send({message: `Server error: ${error.message}`})
     }
 }
+
+exports.getUsersPosts = async (req, res) =>{
+    try {
+        const userId = res.locals.userId
+        const posts = await Post.find({postedBy: userId});
+        return res.status(200).json(posts);
+    } catch (error) {
+        return res.status(500).send({message: `Server error: ${error.message}`})
+    }
+}
+
+exports.getOtherUsersPosts = async (req, res) =>{
+    try {
+        const otherUserId = req.params.id;
+        const posts = await Post.find({postedBy: otherUserId});
+        return res.status(200).json(posts);
+    } catch (error) {
+        return res.status(500).send({message: `Server error: ${error.message}`})
+    }
+}
