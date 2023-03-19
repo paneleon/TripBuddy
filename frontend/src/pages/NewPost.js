@@ -26,11 +26,9 @@ const NewPost = () => {
  
   const saveNewPost = async (values) => {
     const post = {...values, image: `posts/${selectedImage}`}
-    console.log(post)
     const response = await axios.post(`${url}/posts`, post, { headers: {
         'Authorization': 'Bearer ' + token
       }})
-    console.log(response)
   }
 
   return (
