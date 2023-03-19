@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import PostCardHorizontal from '../components/PostCardHorizontal'
 import {Container} from 'react-bootstrap';
+import { useAuth } from '../context/authContext';
+import axios from 'axios';
 
 const samplePosts = [
     {
@@ -71,9 +73,19 @@ const samplePosts = [
 
 const MyPosts = () => {
     const [posts, setPosts] = useState([])
+    const {token} = useAuth()
+
+    const url = process.env.REACT_APP_SERVER_URL
+
+    const getUsersPosts = async () => {
+        const response = await axios.get(`${url}/posts/getByUser`, { headers: {
+            'Authorization': 'Bearer ' + token
+        }})
+        setPosts(response.data)
+    }
 
     useEffect(() => {
-        setPosts(samplePosts)
+        getUsersPosts()
     }, [])
 
   return (
