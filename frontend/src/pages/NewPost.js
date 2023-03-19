@@ -1,5 +1,5 @@
 import React, { useState }  from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, useFormikContext } from 'formik';
 import styles from '../styles/Post.module.css';
 import Select from 'react-select'
 import axios from 'axios'
@@ -9,6 +9,7 @@ import { IKImage } from 'imagekitio-react'
 import cn from 'classnames'
 import { useNavigate } from "react-router-dom";
 import {Container} from 'react-bootstrap'
+import ConfirmationPopup from '../components/ConfirmationPopup';
 
 const options = [
   { value: 'Restaurant', label: 'Restaurant' },
@@ -28,23 +29,24 @@ const NewPost = () => {
   const url = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate()
   const [error, setError] = useState(null)
+  const [showPopup, setShowPopup] = useState(false)
  
   const saveNewPost = async (values) => {
     try {
+      console.log("values", values)
       const post = {...values, image: `posts/${selectedImage}`, category: category}
       const response = await axios.post(`${url}/posts`, post, { headers: {
           'Authorization': 'Bearer ' + token
         }})
       setError(null)
-      return navigate('/my-posts')
+      setShowPopup(true)
     } catch (error) {
       setError(error)
     }
-    
   }
 
   return (
-    <Container>
+    <div>
     <Formik
       initialValues={{
         title: '',
@@ -126,17 +128,17 @@ const NewPost = () => {
 
         <br/>
         <div className='text-center'>
-        <button type="Add Post" className={cn(styles.addPostButton, 'btn btn-success')}>Add Post</button>
-        <button type="Cancel Post" className={cn(styles.cancelButton, 'btn btn-danger')}>Cancel</button>
+        <button type="submit" className={cn(styles.addPostButton, 'btn btn-success')}>Add Post</button>
+        <button onClick={() => navigate('/my-posts')} type="reset" className={cn(styles.cancelButton, 'btn btn-danger')}>Cancel</button>
         </div>
-        
 
       </Form>
 
-      
     </Formik>
-    {error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}
-    </Container>
+    <Container>{error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}</Container>
+    <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Done!"} message={"Your post was successfully published"} show={showPopup} setShow={setShowPopup}/>
+
+    </div>
   );
 };
 

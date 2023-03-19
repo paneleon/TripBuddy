@@ -1,0 +1,6 @@
+.popup {
+    background-color: rgba(123, 120, 120, 0.8);
+    position: absolute !important;
+    z-index: 100;
+    padding-top: 15%;
+}
