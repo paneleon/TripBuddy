@@ -20,6 +20,7 @@
 
 .date-tag {
     color: #CFD2CF;
+    align-self: baseline;
 }
 
 .post-preview {
@@ -151,4 +152,33 @@
     height: 40px;
     width: 40px;
     margin-left: 10px;
+}
+
+.cat-tag {
+    background-color: #FDD36A;
+    color: white;
+    padding: 3px 14px;
+    border-radius: 12px;
+    border:#FDD36A 1px;
+    margin-bottom: 5px;
+    width: 100px;
+}
+
+.image-date-div {
+    align-content: space-between;
+}
+
+.rating-tag {
+    font-size: 3rem;
+    text-align: end;
+    display: flex;
+    justify-items: center;
+    justify-content: end;
+}
+
+.rating-tag img {
+    width: 3rem;
+    height: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }

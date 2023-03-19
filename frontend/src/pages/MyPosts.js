@@ -10,7 +10,7 @@ const samplePosts = [
         category: "Restaurant",
         country: "USA",
         city: "New York",
-        image: "https://picsum.photos/id/0/400/400",
+        image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011",
         createdAt:"2016-05-18T16:00:00Z"
     },
     {
@@ -20,7 +20,7 @@ const samplePosts = [
         category: "Residence",
         country: "Russia",
         city: "Moscow",
-        image: "https://picsum.photos/id/40/400/400"
+        image: "posts/park_sMgYVfgCQ.jpeg?updatedAt=1679179941476"
     },
     {
         title: "Palace of Versailles",
@@ -29,7 +29,7 @@ const samplePosts = [
         category: "Outdoors",
         country: "Canada",
         city: "Ottawa",
-        image: "https://picsum.photos/id/90/400/400"
+        image: "/posts/ocean_Ek69y4CzAM.jpg?updatedAt=1679179943857"
     },
     {
         title: "Sagrada Familia",
@@ -38,7 +38,7 @@ const samplePosts = [
         category: "Residence",
         country: "USA",
         city: "New York",
-        image: "https://picsum.photos/id/130/400/400"
+        image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011"
     },
     {
         title: "Sydney Opera House",
@@ -47,7 +47,7 @@ const samplePosts = [
         category: "Residence",
         country: "Canada",
         city: "Toronto",
-        image: "https://picsum.photos/id/100/400/400"
+        image: "/posts/ocean_Ek69y4CzAM.jpg?updatedAt=1679179943857"
     },
     {
         title: "Machu Picchu",
@@ -56,7 +56,7 @@ const samplePosts = [
         category: "Attractions",
         country: "Canada",
         city: "Vancouver",
-        image: "https://picsum.photos/id/190/400/400"
+        image: "posts/park_sMgYVfgCQ.jpeg?updatedAt=1679179941476"
     },
     {
         title: "Eiffel Tower",
@@ -65,7 +65,7 @@ const samplePosts = [
         category: "Residence",
         country: "Germany",
         city: "Berlin",
-        image: "https://picsum.photos/id/180/400/400"
+        image: "/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011"
     }
 ]
 
