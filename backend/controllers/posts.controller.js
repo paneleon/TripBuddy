@@ -1,4 +1,5 @@
 const Post = require('../models/post.model')
+const User = require('../models/user.model')
 
 exports.createNewPost = async (req, res) => {
 
@@ -27,9 +28,13 @@ exports.createNewPost = async (req, res) => {
 
 exports.getPostDetails = async (req, res) =>{
     try {
-        let id = req.params.id;
-        postFound = await Post.findById(id);
-        return res.status(200).json(postFound);
+        const id = req.params.id;
+        const postFound = await Post.findById(id);
+
+        const authorId = postFound.postedBy
+        const author = await User.findById(authorId)
+        const finalData = {...postFound.toJSON(), postedByUser: author}
+        return res.status(200).json(finalData);
     } catch (error) {
         return res.status(500).send({message: `Server error: ${error.message}`})
     }
