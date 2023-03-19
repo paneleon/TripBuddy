@@ -2,6 +2,11 @@ import React, { useState }  from 'react';
 import { Formik, Field, Form } from 'formik';
 import styles from '../styles/Post.module.css';
 import Select from 'react-select'
+import axios from 'axios'
+import { useAuth } from '../context/authContext';
+import ImageUpload from '../components/ImageUpload'
+import { IKImage } from 'imagekitio-react'
+import cn from 'classnames'
 
 const options = [
   { value: 'Restaurant', label: 'Restaurant' },
@@ -16,10 +21,22 @@ const options = [
 
 const NewPost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const {token} = useAuth()
+  const url = process.env.REACT_APP_SERVER_URL;
+ 
+  const saveNewPost = async (values) => {
+    const post = {...values, image: `posts/${selectedImage}`}
+    console.log(post)
+    const response = await axios.post(`${url}/posts`, post, { headers: {
+        'Authorization': 'Bearer ' + token
+      }})
+    console.log(response)
+  }
+
   return (
     <Formik
       initialValues={{
-        photo: '',
+        title: '',
         description: '',
         date: '',
         country: '',
@@ -28,35 +45,29 @@ const NewPost = () => {
         categories: '',
       }}
       onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
+        saveNewPost(values)
       }}
     >
       <Form>
       <div>
         {selectedImage && (
           <div>
-            <img
-              alt="not found"
-              width={"400px"}
-              height={"300px"}
-              src={URL.createObjectURL(selectedImage)}
-            />
+            <IKImage path={`posts/${selectedImage}`} width={400} height={300}/>
             <br />
-            <button onClick={() => setSelectedImage(null)}>Remove</button>
+            <button className="btn btn-warning" onClick={() => setSelectedImage(null)}>Remove</button>
           </div>
         )}
       <br />
-        <input
-          type="file"
-          name="myImage"
-          onChange={(event) => {
-            console.log(event.target.files[0]);
-            setSelectedImage(event.target.files[0]);
-          }}
-        />
+        <ImageUpload imageFolder={'posts'} setImageName={setSelectedImage} />
       </div>
-      
+    
+            <Field 
+            id="title" 
+            name="title" 
+            placeholder="Title" className="form-control"/>
+
+        <Field className="form-control" name="description" placeholder="Description" rows={6} cols={50} />
+
         <br />
         <Select options={options} />
         <br />
@@ -64,6 +75,7 @@ const NewPost = () => {
         <div className={styles.wrap}>
           <div className={styles.country}>
             <Field 
+            className="form-control" 
             id="country" 
             name="country" 
             placeholder="Country" />
@@ -72,6 +84,7 @@ const NewPost = () => {
 
           <div className={styles.city}>
             <Field 
+            className="form-control" 
             id="city" 
             name="city" 
             placeholder="City" />
@@ -82,6 +95,7 @@ const NewPost = () => {
         <div className={styles.wrap}>
           <div className={styles.date}>
             <Field 
+            className="form-control" 
             id="date" 
             name="date" 
             placeholder="MM/DD/YYYY" />
@@ -90,6 +104,7 @@ const NewPost = () => {
 
           <div className={styles.rating}>
             <Field 
+            className="form-control" 
             id="rating" 
             name="rating" 
             placeholder="Rating" />
@@ -97,11 +112,14 @@ const NewPost = () => {
           </div>
         </div>
 
-        <textarea name="description" rows={6} cols={50} />
+
 
         <br/>
-        <button type="Add Post" className={styles.addPostButton}>Add Post</button>
-        <button type="Cancel Post" className={styles.cancelButton}>Cancel</button>
+        <div className='text-center'>
+        <button type="Add Post" className={cn(styles.addPostButton, 'btn btn-success')}>Add Post</button>
+        <button type="Cancel Post" className={cn(styles.cancelButton, 'btn btn-danger')}>Cancel</button>
+        </div>
+        
 
       </Form>
     </Formik>
