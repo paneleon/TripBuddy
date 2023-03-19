@@ -4,6 +4,9 @@ import { IKImage } from 'imagekitio-react'
 import Comment from '../components/Comment'
 import { Button, FormControl } from 'react-bootstrap'
 import cn from 'classnames'
+import { useAuth } from '../context/authContext';
+import axios from 'axios';
+import { useParams } from 'react-router-dom'
 
 const samplePost = {
     title: "Grazzie Restaurant",
@@ -39,10 +42,19 @@ const samplePost = {
 const Post = () => {
 
     // get the id from query paramaters and make the request
-
+    const { postId } = useParams()
+    const {token} = useAuth()
+    const url = process.env.REACT_APP_SERVER_URL
     const [post, setPost] = useState(null)
     const [liked, setLiked] = useState(false)
     const [newCommentBody, setNewCommentBody] = useState(null)
+
+    const getPost = async () => {
+        const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
+            'Authorization': 'Bearer ' + token
+        }})
+        setPost(response.data)
+    }
 
     const addNewComment = () => {
         const newComment = {
@@ -56,7 +68,7 @@ const Post = () => {
     }
 
     useEffect(() => {
-        setPost(samplePost)
+        getPost(samplePost)
     }, [])
 
     return (
@@ -71,7 +83,7 @@ const Post = () => {
             </div>
             <div className={styles['post-header-div']}>
                 <h2>{post?.title}</h2>
-                {post?.postedBy && <span className={styles['author-tag']}>Posted by {post?.postedBy}</span>}
+                {post?.postedBy && <span className={styles['author-tag']}>Posted by {post?.postedByUser?.username}</span>}
                 <span className={cn(styles['cat-tag'], 'd-block')}>{post?.category}</span>
                 <span className={cn(styles['date-tag'], 'd-block')}>Posted on {post?.createdAt}</span>
                 <span className={cn(styles['location-tag'], 'd-block')}>{post?.country}, {post?.city}</span>

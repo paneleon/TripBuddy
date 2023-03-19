@@ -21,7 +21,8 @@ exports.isAuthenticated = (req, res, next) => {
   }
   const token = authHeader.split(' ')[1]
   try {
-    jwt.verify(token, secret)
+    const verified = jwt.verify(token, secret)
+    res.locals.userId = verified.id // set id of the user who is authenticated
   } catch (error){
     return res.status(401).json({ success: false, message: 'Token is invalid' });
   }
@@ -37,7 +38,7 @@ exports.GenerateToken = (user) => {
   };
 
   const jwtOptions = {
-    expiresIn: 60004800, //1 Week
+    expiresIn: '30d',
   };
 
   return jwt.sign(payload, secret, jwtOptions);
