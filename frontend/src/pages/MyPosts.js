@@ -94,7 +94,7 @@ const MyPosts = () => {
         <div className='posts-list'>
             {
                 posts?.map((post) => {
-                    return <PostCardHorizontal post={post}/>
+                    return <PostCardHorizontal post={post} mainPage={'my-posts'}/>
                 })
             }
         </div>

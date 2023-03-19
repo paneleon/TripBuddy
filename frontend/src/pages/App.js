@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/subscription" element={<Subscription /> } />
         <Route path="/sample" element={<Sample /> } />
         <Route path="/my-posts" element={<MyPosts /> } />
-        <Route path="/my-posts/:id" element={<Post /> } />
+        <Route path="/my-posts/:postId" element={<Post /> } />
        </Routes>
     </>
   );
