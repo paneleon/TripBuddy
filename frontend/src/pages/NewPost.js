@@ -7,6 +7,8 @@ import { useAuth } from '../context/authContext';
 import ImageUpload from '../components/ImageUpload'
 import { IKImage } from 'imagekitio-react'
 import cn from 'classnames'
+import { useNavigate } from "react-router-dom";
+import {Container} from 'react-bootstrap'
 
 const options = [
   { value: 'Restaurant', label: 'Restaurant' },
@@ -21,17 +23,28 @@ const options = [
 
 const NewPost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [category, setCategory] = useState(null);
   const {token} = useAuth()
   const url = process.env.REACT_APP_SERVER_URL;
+  const navigate = useNavigate()
+  const [error, setError] = useState(null)
  
   const saveNewPost = async (values) => {
-    const post = {...values, image: `posts/${selectedImage}`}
-    const response = await axios.post(`${url}/posts`, post, { headers: {
-        'Authorization': 'Bearer ' + token
-      }})
+    try {
+      const post = {...values, image: `posts/${selectedImage}`, category: category}
+      const response = await axios.post(`${url}/posts`, post, { headers: {
+          'Authorization': 'Bearer ' + token
+        }})
+      setError(null)
+      return navigate('/my-posts')
+    } catch (error) {
+      setError(error)
+    }
+    
   }
 
   return (
+    <Container>
     <Formik
       initialValues={{
         title: '',
@@ -39,8 +52,7 @@ const NewPost = () => {
         date: '',
         country: '',
         city: '',
-        rating: '',
-        categories: '',
+        rating: ''
       }}
       onSubmit={async (values) => {
         saveNewPost(values)
@@ -67,8 +79,8 @@ const NewPost = () => {
         <Field className="form-control" name="description" placeholder="Description" rows={6} cols={50} />
 
         <br />
-        <Select options={options} />
-        <br />
+        <Select id="category" name="category" options={options} onChange={(e) => setCategory(e.value)}/>
+        <br /> 
 
         <div className={styles.wrap}>
           <div className={styles.country}>
@@ -120,7 +132,11 @@ const NewPost = () => {
         
 
       </Form>
+
+      
     </Formik>
+    {error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}
+    </Container>
   );
 };
 
