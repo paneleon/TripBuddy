@@ -59,3 +59,55 @@ exports.getOtherUsersPosts = async (req, res) =>{
         return res.status(500).send({message: `Server error: ${error.message}`})
     }
 }
+
+exports.deletePost = async (req, res) =>{
+    try{
+        const postId = req.params.id;
+        const postBy = Post.findById(postId).postBy;
+        const userId = res.locals.userId // get user id from authentication middleware
+        if(userId == postBy)
+        {
+            const result = await Post.findByIdAndRemove(postId);          
+            return res.status(200).json(result); 
+        }
+        else
+        {
+            return res.status(400).json({error: "The post is not posted by this user"});
+        }
+              
+    }catch (error) {
+    return res.status(500).send({message: `Server error: ${error.message}`})
+    }
+}
+
+exports.editPost = async (req, res) => {
+
+    try {
+        const postID = req.params.id;
+        const postBy = Post.findById(postId).postBy;
+        const userId = res.locals.userId // get user id from authentication middleware
+        if(userId == postBy)
+        {
+        const updatedPost = new Post({
+            id: postID,
+            title: req.body.title,
+            description: req.body.description,
+            rating: req.body.rating,
+            postedBy: userId,
+            image: req.body.image,
+            category: req.body.category,
+            address: req.body.address,
+            country: req.body.country,
+            city: req.body.city,
+        })
+        await Post.updateOne({_id:postID}, updatedPost);
+        return res.status(200).json(updatedPost);
+        }
+        else
+        {
+            return res.status(400).json({error: "The post is not posted by this user"});
+        }
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+}
