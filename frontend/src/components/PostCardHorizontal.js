@@ -3,7 +3,7 @@ import {Button, Card, Row, Col} from 'react-bootstrap';
 import styles from '../styles/Posts.module.css'
 import { IKImage } from 'imagekitio-react';
 
-const PostCardHorizontal = ({post}) => {
+const PostCardHorizontal = ({post, mainPage}) => {
 
   return (
     <div className={styles['horizontal-card-wrapper']}>
@@ -27,7 +27,7 @@ const PostCardHorizontal = ({post}) => {
                     {post?.description.substring(0, 100) + "..."}
                 </Card.Text>
 
-                <Button className={styles['post-button']} variant='dark'>View post</Button>
+                <Button className={styles['post-button']} variant='dark' href={`/${mainPage}/${post?._id}`}>View post</Button>
             </Card.Body>
             </div>
       </div>
