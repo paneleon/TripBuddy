@@ -6,9 +6,7 @@ exports.createNewPost = async (req, res) => {
         if (!req.body.title){
             return res.status(400).send({success: false, message: "Post title is required"})
         }
-
-        const userId = "user id placeholder" // TODO: get user id from authentication middleware
-
+        const userId = res.locals.userId // get user id from authentication middleware
         const post = new Post({
             title: req.body.title,
             description: req.body.description,
