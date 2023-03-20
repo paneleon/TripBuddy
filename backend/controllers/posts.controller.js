@@ -1,5 +1,6 @@
 const Post = require('../models/post.model')
 const User = require('../models/user.model')
+const imageUpload = require('../config/imageUpload.config')
 
 exports.createNewPost = async (req, res) => {
 
@@ -101,6 +102,12 @@ exports.editPost = async (req, res) => {
             "country": req.body.country,
             "city": req.body.city
         }
+
+        // delete old image from cloud storage
+        if (oldPost.image && (oldPost.image != updatedPost.image)){
+            await deleteImage(oldPost.image)
+        }
+
         await Post.updateOne({_id:postId}, updatedPost);
         return res.status(200).json(updatedPost);
         }
@@ -110,5 +117,15 @@ exports.editPost = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+} 
+
+const deleteImage = async (imageName) => {
+    try {
+        const images = await imageUpload.listFiles({name: imageName})
+        const imageId = images[0].fileId
+        await imageUpload.deleteFile(imageId)
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Error deleting the image: ${error.message}`})
     }
 }
