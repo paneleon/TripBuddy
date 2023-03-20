@@ -7,11 +7,8 @@ import { deletePost } from '../../../backend/controllers/posts.controller';
 
 const DeleteConfirmation = ({title, message, show, setShow, doAction}) =>
  {
-    const title = "Delete Post";
-    const message = "Are you sure you want to delete this post ?";
-
     const postDelete = () => {
-        deletePost();
+        doAction (deletePost)
         setShow(false)
     }
 
