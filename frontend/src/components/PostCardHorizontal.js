@@ -3,16 +3,11 @@ import {Button, Card, Row, Col} from 'react-bootstrap';
 import styles from '../styles/Posts.module.css'
 import { IKImage } from 'imagekitio-react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { getFormattedDateTime } from '../utils/utilFunctions';
 
-const PostCardHorizontal = ({post, mainPage}) => {
+const PostCardHorizontal = ({post, mainPage, deletePost}) => {
 
     const navigate = useNavigate()
-
-    const deletePost = async (id) => {
-        // TODO: add a confirmation popup
-    } 
 
   return (
     <div className={styles['horizontal-card-wrapper']}>
