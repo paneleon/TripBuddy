@@ -1,6 +1,5 @@
-import React, { useState }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import { Formik, Field, Form, useFormikContext } from 'formik';
-import styles from '../styles/Post.module.css';
 import Select from 'react-select'
 import axios from 'axios'
 import { useAuth } from '../context/authContext';
@@ -10,6 +9,9 @@ import cn from 'classnames'
 import { useNavigate } from "react-router-dom";
 import {Container} from 'react-bootstrap'
 import ConfirmationPopup from '../components/ConfirmationPopup';
+import styles from '../styles/Post.module.css';
+import { useParams } from 'react-router-dom';
+import { getFormattedDate } from '../utils/utilFunctions';
 
 const options = [
   { value: 'Restaurant', label: 'Restaurant' },
@@ -22,42 +24,62 @@ const options = [
   { value: 'Other', label: 'Other' }
 ]
 
-const NewPost = () => {
+const EditPost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [category, setCategory] = useState(null);
   const {token} = useAuth()
   const url = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate()
   const [error, setError] = useState(null)
-  const [showPopup, setShowPopup] = useState(false)
+//   const [showPopup, setShowPopup] = useState(false)
+
+  // get the id from query paramaters and make the request
+  const { postId } = useParams()
+  const [post, setPost] = useState(null)
+
+  const getPost = async () => {
+      const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
+          'Authorization': 'Bearer ' + token
+      }})
+      setPost(response.data)
+      setSelectedImage(response.data.image)
+      setCategory(response.data.category)
+  }
  
-  const saveNewPost = async (values) => {
+  const editPost = async (values) => {
     try {
-      const post = {...values, image: selectedImage, category: category}
-      const response = await axios.post(`${url}/posts`, post, { headers: {
+      const edittedPost = {...values, image: selectedImage, category: category}
+      const response = await axios.put(`${url}/posts/editById/${postId}`, edittedPost, { headers: {
           'Authorization': 'Bearer ' + token
         }})
       setError(null)
-      setShowPopup(true)
+      navigate('/my-posts')
+    //   setShowPopup(true)
     } catch (error) {
       setError(error)
     }
   }
 
+  useEffect(() => {
+    getPost()
+  }, [])
+
+
   return (
     <div>
-    <h2 className='text-center mb-5'>Publish Post</h2>
+    <h2 className='text-center mb-5'>Edit Post</h2>
+    {post &&
     <Formik
       initialValues={{
-        title: '',
-        description: '',
-        date: '',
-        country: '',
-        city: '',
-        rating: ''
-      }}
-      onSubmit={async (values) => {
-        saveNewPost(values)
+        title: post?.title,
+        description: post?.description,
+        country: post?.country,
+        city: post?.city,
+        rating: post?.rating,
+        date: getFormattedDate(post?.date)
+        }}
+        onSubmit={async (values) => {
+            editPost(values)
       }}
     >
       <Form>
@@ -72,20 +94,23 @@ const NewPost = () => {
       <br />
         <ImageUpload imageFolder={'posts'} setImageName={setSelectedImage} />
       </div>
-    
+            <label className={styles.label}>Title:</label>
             <Field 
             id="title" 
             name="title" 
             placeholder="Title" className="form-control"/>
 
+        <label className={styles.label}>Description:</label>
         <Field className="form-control" name="description" placeholder="Description" rows={6} cols={50} />
 
         <br />
-        <Select id="category" name="category" options={options} onChange={(e) => setCategory(e.value)}/>
+        <label className={styles.label}>Category:</label>
+        <Select id="category" name="category" options={options} onChange={(e) => setCategory(e.value)}  value={options?.filter((option) => option.value == category)[0]}  />
         <br /> 
 
         <div className={styles.wrap}>
           <div className={styles.country}>
+            <label className={styles.label}>Country:</label>
             <Field 
             className="form-control" 
             id="country" 
@@ -95,6 +120,7 @@ const NewPost = () => {
           </div>
 
           <div className={styles.city}>
+            <label className={styles.label}>City:</label>
             <Field 
             className="form-control" 
             id="city" 
@@ -106,6 +132,7 @@ const NewPost = () => {
 
         <div className={styles.wrap}>
           <div className={styles.date}>
+            <label className={styles.label}>Date Visisted:</label>
             <Field 
             className="form-control" 
             id="date" 
@@ -115,6 +142,7 @@ const NewPost = () => {
           </div>
 
           <div className={styles.rating}>
+          <label className={styles.label}>Rating:</label>
             <Field 
             className="form-control" 
             id="rating" 
@@ -128,18 +156,18 @@ const NewPost = () => {
 
         <br/>
         <div className='text-center'>
-        <button type="submit" className={cn(styles.addPostButton, 'btn btn-success')}>Add Post</button>
-        <button onClick={() => navigate('/my-posts')} type="reset" className={cn(styles.cancelButton, 'btn btn-danger')}>Cancel</button>
+        <button type="submit" className={'btn btn-success me-3'}>Edit Post</button>
+        <button onClick={() => navigate('/my-posts')} type="reset" className={'btn btn-warning'}>Cancel</button>
         </div>
 
       </Form>
-
     </Formik>
+    }
     <Container>{error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}</Container>
-    <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Done!"} message={"Your post was successfully published"} show={showPopup} setShow={setShowPopup}/>
+    {/* <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Done!"} message={"Your post was successfully updated"} show={showPopup} setShow={setShowPopup}/> */}
 
     </div>
   );
 };
 
-export default NewPost;
+export default EditPost;

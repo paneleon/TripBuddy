@@ -13,6 +13,7 @@ import NavigationBar from '../components/NavigationBar';
 import Sample from './Sample';
 import MyPosts from './MyPosts'
 import NewPost from './NewPost';
+import EditPost from './EditPost';
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/sample" element={<Sample /> } />
         <Route path="/my-posts" element={<MyPosts /> } />
         <Route path="/my-posts/:postId" element={<Post /> } />
+        <Route path="/my-posts/edit/:postId" element={<EditPost /> } />
        </Routes>
     </>
   );

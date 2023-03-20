@@ -74,8 +74,8 @@ const samplePosts = [
 const MyPosts = () => {
     const [posts, setPosts] = useState([])
     const {token} = useAuth()
-
     const url = process.env.REACT_APP_SERVER_URL
+    const [error, setError] = useState(false)
 
     const getUsersPosts = async () => {
         const response = await axios.get(`${url}/posts/getByUser`, { headers: {
@@ -83,6 +83,19 @@ const MyPosts = () => {
         }})
         setPosts(response.data)
     }
+
+    const deletePost = async (id) => {
+        // TODO: add a confirmation popup
+        try {
+            const response = await axios.delete(`${url}/posts/deleteById/${id}`, { headers: {
+                'Authorization': 'Bearer ' + token
+              }})
+            setError(null)
+            setPosts(posts.filter((post) => post?._id != id))
+          } catch (error) {
+            setError(error)
+          }
+    } 
 
     useEffect(() => {
         getUsersPosts()
@@ -94,7 +107,11 @@ const MyPosts = () => {
         <div className='posts-list'>
             {
                 posts?.map((post) => {
-                    return <PostCardHorizontal post={post} mainPage={'my-posts'}/>
+                    return (<>
+                        <PostCardHorizontal post={post} mainPage={'my-posts'} deletePost={(id) => deletePost(id)}/>
+                        {error && <div className='alert alert-danger my-3 w-90 mx-auto'>{`Error happened while deleting the post: ${error?.message}`}</div>}
+                    </>
+                    )
                 })
             }
         </div>

@@ -88,6 +88,7 @@ const Post = () => {
                 <span className={cn(styles['date-tag'], 'd-block')}>Posted on {post?.createdAt}</span>
                 <span className={cn(styles['location-tag'], 'd-block')}>{post?.country}, {post?.city}</span>
                 <span className={styles['rating-tag']}><img src='/star.png'/>{post?.rating} </span>
+                <span className={cn(styles['date-tag'], 'd-block')}>Visisted on {post?.date}</span>
 
             </div>
             
