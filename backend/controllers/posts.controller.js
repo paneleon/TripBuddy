@@ -129,3 +129,31 @@ const deleteImage = async (imageName) => {
         return res.status(500).send({success: false, message: `Error deleting the image: ${error.message}`})
     }
 }
+
+exports.searchForPosts = async (req, res) => {
+    try {
+        const category = req.query.category;
+        const keyword = req.query.keyword;
+        const contentProvider = req.query.contentProvider;
+        // to test: http://localhost:5000/api/posts/search?category=Other&contentProvider=64167b5ce5ddd47be70b28f2&keyword=coffee
+
+        let conditions = []
+        // if keyword is provided
+        if (keyword != null){
+            conditions.push({title: { $regex: new RegExp("" + keyword.toLowerCase(), "gi") }})
+        }
+        // if category is provided
+        if (category != null){
+            conditions.push({category: category})
+        }
+        // if content provider id is provided
+        if (contentProvider != null){
+            conditions.push({postedBy: contentProvider})
+        }
+
+        const posts = await Post.find({$and: conditions})
+        return res.status(200).json(posts);
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+}

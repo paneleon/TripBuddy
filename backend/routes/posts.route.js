@@ -11,5 +11,6 @@ router.get('/getByUser', authUtils.isAuthenticated, PostsController.getUsersPost
 router.get('/getByUser/:id', authUtils.isAuthenticated, PostsController.getOtherUsersPosts) // get posts of another user
 router.delete('/deleteById/:id', authUtils.isAuthenticated, PostsController.deletePost) // get to delete post by id
 router.put('/editById/:id',authUtils.isAuthenticated, PostsController.editPost)// post route to edit post by id
+router.get('/search', PostsController.searchForPosts)
 
 module.exports = router;
