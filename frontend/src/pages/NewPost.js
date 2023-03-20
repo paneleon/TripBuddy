@@ -33,8 +33,7 @@ const NewPost = () => {
  
   const saveNewPost = async (values) => {
     try {
-      console.log("values", values)
-      const post = {...values, image: `posts/${selectedImage}`, category: category}
+      const post = {...values, image: selectedImage, category: category}
       const response = await axios.post(`${url}/posts`, post, { headers: {
           'Authorization': 'Bearer ' + token
         }})
@@ -47,6 +46,7 @@ const NewPost = () => {
 
   return (
     <div>
+    <h2 className='text-center mb-5'>Publish Post</h2>
     <Formik
       initialValues={{
         title: '',
