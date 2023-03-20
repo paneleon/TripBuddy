@@ -132,10 +132,9 @@ const deleteImage = async (imageName) => {
 
 exports.searchForPosts = async (req, res) => {
     try {
-        const category = req.query.category;
-        const keyword = req.query.keyword;
-        const contentProvider = req.query.contentProvider;
-        // to test: http://localhost:5000/api/posts/search?category=Other&contentProvider=64167b5ce5ddd47be70b28f2&keyword=coffee
+        const category = req.body.category;
+        const keyword = req.body.keyword;
+        const contentProviders = req.body.contentProviders;
 
         let conditions = []
         // if keyword is provided
@@ -147,8 +146,8 @@ exports.searchForPosts = async (req, res) => {
             conditions.push({category: category})
         }
         // if content provider id is provided
-        if (contentProvider != null){
-            conditions.push({postedBy: contentProvider})
+        if (contentProviders.length > 0){
+            conditions.push({postedBy: {$in: contentProviders}})
         }
 
         const posts = await Post.find({$and: conditions})
