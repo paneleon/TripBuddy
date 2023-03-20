@@ -3,15 +3,15 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/Popup.module.css'
 import cn from 'classnames'
-import { deletePost } from '../../../backend/controllers/posts.controller';
+import { deleteUser } from '../../../backend/controllers/posts.controller';
 
 const DeleteConfirmation = ({title, message, show, setShow, doAction}) =>
  {
-    const title = "Delete Post";
-    const message = "Are you sure you want to delete this post ?";
+    const title = "Confirmation For Deleting User";
+    const message = "Are you sure you want to delete this User ?";
 
-    const postDelete = () => {
-        deletePost();
+    const userDelete = () => {
+        deleteUser();
         setShow(false)
     }
 
@@ -33,7 +33,7 @@ const DeleteConfirmation = ({title, message, show, setShow, doAction}) =>
 
                 <Modal.Footer>
                 <Button variant="secondary" onClick={() => setShow(false)}>Back</Button>
-                <Button variant="success" onClick={() => doAction={postDelete}}>Confirm</Button>
+                <Button variant="success" onClick={() => doAction={userDelete}}>Confirm</Button>
                 </Modal.Footer>
             </Modal.Dialog>
             </div>
