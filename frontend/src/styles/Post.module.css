@@ -35,3 +35,9 @@
 textarea {
     width: 100%;
 }
+
+.label {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: 600;
+}
