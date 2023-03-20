@@ -7,11 +7,8 @@ import { deleteUser } from '../../../backend/controllers/posts.controller';
 
 const DeleteConfirmation = ({title, message, show, setShow, doAction}) =>
  {
-    const title = "Confirmation For Deleting User";
-    const message = "Are you sure you want to delete this User ?";
-
     const userDelete = () => {
-        deleteUser();
+        doAction (deleteUser)
         setShow(false)
     }
 
