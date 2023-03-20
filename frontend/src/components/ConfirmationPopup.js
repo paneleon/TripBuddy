@@ -7,12 +7,9 @@ import { createNewPost } from '../../../backend/controllers/posts.controller';
 
 const ConfirmationPopup = ({title, message, show, setShow, doAction}) => {
 
-           const title = "Publish Post Comfirmation Require"
-           const message = "Are you sure you want to publish this post ?"
-
            const addpost = () =>
            {
-              createNewPost()
+              doAction (createNewPost)
               setShow(false)
            }
 
