@@ -4,7 +4,13 @@ import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/Popup.module.css'
 import cn from 'classnames'
 
-const ConfirmationPopup = ({title, message, show, setShow, doAction}) => {
+const ConfirmationPopup = ({title, message, show, setShow, doAction, createNewPost}) => {
+
+        const addPost = () =>
+        {
+          createNewPost()
+          setShow(false)
+        }
 
   return (
     <>
@@ -24,7 +30,7 @@ const ConfirmationPopup = ({title, message, show, setShow, doAction}) => {
 
                 <Modal.Footer>
                 <Button variant="secondary" onClick={() => setShow(false)}>Back</Button>
-                <Button variant="success" onClick={() => doAction()}>Confirm</Button>
+                <Button variant="success" onClick={() => doAction(addPost)}>Confirm</Button>
                 </Modal.Footer>
             </Modal.Dialog>
             </div>
