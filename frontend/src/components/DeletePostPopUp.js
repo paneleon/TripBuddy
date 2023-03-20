@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/Popup.module.css'
 import cn from 'classnames'
-import { deletePosts } from '../../../backend/controllers/posts.controller';
+import { deletePost } from '../../../backend/controllers/posts.controller';
 
 const DeleteConfirmation = ({title, message, show, setShow, doAction}) =>
  {
@@ -11,7 +11,7 @@ const DeleteConfirmation = ({title, message, show, setShow, doAction}) =>
     const message = "Are you sure you want to delete this post ?";
 
     const postDelete = () => {
-        deletePosts();
+        deletePost();
         setShow(false)
     }
 
