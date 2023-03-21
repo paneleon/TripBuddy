@@ -164,7 +164,7 @@ const EditPost = () => {
     </Formik>
     }
     <Container>{error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}</Container>
-    <EditPostConfirmationPopup doAction={() => navigate()} title={"Done!"} message={"Your post was successfully updated"} show={showPopup} setShow={setShowPopup}/>
+    <EditPostConfirmationPopup doAction={() => navigate('/my-posts')} title={"Confirmation Action Require "} message={"Are you sure you want to update this post ?"} show={showPopup} setShow={setShowPopup}/>
 
     </div>
   );
