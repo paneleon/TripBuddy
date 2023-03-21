@@ -8,7 +8,7 @@ import { IKImage } from 'imagekitio-react'
 import cn from 'classnames'
 import { useNavigate } from "react-router-dom";
 import {Container} from 'react-bootstrap'
-import  EditPostConfirmationPopup from '../components/EditPostPopup';
+import  ConfirmationPopup from '../components/ConfirmationPopup';
 import styles from '../styles/Post.module.css';
 import { useParams } from 'react-router-dom';
 import { getFormattedDate } from '../utils/utilFunctions';
@@ -53,7 +53,6 @@ const EditPost = () => {
           'Authorization': 'Bearer ' + token
         }})
       setError(null)
-      navigate('/my-posts')
       setShowPopup(true)
     } catch (error) {
       setError(error)
@@ -156,7 +155,7 @@ const EditPost = () => {
 
         <br/>
         <div className='text-center'>
-        <button type="submit" className={'btn btn-success me-3'} onClick={setShowPopup}>Edit Post</button>
+        <button type="submit" className={'btn btn-success me-3'} >Edit Post</button>
         <button onClick={() => navigate('/my-posts')} type="reset" className={'btn btn-warning'}>Cancel</button>
         </div>
 
@@ -164,8 +163,7 @@ const EditPost = () => {
     </Formik>
     }
     <Container>{error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}</Container>
-    <EditPostConfirmationPopup doAction={() => navigate('/my-posts')} title={"Confirmation Action Require "} message={"Are you sure you want to update this post ?"} show={showPopup} setShow={setShowPopup}/>
-
+    <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Confirmation Action Require "} message={"Are you sure you want to update this post ?"} show={showPopup} setShow={setShowPopup}/>
     </div>
   );
 };
