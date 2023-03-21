@@ -79,7 +79,7 @@ const Post = () => {
             
             <div className={styles['post-grid']}>
             <div className={styles['post-image-div']}>
-                {post?.image ? <IKImage path={post?.image}/> : <img src="/no-image.jpg"/> }
+                {post?.image ? <IKImage path={`posts/${post?.image}`}/> : <img src="/no-image.jpg"/> }
             </div>
             <div className={styles['post-header-div']}>
                 <h2>{post?.title}</h2>

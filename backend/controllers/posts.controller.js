@@ -1,5 +1,6 @@
 const Post = require('../models/post.model')
 const User = require('../models/user.model')
+const imageUpload = require('../config/imageUpload.config')
 
 exports.createNewPost = async (req, res) => {
 
@@ -101,6 +102,12 @@ exports.editPost = async (req, res) => {
             "country": req.body.country,
             "city": req.body.city
         }
+
+        // delete old image from cloud storage
+        if (oldPost.image && (oldPost.image != updatedPost.image)){
+            await deleteImage(oldPost.image)
+        }
+
         await Post.updateOne({_id:postId}, updatedPost);
         return res.status(200).json(updatedPost);
         }
@@ -108,6 +115,43 @@ exports.editPost = async (req, res) => {
         {
             return res.status(400).json({error: "The post is not posted by this user"});
         }
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+} 
+
+const deleteImage = async (imageName) => {
+    try {
+        const images = await imageUpload.listFiles({name: imageName})
+        const imageId = images[0].fileId
+        await imageUpload.deleteFile(imageId)
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Error deleting the image: ${error.message}`})
+    }
+}
+
+exports.searchForPosts = async (req, res) => {
+    try {
+        const category = req.body.category;
+        const keyword = req.body.keyword;
+        const contentProviders = req.body.contentProviders;
+
+        let conditions = []
+        // if keyword is provided
+        if (keyword != null){
+            conditions.push({title: { $regex: new RegExp("" + keyword.toLowerCase(), "gi") }})
+        }
+        // if category is provided
+        if (category != null){
+            conditions.push({category: category})
+        }
+        // if content provider id is provided
+        if (contentProviders.length > 0){
+            conditions.push({postedBy: {$in: contentProviders}})
+        } 
+        
+        const posts = await Post.find({$and: conditions}).populate('postedBy', 'username') // include the author's username
+        return res.status(200).json(posts);
     } catch (error) {
         return res.status(500).send({success: false, message: `Server error: ${error.message}`})
     }
