@@ -6,6 +6,7 @@ import styles from '../styles/Browse.module.css'
 import axios from 'axios'
 import { useAuth } from '../context/authContext'
 import NotFound from '../components/NotFound'
+import { useNavigate } from 'react-router-dom'
 
 const sampleCategories = [
   "Restaurant",
@@ -50,6 +51,7 @@ const Browse = () => {
   const {token} = useAuth()
   const url = process.env.REACT_APP_SERVER_URL
   const [error, setError] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setCategories(sampleCategories)
@@ -92,7 +94,7 @@ const Browse = () => {
           <div className={styles['posts-grid']}>
                   {
                       posts?.map((post) => {
-                          return <PostCard post={post}/>
+                          return <PostCard post={post} viewPost={() => navigate(`/browse/${post?._id}`)}/>
                       })
                   }
 

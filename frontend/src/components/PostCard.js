@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { Card, Button } from 'react-bootstrap'
 import styles from '../styles/Browse.module.css'
 
-const PostCard = ({post}) => {
+const PostCard = ({post, viewPost}) => {
   
     return (
     <>
@@ -21,7 +21,7 @@ const PostCard = ({post}) => {
                 {post?.description.substring(0, 80) + "..."}
             </Card.Text>
             <Card.Text className={styles['author-tag']}>By {post?.postedBy?.username}</Card.Text>
-            <Button className={styles["post-button"]} variant='secondary'>View post</Button>
+            <Button className={styles["post-button"]} variant='secondary' onClick={viewPost}>View post</Button>
         </Card.Body>
         </Card>
     </>
