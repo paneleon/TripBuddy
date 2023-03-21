@@ -18,7 +18,7 @@ const postSchema = new mongoose.Schema({
     },
     description: String,
     rating: Number,
-    postedBy: String,
+    postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     date: { type: Date, default: Date.now },
     image: String,
     category: {
