@@ -65,7 +65,7 @@ const Post = () => {
         align="center" 
         name="categories" 
         as="select">
-          <option value="" selected disabled hidden>Select a Category</option>
+          <option value="" disabled hidden>Select a Category</option>
           <option value="Restaurant">Restaurant</option>
           <option value="Residence">Residence</option>
           <option value="Attractions">Attractions</option>

@@ -102,14 +102,12 @@ form {
     color: #1c3e8e;
     width: 80px;
     height: 40px;
-    #1c3e8e : #f1c470
 }
 .confirmPasswordInput {
     font-size: 18px;
     width: 50%;
     height: 35px;
     display: block;
-
     margin-left: auto;
     margin-right: auto;
     border-top: none;
