@@ -1,8 +1,9 @@
 const express = require('express');
-const ProfileController = require('../controllers/profile.controller.js');
 const router = express.Router();
+const auth = require('../utils/auth.js');
+const { getUserProfile, updateProfile } = require('../controllers/profile.controller.js');
 
-router.get('/profile', ProfileController.DisplayProfilePage);
-router.post('/profile', ProfileController.ProcessProfileChangePage);
+router.get('/profile', auth, getUserProfile);
+router.put('/profile', auth, updateProfile);
 
 module.exports = router;
