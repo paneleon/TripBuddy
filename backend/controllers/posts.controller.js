@@ -148,9 +148,9 @@ exports.searchForPosts = async (req, res) => {
         // if content provider id is provided
         if (contentProviders.length > 0){
             conditions.push({postedBy: {$in: contentProviders}})
-        }
-
-        const posts = await Post.find({$and: conditions})
+        } 
+        
+        const posts = await Post.find({$and: conditions}).populate('postedBy', 'username') // include the author's username
         return res.status(200).json(posts);
     } catch (error) {
         return res.status(500).send({success: false, message: `Server error: ${error.message}`})
