@@ -3,6 +3,8 @@ import PostCardHorizontal from '../components/PostCardHorizontal'
 import {Container} from 'react-bootstrap';
 import { useAuth } from '../context/authContext';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import DeletePastDestinationConfirmationPopup from '../components/DeletePastDestinationPopup';
 
 const samplePosts = [
     {
@@ -76,6 +78,8 @@ const MyPosts = () => {
     const {token} = useAuth()
     const url = process.env.REACT_APP_SERVER_URL
     const [error, setError] = useState(false)
+    const navigate = useNavigate()
+    const [showPopup, setShowPopup] = useState(false)
 
     const getUsersPosts = async () => {
         const response = await axios.get(`${url}/posts/getByUser`, { headers: {
@@ -110,6 +114,8 @@ const MyPosts = () => {
                     return (<>
                         <PostCardHorizontal post={post} mainPage={'my-posts'} deletePost={(id) => deletePost(id)}/>
                         {error && <div className='alert alert-danger my-3 w-90 mx-auto'>{`Error happened while deleting the post: ${error?.message}`}</div>}
+                        <DeletePastDestinationConfirmationPopup doAction={() => navigate('/my-posts')} title={"Confirmation Action Require "} message={"Are you sure you want to delete this post ?"} show={showPopup} setShow={setShowPopup}/>
+
                     </>
                     )
                 })
