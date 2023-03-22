@@ -1,10 +1,79 @@
 const passport = require('passport');
 const authUtils = require('../utils/auth.js');
-const User = require('../models/user.model');
-const imageUpload = require('../config/imageUpload.config');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const useNavigate = require('react-router-dom');
+const User = require('../models/user.model')
+const imageUpload = require('../config/imageUpload.config')
+
+exports.processLogin = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    // are there any server errors?
+    if (err) {
+      console.error(err);
+      res.end(err);
+    }
+    // are there any login errors?
+    if (!user) {
+      return res.json({ success: false, msg: "ERROR: Authentication Failed" });
+    }
+
+    // no problems -  we have a good username and password
+    req.logIn(user, (err) => {
+      // are there any db errors?
+      if (err) {
+        console.error(err);
+        res.end(err);
+      }
+
+      const authToken = Utils.GenerateToken(user);
+      return res.json({
+        success: true,
+        msg: "User Logged In Successfully",
+        user: {
+          id: user._id,
+          displayName: user.firstName,
+          username: user.username,
+          emailAddress: user.email,
+        },
+        token: authToken,
+      });
+    });
+  })(req, res, next);
+}
+
+exports.processRegistration = (req, res, next) => {
+  //Instantiate a new user object
+  let newUser = new User({
+    ...req.body, //Javascript destructing
+  });
+
+  User.register(newUser, req.body.password, (err) => {
+    // error validations
+    if (err) {
+      if (err.name === "UserExistsError") {
+        console.error("ERROR: User Already Exists!");
+      }
+
+      console.log(err);
+
+      return res.json({ success: false, msg: "ERROR: Registration Failed!" });
+    }
+
+    // all ok - user has been registered
+    return res.json({ success: true, msg: "User Registered Successfully" });
+  });
+}
+
+exports.processLogout = (req, res, next) => {
+  req.logOut((err) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    }
+
+    console.log("User Logged Out");
+  });
+
+  res.json({ success: true, msg: "User logged out successfully" });
+}
 
 exports.getAuthImageUploadData = (req, res) => { // function for uploading images
   const result = imageUpload.getAuthenticationParameters()
@@ -33,87 +102,3 @@ exports.subscribeToContentProvider = async (req, res) => {
     return res.status(500).send({success: false, message: `Server error: ${error.message}`})
   }
 }
-
-exports.register = async (req, res) => {
-  const { username, email, password } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
-    }
-
-    user = new User({
-      username,
-      email,
-      password,
-    });
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.SECRET,
-      { expiresIn: '1h' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.SECRET,
-      { expiresIn: '1h' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-exports.logout = (req, res) => {
-  res.json({ msg: 'Logout successful' });
-  useNavigate('/home');
-};

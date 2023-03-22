@@ -8,6 +8,6 @@ exports.getSampleData = async (req, res) => {
     if (sample){
         return res.status(200).json(sample);
     } else {
-        return res.status(404).send({success: false, message: "Sample data with this id was not found"})
+        return res.status(404).send({message: "Sample data with this id was not found"})
     }
 }
