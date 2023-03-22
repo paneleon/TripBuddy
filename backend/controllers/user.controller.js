@@ -4,7 +4,6 @@ const User = require('../models/user.model');
 const imageUpload = require('../config/imageUpload.config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const useNavigate = require('react-router-dom');
 
 exports.getAuthImageUploadData = (req, res) => { // function for uploading images
   const result = imageUpload.getAuthenticationParameters()
@@ -41,7 +40,7 @@ exports.register = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
+      return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
     user = new User({
@@ -72,7 +71,7 @@ exports.register = async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send({success: false, message: 'Server error'});
   }
 };
 
@@ -83,13 +82,13 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res.status(400).json({ success: false, message: 'Invalid credentials' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res.status(400).json({ success: false, message: 'Invalid credentials' });
     }
 
     const payload = {
@@ -109,11 +108,16 @@ exports.login = async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send({success: false, message: 'Server error'});
   }
 };
 
-exports.logout = (req, res) => {
-  res.json({ msg: 'Logout successful' });
-  useNavigate('/home');
-};
+exports.logout = async (req, res) => {
+  try {
+    await req.logout();
+    res.status(200).send({success: true, message: 'Logout successful'});
+  } catch {
+    res.status(500).send({success: false, message: 'Server error: Logout unsuccessful'});
+  }
+  
+}

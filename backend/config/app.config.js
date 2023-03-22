@@ -7,13 +7,10 @@ const morgan = require('morgan');
 const compress = require('compression');
 const methodOverride = require('method-override');
 const passport = require('passport');
-const passportLocal = require('passport-local');
-const flash = require('flash');
 const session = require('express-session');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
-const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user.model')
 
 // load env variables
@@ -85,15 +82,14 @@ module.exports = () => {
   app.use(passport.session());
   app.use(methodOverride());
   app.use(methodOverride('_method'));
-  app.use(flash());
 
   // configure and use routes
   app.use('/api/sample', sampleRoute);
   app.use('/api/user', userRoute);
   app.use('/api/posts', postsRoute)
-  app.use('/api/auth', profileRoute);
-  app.use('/api/auth', paymentRoute);
-  app.use('/api/auth', subscriptionRoute);
+  app.use('/api/profile', profileRoute);
+  app.use('/api/payment', paymentRoute);
+  app.use('/api/subscription', subscriptionRoute);
 
   return app;
 }
