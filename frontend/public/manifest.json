@@ -3,12 +3,12 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "tripbuddy_icon_lg",
+      "src": "tripbuddy_icon_lg.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "tripbuddy_icon_sm",
+      "src": "tripbuddy_icon_sm.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
