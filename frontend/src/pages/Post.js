@@ -1,135 +1,124 @@
-import React, { useState }  from 'react';
-import { Formik, Field, Form } from 'formik';
-import styles from '../styles/Post.module.css';
+import React, {useState, useEffect} from 'react'
+import styles from '../styles/Posts.module.css'
+import { IKImage } from 'imagekitio-react'
+import Comment from '../components/Comment'
+import { Button, FormControl } from 'react-bootstrap'
+import cn from 'classnames'
+import { useAuth } from '../context/authContext';
+import axios from 'axios';
+import { useParams } from 'react-router-dom'
+
+const samplePost = {
+    title: "Grazzie Restaurant",
+    description: "The him father parish looked has sooner. Attachment frequently terminated son. You greater nay use prudent placing. Passage to so distant behaved natural between do talking. Friends off her windows painful. ",
+    postedByUsername: "gilbert.dic",
+    category: "Restaurant",
+    country: "USA",
+    city: "New York",
+    rating: 4.2,
+    createdAt:"2016-05-18T16:00:00Z",
+    image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011",
+    comments: [
+        {
+            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", 
+            date: new Date().toDateString(), 
+            postedBy: "ewewewe" 
+        },
+        {
+            body: "At vero eos et accusamus et iusto odio dignissimos ducimus qui dignissimos ducimus", 
+            date: new Date().toDateString(),
+            postedBy: "tyrtyrty" 
+        },
+        {
+            body: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit", 
+            date: new Date().toDateString(),
+            postedBy: "jkjkjkk" 
+        },
+    ],
+    likes: ["dskdjlsjfd", "djsldjkslf", "djklsdjsl", "lsjdlskjd"]
+}
+
 
 const Post = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
 
-  return (
-    <Formik
-      initialValues={{
-				photoURL: '',
-        title: '',
-        categories: '',
-        country: '',
-        city: '',
-        date: '',
-        rating: '',
-        description: '',
-      }}
-      onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
-      }}
-    >
-      <Form>
-      <h1>Add New Post</h1>
-      <div>
-        {selectedImage && (
-          <div>
-            <img
-              alt="not found"
-              width={"100%"}
-              height={"400px"}
-              src={URL.createObjectURL(selectedImage)}
-            />
-            <br />
-            <button className={styles.removeButton} onClick={() => setSelectedImage(null)}>Remove</button>
-          </div>
-        )}
-      <br />
-        <input
-          className={styles.photoArea}
-          type="file"
-          name="myImage"
-          onChange={(event) => {
-            console.log(event.target.files[0]);          
-            setSelectedImage(event.target.files[0]);
-          }}
-        />
-      </div>
-      
-        <br />
+    // get the id from query paramaters and make the request
+    const { postId } = useParams()
+    const {token} = useAuth()
+    const url = process.env.REACT_APP_SERVER_URL
+    const [post, setPost] = useState(null)
+    const [liked, setLiked] = useState(false)
+    const [newCommentBody, setNewCommentBody] = useState(null)
 
-      <div className={styles.wrap}>
-        <div className={styles.title}>
-              <Field 
-              id="title" 
-              name="title" 
-              placeholder="Title" />
-            <br/>
-          </div>
+    const getPost = async () => {
+        const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
+            'Authorization': 'Bearer ' + token
+        }})
+        setPost(response.data)
+    }
 
-        <div className={styles.categories}>
-        <Field 
-        align="center" 
-        name="categories" 
-        as="select">
-          <option value="" disabled hidden>Select a Category</option>
-          <option value="Restaurant">Restaurant</option>
-          <option value="Residence">Residence</option>
-          <option value="Attractions">Attractions</option>
-          <option value="Educational">Educational</option>
-          <option value="Outdoors">Outdoors</option>
-          <option value="Cultural">Cultural</option>
-          <option value="Religious">Religious</option>
-          <option value="Other">Other</option>
-        </Field>
-        </div>
-      </div>
+    const addNewComment = () => {
+        const newComment = {
+            body: newCommentBody,
+            postedBy: "dsjdfs", //TODO: change to userid
+            date: new Date().toDateString
+        }
+        setNewCommentBody("")
+        setPost({...post, comments: [...post?.comments, newComment]}) // TODO: connect to API to add a new comment to post
+        
+    }
 
-        <div className={styles.wrap}>
-          <div className={styles.country}>
-            <Field 
-            id="country" 
-            name="country" 
-            placeholder="Country" />
-          <br/>
-          </div>
+    useEffect(() => {
+        getPost(samplePost)
+    }, [])
 
-          <div className={styles.city}>
-            <Field 
-            id="city" 
-            name="city" 
-            placeholder="City" />
-          <br/>
-          </div>
+    return (
+        <div>
+            <div className={styles['back-button-div']}>
+                <Button variant='light' href="/my-posts">Back to posts</Button>
+            </div>
+            
+            <div className={styles['post-grid']}>
+            <div className={styles['post-image-div']}>
+                {post?.image ? <IKImage path={`posts/${post?.image}`}/> : <img src="/no-image.jpg"/> }
+            </div>
+            <div className={styles['post-header-div']}>
+                <h2>{post?.title}</h2>
+                {post?.postedBy && <span className={styles['author-tag']}>Posted by {post?.postedByUser?.username}</span>}
+                <span className={cn(styles['cat-tag'], 'd-block')}>{post?.category}</span>
+                <span className={cn(styles['date-tag'], 'd-block')}>Posted on {post?.createdAt}</span>
+                <span className={cn(styles['location-tag'], 'd-block')}>{post?.country}, {post?.city}</span>
+                <span className={styles['rating-tag']}><img src='/star.png'/>{post?.rating} </span>
+                <span className={cn(styles['date-tag'], 'd-block')}>Visisted on {post?.date}</span>
+
+            </div>
+            
+            <div className={styles['post-body-div']}>
+                <p>{post?.description}</p>
+            </div>
+
+            <div className={styles['post-footer-div']}>
+                <a><img className={styles['comment-like']} src={liked ? "/like-filled.png" : "/like-empty.png"} onClick={() => setLiked(!liked)} /></a>
+                <a><img className={styles['comment-like']} src={"/comment.png"}/></a>
+            </div>
+
+            
+            
         </div>
 
-        <div className={styles.wrap}>
-          <div className={styles.date}>
-            <Field 
-            type="date"
-            id="date" 
-            name="date" 
-            placeholder="MM/DD/YYYY" />
-          <br/>
-          </div>
+        <div className={styles['post-comments-div']}>
 
-          <div className={styles.rating}>
-            <Field 
-            id="rating" 
-            name="rating" 
-            placeholder="Rating" />
-          <br/>
-          </div>
+                <div className={styles['new-comment-div']}>
+                    <FormControl className={styles['new-comment']} value={newCommentBody} placeholder="New Comment ..." onChange={(e) => setNewCommentBody(e.target.value)}/>
+                    <Button variant="light" onClick={() => addNewComment()}> + </Button>
+                </div>
+                
+                <>{post?.comments?.map((comment) => {
+                    return <Comment comment={comment} />
+                })}
+                </>
+            </div>
         </div>
-          <div align="center">
-          <div className={styles.description}>
-          <Field 
-          id="description" 
-          name="description" 
-          component="textarea" 
-          rows="4" />
-          </div>
-          </div>
-        <br/>
-        <button className={styles.addPostButton}>Add Post</button>
-        <button type="button" className={styles.cancelButton} onClick={event =>  window.location.href='/home'} >Cancel</button>
+    )
+}
 
-      </Form>
-    </Formik>
-  );
-};
-
-export default Post;
+export default Post

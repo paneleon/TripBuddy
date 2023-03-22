@@ -9,7 +9,6 @@ function Register() {
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
 
 	async function registerUser(event) {
 		event.preventDefault()
@@ -54,14 +53,6 @@ function Register() {
 				/>
 				<br />
 				<input
-					className={styles.emailInput}
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					type="email"
-					placeholder="Email"
-				/>
-				<br />
-				<input
 					className={styles.usernameInput}
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
@@ -70,19 +61,19 @@ function Register() {
 				/>
 				<br />
 				<input
+					className={styles.emailInput}
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					type="email"
+					placeholder="Email"
+				/>
+				<br />
+				<input
 					className={styles.passwordInput}
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					type="password"
 					placeholder="Password"
-				/>
-				<br />
-				<input
-					className={styles.confirmPasswordInput}
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-					type="password"
-					placeholder="Confirm Password"
 				/>
 				<br />
 				<input type="submit" value="Register" className={styles.registerButton} />

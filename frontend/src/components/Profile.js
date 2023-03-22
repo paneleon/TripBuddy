@@ -6,7 +6,15 @@ const Profile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const [updateData, setUpdateData] = useState({
-    username: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    phone: '',
+    country: '',
+    city: '',
+    postalCode: '',
+    BOD: '',
+    sex: '',
     email: '',
   });
 
@@ -20,7 +28,15 @@ const Profile = () => {
         const response = await axios.get('/api/auth/profile', config);
         setUserData(response.data);
         setUpdateData({
-          username: response.data.username,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          address: response.data.address,
+          phone: response.data.phone,
+          country: response.data.country,
+          city: response.data.city,
+          postalCode: response.data.postalCode,
+          BOD: response.data.BOD,
+          sex: response.data.sex,
           email: response.data.email,
         });
       } catch (err) {
@@ -55,11 +71,80 @@ const Profile = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="username"
-          placeholder="Username"
-          value={updateData.username}
+          name="firstName"
+          placeholder="First Name"
+          value={updateData.firstName}
           onChange={handleChange}
         />
+          <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={updateData.lastName}
+          onChange={handleChange}
+        />
+        <br />
+        <input
+          type="text"
+          name="address"
+          placeholder="Address"
+          value={updateData.address}
+          onChange={handleChange}
+        />
+          <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          value={updateData.phone}
+          onChange={handleChange}
+        />
+        <br />
+        <input
+          type="text"
+          name="country"
+          placeholder="Country"
+          value={updateData.country}
+          onChange={handleChange}
+        />
+          <input
+          type="text"
+          name="city"
+          placeholder="City"
+          value={updateData.city}
+          onChange={handleChange}
+        />
+        <br />
+        <input
+          type="text"
+          name="postalCode"
+          placeholder="Postal Code"
+          value={updateData.postalCode}
+          onChange={handleChange}
+        />
+          <input
+          type="Date"
+          name="BOD"
+          placeholder="YYYY/MM/DD"
+          value={updateData.BOD}
+          onChange={handleChange}
+        />
+        <br />
+        <input
+          type="radio"
+          name="sex"
+          placeholder="Male"
+          value={updateData.sex}
+          onChange={handleChange}
+        />
+        <label>Male</label>
+          <input
+          type="radio"
+          name="sex"
+          placeholder="Female"
+          value={updateData.sex}
+          onChange={handleChange}
+        />
+        <label>Female</label>
         <input
           type="email"
           name="email"
@@ -67,7 +152,8 @@ const Profile = () => {
           value={updateData.email}
           onChange={handleChange}
         />
-        <button type="submit">Update Profile</button>
+        <br />
+        <button type="submit">Save</button>
       </form>
     </div>
   );

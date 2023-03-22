@@ -44,7 +44,8 @@ const NavigationBar = () => {
             <Nav className={styles.navbar}>
               <Nav.Link href="/home">Home</Nav.Link>
               <Nav.Link href="/browse">Browse Destinations</Nav.Link>
-              <Nav.Link href="/post">Add New Post</Nav.Link>
+              <Nav.Link href="/my-posts">My Posts</Nav.Link>
+              <Nav.Link href="/new-post">Add New Post</Nav.Link>
             </Nav>
             <Nav className={styles.login}>
               <Nav.Link href="#"></Nav.Link>

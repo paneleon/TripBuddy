@@ -153,7 +153,7 @@ const Payment = () => {
           onChange={handleChange}
         />
         <br />
-        <button type="submit">Update Payment Info</button>
+        <button type="submit">Save</button>
       </form>
     </div>
   );

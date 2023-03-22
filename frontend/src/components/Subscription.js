@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Subscription = () => {
     const navigate = useNavigate();
-    const [currentSubscription, setCurrentSubscription] = useState(null);
-    const [selectedSubscription, setSelectedSubscription] = useState(null);
+    const [currentSubscription, setCurrentSubscription] = useState({});
+    const [selectedSubscription, setSelectedSubscription] = useState({
+      subscription: '',
+    });
 
     useEffect(() => {
     const fetchSubscription = async () => {
@@ -14,10 +16,10 @@ const Subscription = () => {
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };
-            const res = await axios.get('/api/auth/subscription', config);
-            setCurrentSubscription(res.data.subscription);
+            const response = await axios.get('/api/auth/subscription', config);
+            setCurrentSubscription(response.data.subscription);
             setSelectedSubscription({
-                subscription: res.data.subscription,
+                subscription: response.data.subscription,
               });
         } catch (err) {
             console.error(err);
@@ -26,21 +28,8 @@ const Subscription = () => {
         fetchSubscription();
     }, []);
 
-    const updateSubscription = async () => {
-        try {
-          const res = await axios.put('/api/auth/subscription');
-          setCurrentSubscription(res.data.subscription); 
-          setSelectedSubscription({
-            subscription: selectedSubscription,
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      };
-
     const handlePlanChange = (e) => {
-        e.preventDefault();
-        setSelectedSubscription({ ...selectedSubscription, [e.target.name]: e.target.value });
+        setSelectedSubscription({ ...selectedSubscription, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e) => {
@@ -51,7 +40,8 @@ const Subscription = () => {
               headers: { Authorization: `Bearer ${token}` },
             };
             await axios.put('/api/auth/subscription', selectedSubscription, config);
-
+            alert('Subscribe successfully');
+            navigate('/home');
           } catch (err) {
             console.error(err);
           }
@@ -65,8 +55,7 @@ const Subscription = () => {
         <input
           type="radio"
           name="subscription"
-          value="Basic"
-          checked={selectedSubscription === 'Basic'}
+          value='Basic'
           onChange={handlePlanChange}
         />
         <label htmlFor="basic">Basic Plan</label>
@@ -75,8 +64,7 @@ const Subscription = () => {
         <input
           type="radio"
           name="subscription"
-          value="Premium"
-          checked={selectedSubscription === 'Premium'}
+          value='Premium'
           onChange={handlePlanChange}
         />
         <label htmlFor="premium">Premium Plan</label>
@@ -85,13 +73,13 @@ const Subscription = () => {
         <input
           type="radio"
           name="subscription"
-          value="Business"
-          checked={selectedSubscription === 'Business'}
+          value='Business'
           onChange={handlePlanChange}
         />
         <label htmlFor="business">Business Plan</label>
       </div>
       <button type="submit">Subscribe</button>
+
       </form>
     </div>
   );
