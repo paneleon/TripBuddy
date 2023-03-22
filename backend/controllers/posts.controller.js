@@ -83,7 +83,7 @@ exports.deletePost = async (req, res) =>{
 }
 
 exports.editPost = async (req, res) => {
-
+    
     try {
         const postId = req.params.id;
         const oldPost = await Post.findById(postId)
@@ -121,13 +121,9 @@ exports.editPost = async (req, res) => {
 } 
 
 const deleteImage = async (imageName) => {
-    try {
         const images = await imageUpload.listFiles({name: imageName})
         const imageId = images[0].fileId
         await imageUpload.deleteFile(imageId)
-    } catch (error) {
-        return res.status(500).send({success: false, message: `Error deleting the image: ${error.message}`})
-    }
 }
 
 exports.searchForPosts = async (req, res) => {
