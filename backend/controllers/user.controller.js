@@ -1,9 +1,40 @@
+const passport = require('passport');
+const authUtils = require('../utils/auth.js');
 const User = require('../models/user.model');
+const imageUpload = require('../config/imageUpload.config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const useNavigate = require('react-router-dom');
 
-const register = async (req, res) => {
+exports.getAuthImageUploadData = (req, res) => { // function for uploading images
+  const result = imageUpload.getAuthenticationParameters()
+  res.send(result);
+}
+
+exports.subscribeToContentProvider = async (req, res) => {
+  try {
+    const contentProviderId = req.params.id;
+    const userId =  res.locals.userId;
+
+    const contentProvider = await User.findById(contentProviderId)
+    if (!contentProvider){
+      return res.status(404).send({success: false, message: `Invalid content provider id`})
+    }
+
+    const user = await User.findById(userId)
+    if (user?.subscribedTo?.includes(contentProviderId)){
+      return res.status(409).send({success: false, message: `User is already subscribed to this content provider`})
+    }
+
+    await User.updateOne({_id: userId}, {$push: {subscribedTo: contentProviderId}})
+
+    return res.status(200).json({success: true, message: `Successfully subscribed`});
+  } catch (error) {
+    return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+  }
+}
+
+exports.register = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
@@ -45,7 +76,7 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+exports.login = async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -82,15 +113,7 @@ const login = async (req, res) => {
   }
 };
 
-const logout = (req, res) => {
+exports.logout = (req, res) => {
   res.json({ msg: 'Logout successful' });
   useNavigate('/home');
-};
-
-
-
-module.exports = {
-  register,
-  login,
-  logout,
 };

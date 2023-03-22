@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
-const config = require('dotenv').config();
 
 exports.UserDisplayName = (req, res) => {
   if (req.user) {
@@ -8,7 +7,6 @@ exports.UserDisplayName = (req, res) => {
   }
   return "";
 }
-
 exports.UserId = (req) => {
   if (req.user) {
     return req.user._id;
@@ -17,13 +15,14 @@ exports.UserId = (req) => {
 }
 
 exports.isAuthenticated = (req, res, next) => {
-  const authHeader = req.get('Authorization')
+  const authHeader = req.get('authorization')
   if (!authHeader){
     return res.status(403).json({ success: false, message: 'Token is not provided' });
   }
   const token = authHeader.split(' ')[1]
   try {
-    jwt.verify(token, secret)
+    const verified = jwt.verify(token, secret)
+    res.locals.userId = verified.id // set id of the user who is authenticated
   } catch (error){
     return res.status(401).json({ success: false, message: 'Token is invalid' });
   }
@@ -39,13 +38,13 @@ exports.GenerateToken = (user) => {
   };
 
   const jwtOptions = {
-    expiresIn: 60004800, //1 Week
+    expiresIn: '30d',
   };
 
   return jwt.sign(payload, secret, jwtOptions);
 }
 
-const auth = (req, res, next) => {
+exports.auth = (req, res, next) => {
   const token = req.header('Authorization').split(' ')[1];
 
   if (!token) {
@@ -60,5 +59,3 @@ const auth = (req, res, next) => {
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
-
-module.exports = auth;

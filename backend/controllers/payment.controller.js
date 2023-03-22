@@ -1,6 +1,6 @@
 const User = require('../models/user.model.js');
 
-const getUserPayment = async (req, res) => {
+exports.getUserPayment = async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select('-password');
       if (user.BOD) {
@@ -21,7 +21,7 @@ const getUserPayment = async (req, res) => {
 
   };
   
-  const updatePayment = async (req, res) => {
+  exports.updatePayment = async (req, res) => {
     const { cardNumber, expirationDate, CVC, firstName, lastName, phone, address, country, city, postalCode, BOD } = req.body;
   
     try {
@@ -52,9 +52,4 @@ const getUserPayment = async (req, res) => {
         return `${year}-${month}`;
       }
 
-  };
-
-  module.exports = {
-    getUserPayment,
-    updatePayment,
   };

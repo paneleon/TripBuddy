@@ -14,14 +14,15 @@ const passportJWT = require('passport-jwt');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/user.model');
+const User = require('../models/user.model')
 
 // load env variables
 require('dotenv').config()
 
 // import routers
-
-const authRoute = require('../routes/auth.route');
+const sampleRoute = require('../routes/sample.route');
+const userRoute = require('../routes/user.route');
+const postsRoute = require('../routes/posts.route');
 const profileRoute = require('../routes/profile.route');
 const paymentRoute = require('../routes/payment.route');
 const subscriptionRoute = require('../routes/subscription.route');
@@ -43,7 +44,6 @@ let strategy = new JWTStrategy(jwtOptions, (jwt_payload, done) =>{
 
 passport.use(strategy);
 passport.use(User.createStrategy());
-passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -88,11 +88,12 @@ module.exports = () => {
   app.use(flash());
 
   // configure and use routes
- 
-  app.use('/api/auth', authRoute);
+  app.use('/api/sample', sampleRoute);
+  app.use('/api/user', userRoute);
+  app.use('/api/posts', postsRoute)
   app.use('/api/auth', profileRoute);
   app.use('/api/auth', paymentRoute);
   app.use('/api/auth', subscriptionRoute);
-  
+
   return app;
 }
