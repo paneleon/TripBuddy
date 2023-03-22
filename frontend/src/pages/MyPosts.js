@@ -4,7 +4,7 @@ import {Container} from 'react-bootstrap';
 import { useAuth } from '../context/authContext';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import DeletePastDestinationConfirmationPopup from '../components/DeletePastDestinationPopup';
+import ConfirmationPopup from '../components/ConfirmationPopup';
 
 const samplePosts = [
     {
@@ -89,18 +89,22 @@ const MyPosts = () => {
     }
 
     const deletePost = async (id) => {
-        // TODO: add a confirmation popup
-        try {
+
+        const confirmed = window.confirm("Are you sure you want to delete this post?");
+        if (confirmed) 
+        {    
+        try { 
             const response = await axios.delete(`${url}/posts/deleteById/${id}`, { headers: {
                 'Authorization': 'Bearer ' + token
               }})
             setError(null)
+            //setShowPopup(true) - this popup works sometimes and sometimes it doesn't but confirmation is created
             setPosts(posts.filter((post) => post?._id != id))
           } catch (error) {
             setError(error)
           }
-    } 
-
+      } 
+    }
     useEffect(() => {
         getUsersPosts()
     }, [])
@@ -114,7 +118,7 @@ const MyPosts = () => {
                     return (<>
                         <PostCardHorizontal post={post} mainPage={'my-posts'} deletePost={(id) => deletePost(id)}/>
                         {error && <div className='alert alert-danger my-3 w-90 mx-auto'>{`Error happened while deleting the post: ${error?.message}`}</div>}
-                        <DeletePastDestinationConfirmationPopup doAction={() => navigate('/my-posts')} title={"Confirmation Action Require "} message={"Are you sure you want to delete this post ?"} show={showPopup} setShow={setShowPopup}/>
+                        <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Sucessful !"} message={"Post deleted !"} show={showPopup} setShow={setShowPopup}/>
 
                     </>
                     )
