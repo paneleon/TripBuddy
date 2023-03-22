@@ -7,5 +7,6 @@ router.post('/login', UserController.processLogin);
 router.post('/register', UserController.processRegistration);
 router.get('/logout', UserController.processLogout);
 router.get('/auth', UserController.getAuthImageUploadData);
+router.post('/subscribeTo/:id', authUtils.isAuthenticated, UserController.subscribeToContentProvider)
 
 module.exports = router;

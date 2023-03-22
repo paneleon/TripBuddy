@@ -79,3 +79,26 @@ exports.getAuthImageUploadData = (req, res) => { // function for uploading image
   const result = imageUpload.getAuthenticationParameters()
   res.send(result);
 }
+
+exports.subscribeToContentProvider = async (req, res) => {
+  try {
+    const contentProviderId = req.params.id;
+    const userId =  res.locals.userId;
+
+    const contentProvider = await User.findById(contentProviderId)
+    if (!contentProvider){
+      return res.status(404).send({success: false, message: `Invalid content provider id`})
+    }
+
+    const user = await User.findById(userId)
+    if (user?.subscribedTo?.includes(contentProviderId)){
+      return res.status(409).send({success: false, message: `User is already subscribed to this content provider`})
+    }
+
+    await User.updateOne({_id: userId}, {$push: {subscribedTo: contentProviderId}})
+
+    return res.status(200).json({success: true, message: `Successfully subscribed`});
+  } catch (error) {
+    return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+  }
+}

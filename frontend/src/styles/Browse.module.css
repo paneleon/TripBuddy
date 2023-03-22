@@ -76,8 +76,8 @@ div > .search-bar {
 
 @media (min-width: 1300px) {
     .content-providers-block {
-        grid-row-start: 1;
-        grid-row-end: span 2;
+        grid-row-start: 2;
+        grid-row-end: span 3;
         grid-column-start: 2;
         min-width: 20rem;
         height: 40rem;
@@ -104,4 +104,10 @@ div > .search-bar {
 
 .post-button {
     background-color: #2D2E2E;
+}
+
+.not-found {
+    grid-row-start: 3;
+    grid-row-end: 3;
+    grid-column-start: 1;
 }
