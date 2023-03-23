@@ -170,3 +170,14 @@ exports.savePost = async (req, res) => {
         return res.status(500).send({success: false, message: `Server error: ${error.message}`})
     }
 }
+
+exports.getSavedPost = async (req,res) => {
+    try{
+        const userId = res.locals.userId;
+        const userProfile = await User.findById(userId);
+        const savedPosts = userProfile.savedPosts;
+        return res.status(200).json(savedPosts);
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+}
