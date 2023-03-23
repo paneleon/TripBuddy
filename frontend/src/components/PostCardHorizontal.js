@@ -31,6 +31,8 @@ const PostCardHorizontal = ({post, mainPage, deletePost, showPostedBy}) => {
                     {post?.description.substring(0, 100) + "..."}
                 </Card.Text>
 
+                {showPostedBy && <Card.Subtitle className="mb-3 mt-5">Posted by {post?.postedByUsername}</Card.Subtitle>}
+
                 <Button className={styles['post-button']} variant='dark' href={`/${mainPage}/${post?._id}`}>View post</Button>
             </Card.Body>
             </div>

@@ -14,6 +14,7 @@ import Sample from './Sample';
 import MyPosts from './MyPosts'
 import NewPost from './NewPost';
 import EditPost from './EditPost';
+import SavedPosts from './SavedPosts'
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/my-posts/:postId" element={<Post /> } />
         <Route path="/browse/:postId" element={<Post /> } />
         <Route path="/my-posts/edit/:postId" element={<EditPost /> } />
+        <Route path="/saved" element={<SavedPosts /> } />
        </Routes>
     </>
   );
