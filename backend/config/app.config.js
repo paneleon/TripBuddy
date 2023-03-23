@@ -20,7 +20,7 @@ require('dotenv').config()
 
 // import routers
 const sampleRoute = require('../routes/sample.route');
-const userRote = require('../routes/user.route');
+const userRoute = require('../routes/user.route');
 const postsRoute = require('../routes/posts.route')
 const categoryRoute = require('../routes/category.route')
 

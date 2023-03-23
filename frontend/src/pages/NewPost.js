@@ -128,7 +128,7 @@ const NewPost = () => {
 
         <br/>
         <div className='text-center'>
-        <button type="submit" className={cn(styles.addPostButton, 'btn btn-success')}>Add Post</button>
+        <button type="submit" className={cn(styles.addPostButton, 'btn btn-success')} onClick={setShowPopup}>Add Post</button>
         <button onClick={() => navigate('/my-posts')} type="reset" className={cn(styles.cancelButton, 'btn btn-danger')}>Cancel</button>
         </div>
 
@@ -136,7 +136,7 @@ const NewPost = () => {
 
     </Formik>
     <Container>{error && <div className='alert alert-danger my-3'>{`Error happened: ${error?.message}`}</div>}</Container>
-    <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Done!"} message={"Your post was successfully published"} show={showPopup} setShow={setShowPopup}/>
+    <ConfirmationPopup doAction={() => navigate('/my-posts')} title={"Confirmation Action Require "} message={"Are you sure you want to publish this post ?"} show={showPopup} setShow={setShowPopup}/>
 
     </div>
   );
