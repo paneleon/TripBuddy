@@ -5,5 +5,6 @@ const ProfileController = require('../controllers/profile.controller.js');
 
 router.get('/', authUtils.isAuthenticated, ProfileController.getUserProfile);
 router.put('/', authUtils.isAuthenticated, ProfileController.updateProfile);
+router.get('/getSubscribedTo', authUtils.isAuthenticated, ProfileController.getSubscribedTo);
 
 module.exports = router;
