@@ -22,6 +22,7 @@ require('dotenv').config()
 const sampleRoute = require('../routes/sample.route');
 const userRote = require('../routes/user.route');
 const postsRoute = require('../routes/posts.route')
+const categoryRoute = require('../routes/category.route')
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -87,6 +88,7 @@ module.exports = () => {
   app.use('/api/sample', sampleRoute);
   app.use('/api/user', userRote);
   app.use('/api/posts', postsRoute)
+  app.use('/api/category', categoryRoute)
 
   return app;
 }
