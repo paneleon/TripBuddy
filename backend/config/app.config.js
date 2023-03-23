@@ -86,7 +86,7 @@ module.exports = () => {
 
   // configure and use routes
   app.use('/api/sample', sampleRoute);
-  app.use('/api/user', userRote);
+  app.use('/api/user', userRoute);
   app.use('/api/posts', postsRoute)
   app.use('/api/category', categoryRoute)
 
