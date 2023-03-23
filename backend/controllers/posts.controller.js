@@ -83,7 +83,7 @@ exports.deletePost = async (req, res) =>{
 }
 
 exports.editPost = async (req, res) => {
-
+    
     try {
         const postId = req.params.id;
         const oldPost = await Post.findById(postId)
@@ -121,13 +121,9 @@ exports.editPost = async (req, res) => {
 } 
 
 const deleteImage = async (imageName) => {
-    try {
         const images = await imageUpload.listFiles({name: imageName})
         const imageId = images[0].fileId
         await imageUpload.deleteFile(imageId)
-    } catch (error) {
-        return res.status(500).send({success: false, message: `Error deleting the image: ${error.message}`})
-    }
 }
 
 exports.searchForPosts = async (req, res) => {
@@ -152,6 +148,24 @@ exports.searchForPosts = async (req, res) => {
         
         const posts = await Post.find({$and: conditions}).populate('postedBy', 'username') // include the author's username
         return res.status(200).json(posts);
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+}
+
+
+exports.savePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const userId = res.locals.userId;
+
+        const post = await Post.findById(postId);
+        if (!post){
+            return res.status(404).send({success: false, message: `Post with this id is not found`})
+        }
+
+        await User.updateOne({ _id: userId},  {$push: { savedPosts: postId } })
+        return res.status(200).send({success: true, message: `Post was successfully saved`})
     } catch (error) {
         return res.status(500).send({success: false, message: `Server error: ${error.message}`})
     }

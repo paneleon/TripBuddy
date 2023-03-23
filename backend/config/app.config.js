@@ -23,6 +23,7 @@ const sampleRoute = require('../routes/sample.route');
 const userRoute = require('../routes/user.route');
 const postsRoute = require('../routes/posts.route')
 const categoryRoute = require('../routes/category.route')
+const profileRoute = require('../routes/profile.route')
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -86,9 +87,10 @@ module.exports = () => {
 
   // configure and use routes
   app.use('/api/sample', sampleRoute);
-  app.use('/api/user', userRote);
+  app.use('/api/user', userRoute);
   app.use('/api/posts', postsRoute)
   app.use('/api/category', categoryRoute)
+  app.use('/api/profile', profileRoute)
 
   return app;
 }

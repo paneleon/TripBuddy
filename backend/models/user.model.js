@@ -72,6 +72,7 @@ const UserSchema = new mongoose.Schema(
       default: Date.now,
     },
     subscribedTo: [String],
+    savedPosts: [String]
   },
   {
     timestamps: true,

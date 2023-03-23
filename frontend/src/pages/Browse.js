@@ -8,16 +8,6 @@ import { useAuth } from '../context/authContext'
 import NotFound from '../components/NotFound'
 import { useNavigate } from 'react-router-dom'
 
-const sampleCategories = [
-  "Restaurant",
-  "Residence",
-  "Attractions",
-  "Educational",
-  "Outdoors",
-  "Cultural",
-  "Religious",
-  "Other"
-]
 
 const sampleContentProviders = [
   {
@@ -54,7 +44,7 @@ const Browse = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setCategories(sampleCategories)
+    getCategories()
     setFollowedContentProviders(sampleContentProviders)
   }, [])
 
@@ -84,7 +74,18 @@ const Browse = () => {
     } catch (error) {
         setError(true)
     }
-}
+    }
+
+    const getCategories = async () => {
+        try {
+            const response = await axios.get(`${url}/category/getAll`)
+            setCategories(response.data)
+            setError(false)
+        } catch (error) {
+            setError(true)
+        }
+    }
+    
 
   return (
       <div className={styles['browsing-posts-layout']}>
