@@ -5,7 +5,7 @@ import { IKImage } from 'imagekitio-react';
 import { useNavigate } from 'react-router-dom';
 import { getFormattedDateTime } from '../utils/utilFunctions';
 
-const PostCardHorizontal = ({post, mainPage, deletePost}) => {
+const PostCardHorizontal = ({post, mainPage, deletePost, showPostedBy}) => {
 
     const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ const PostCardHorizontal = ({post, mainPage, deletePost}) => {
                 {post?.image ? (<IKImage path={`/posts/${post?.image}`}/> || <img src="/no-image.jpg"/>) : <img src="/no-image.jpg"/> }
                 <Card.Subtitle className={styles['date-tag']}>Posted on {getFormattedDateTime(post?.createdAt)}</Card.Subtitle>
             </div>
-            <div>
+            <div className={styles['details-div']}>
             <Card.Body>
                 <div className={styles['tag-container']}>
                     <span>
@@ -35,11 +35,6 @@ const PostCardHorizontal = ({post, mainPage, deletePost}) => {
             </Card.Body>
             </div>
       </div>
-
-            <div className={styles['buttons-div']}>
-                <Button variant='outline-secondary' onClick={() => navigate(`/my-posts/edit/${post?._id}`)}> Update </Button>
-                <Button variant='outline-danger' onClick={() => deletePost(post?._id)}> Delete </Button>
-            </div>
     </div>
   )
 }
