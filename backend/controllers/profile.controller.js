@@ -39,3 +39,14 @@ exports.updateProfile = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+exports.getSubscribedTo = async (req,res) => {
+  try{
+      const userId = res.locals.userId;
+      const userProfile = await User.findById(userId);
+      const subscribedToUsers = await User.find({_id: {$in: userProfile.subscribedTo}});
+      return res.status(200).json(subscribedToUsers);
+  } catch (error) {
+      return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+  }
+}
