@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import { Formik, Field, Form, useFormikContext } from 'formik';
 import styles from '../styles/Post.module.css';
 import Select from 'react-select'
@@ -11,17 +11,6 @@ import { useNavigate } from "react-router-dom";
 import {Container} from 'react-bootstrap'
 import ConfirmationPopup from '../components/ConfirmationPopup';
 
-const options = [
-  { value: 'Restaurant', label: 'Restaurant' },
-  { value: 'Residence', label: 'Residence' },
-  { value: 'Attractions', label: 'Attractions' },
-  { value: 'Educational', label: 'Educational' },
-  { value: 'Outdoors', label: 'Outdoors' },
-  { value: 'Cultural', label: 'Cultural' },
-  { value: 'Religious', label: 'Religious' },
-  { value: 'Other', label: 'Other' }
-]
-
 const NewPost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [category, setCategory] = useState(null);
@@ -30,6 +19,7 @@ const NewPost = () => {
   const navigate = useNavigate()
   const [error, setError] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
+  const [categoryOptions, setCategoryOptions] = useState([])
  
   const saveNewPost = async (values) => {
     try {
@@ -43,6 +33,24 @@ const NewPost = () => {
       setError(error)
     }
   }
+
+  const getCategories = async () => {
+    try {
+        const response = await axios.get(`${url}/category/getAll`)
+        const categories = response?.data?.map((category) => {
+          return { value: category, label: category }
+        })
+
+        setCategoryOptions(categories)
+        setError(false)
+    } catch (error) {
+        setError(true)
+    }
+  } 
+
+  useEffect(() => {
+    getCategories()
+  }, [])
 
   return (
     <div>
@@ -81,7 +89,7 @@ const NewPost = () => {
         <Field className="form-control" name="description" placeholder="Description" rows={6} cols={50} />
 
         <br />
-        <Select id="category" name="category" options={options} onChange={(e) => setCategory(e.value)}/>
+        <Select id="category" name="category" options={categoryOptions} onChange={(e) => setCategory(e.value)}/>
         <br /> 
 
         <div className={styles.wrap}>

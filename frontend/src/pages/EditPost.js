@@ -13,16 +13,6 @@ import styles from '../styles/Post.module.css';
 import { useParams } from 'react-router-dom';
 import { getFormattedDate } from '../utils/utilFunctions';
 
-const options = [
-  { value: 'Restaurant', label: 'Restaurant' },
-  { value: 'Residence', label: 'Residence' },
-  { value: 'Attractions', label: 'Attractions' },
-  { value: 'Educational', label: 'Educational' },
-  { value: 'Outdoors', label: 'Outdoors' },
-  { value: 'Cultural', label: 'Cultural' },
-  { value: 'Religious', label: 'Religious' },
-  { value: 'Other', label: 'Other' }
-]
 
 const EditPost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -32,6 +22,7 @@ const EditPost = () => {
   const navigate = useNavigate()
   const [error, setError] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
+  const [categoryOptions, setCategoryOptions] = useState([])
 
   // get the id from query paramaters and make the request
   const { postId } = useParams()
@@ -59,8 +50,23 @@ const EditPost = () => {
     }
   }
 
+  const getCategories = async () => {
+    try {
+        const response = await axios.get(`${url}/category/getAll`)
+        const categories = response?.data?.map((category) => {
+          return { value: category, label: category }
+        })
+
+        setCategoryOptions(categories)
+        setError(false)
+    } catch (error) {
+        setError(true)
+    }
+  } 
+
   useEffect(() => {
     getPost()
+    getCategories()
   }, [])
 
 
@@ -104,7 +110,7 @@ const EditPost = () => {
 
         <br />
         <label className={styles.label}>Category:</label>
-        <Select id="category" name="category" options={options} onChange={(e) => setCategory(e.value)}  value={options?.filter((option) => option.value == category)[0]}  />
+        <Select id="category" name="category" options={categoryOptions} onChange={(e) => setCategory(e.value)}  value={categoryOptions?.filter((option) => option.value == category)[0]}  />
         <br /> 
 
         <div className={styles.wrap}>
