@@ -152,3 +152,21 @@ exports.searchForPosts = async (req, res) => {
         return res.status(500).send({success: false, message: `Server error: ${error.message}`})
     }
 }
+
+
+exports.savePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const userId = res.locals.userId;
+
+        const post = await Post.findById(postId);
+        if (!post){
+            return res.status(404).send({success: false, message: `Post with this id is not found`})
+        }
+
+        await User.updateOne({ _id: userId},  {$push: { savedPosts: postId } })
+        return res.status(200).send({success: true, message: `Post was successfully saved`})
+    } catch (error) {
+        return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+    }
+}
