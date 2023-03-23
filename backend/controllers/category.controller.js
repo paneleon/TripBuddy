@@ -4,11 +4,11 @@ const { Category } = require("../constants/index");
 
 exports.getCategorys = async (req, res, next) => {
   try {
-    return res.json({ success: true, data: Object.values(Category)  });
+    return res.send(Object.values(Category));
   } catch (err) {
     return res.json({
       success: false,
-      message: "ERROR: Failed to get categorys!",
+      message: "ERROR: Failed to get categories!",
     });
   }
 };
