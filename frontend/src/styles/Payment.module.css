@@ -1,0 +1,11 @@
+label {
+    text-align: center;
+    border: 1px solid #000;
+    width: 33%;
+    height: 200px;
+}
+
+button {
+    margin: 10px;
+    width: auto;
+}
