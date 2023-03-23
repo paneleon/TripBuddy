@@ -44,14 +44,11 @@ const Browse = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    getContentProviders()
     getCategories()
-    setFollowedContentProviders(sampleContentProviders)
   }, [])
 
   useEffect(() => {
-      console.log("selectedContentProviders", selectedContentProviders)
-      console.log("selectedCategory", selectedCategory)
-      console.log("keyword", keyword)
       if (selectedCategory == ""){
         setSelectedCategory(null)
       }
@@ -86,6 +83,17 @@ const Browse = () => {
         }
     }
     
+    const getContentProviders = async () => {
+        try {
+            const response = await axios.get(`${url}/profile/getSubscribedTo`, { headers: {
+                'Authorization': 'Bearer ' + token
+            }})
+            setFollowedContentProviders(response.data)
+            setError(false)
+        } catch (error) {
+            setError(true)
+        }
+    }
 
   return (
       <div className={styles['browsing-posts-layout']}>

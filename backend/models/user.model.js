@@ -71,7 +71,7 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    subscribedTo: [String],
+    subscribedTo: [mongoose.Schema.Types.ObjectId],
     savedPosts: [String]
   },
   {

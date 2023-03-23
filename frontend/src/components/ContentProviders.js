@@ -8,7 +8,6 @@ const ContentProviders = ({contentProviders, selectedContentProviders, setSelect
         const checked = event.target.checked
         const contentProviderId = event.target.value
         if (checked){
-            console.log("checked")
             setSelectedContentProviders([...selectedContentProviders, contentProviderId])
         } else {
             setSelectedContentProviders(selectedContentProviders.filter((id) => id != contentProviderId))
@@ -19,17 +18,25 @@ const ContentProviders = ({contentProviders, selectedContentProviders, setSelect
         <div className={styles['content-providers-block']}>
             <h6>Following:</h6>
             <>
-                {contentProviders?.map((contProvider) => {
-                    return (<div key={contProvider?.id}>
+                {contentProviders.length > 0 
+                
+                ? contentProviders?.map((contProvider) => {
+                    return (<div key={contProvider?._id}>
                         <input
-                        value={contProvider?.id}
+                        value={contProvider?._id}
                         className='form-check-input me-2'
                         type="checkbox"
                         onChange={(e) => handleCheckboxChange(e)}
                         />
                         <label className="form-check-label" >{contProvider?.username}</label>
                     </div>)
-                })}
+                }) 
+                : 
+                <div>
+                    <h6 className='text-secondary mt-5'>You are currently not following any content providers</h6>
+
+                </div>
+                }
             </>
             
         </div>
