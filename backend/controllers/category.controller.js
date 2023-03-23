@@ -4,7 +4,7 @@ const { Category } = require("../constants/index");
 
 exports.getCategorys = async (req, res, next) => {
   try {
-    return res.json({ success: true, data: Category });
+    return res.json({ success: true, data: Object.values(Category)  });
   } catch (err) {
     return res.json({
       success: false,
