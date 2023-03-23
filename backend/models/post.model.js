@@ -31,9 +31,9 @@ const postSchema = new mongoose.Schema({
     comments: [{ 
         body: String, 
         date: Date, 
-        postedBy: String 
+        postedBy: mongoose.Schema.Types.ObjectId 
     }], 
-    likes: [String], //list of user ids
+    likes: [mongoose.Schema.Types.ObjectId], //list of user ids
 }, { timestamps: true}) // will give properties createdAt and updatedAt
 
 module.exports = mongoose.model('Post', postSchema);
