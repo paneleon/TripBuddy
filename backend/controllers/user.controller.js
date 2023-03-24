@@ -101,4 +101,18 @@ exports.subscribeToContentProvider = async (req, res) => {
   } catch (error) {
     return res.status(500).send({success: false, message: `Server error: ${error.message}`})
   }
-}
+exports.deleteUser = async (req, res, next) => {
+  try {
+    if (!req.params.userId) {
+      return res.json({ success: false, message: "Error: UserId is required" });
+    }
+
+    await User.deleteOne({ _id: req.params.userId }).exec();
+    return res.json({ success: true, message: "User is deleted successfully" });
+  } catch (err) {
+    return res.json({
+      success: false,
+      message: "ERROR: Failed to delete an user!",
+    });
+  }
+};
