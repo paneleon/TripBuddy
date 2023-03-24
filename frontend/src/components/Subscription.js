@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/Subscription.module.css';
 
 const Subscription = () => {
     const navigate = useNavigate();
-    const [currentSubscription, setCurrentSubscription] = useState({});
+    const [currentSubscription, setCurrentSubscription] = useState({
+      subscription: '',
+    });
     const [selectedSubscription, setSelectedSubscription] = useState({
       subscription: '',
     });
@@ -17,7 +20,9 @@ const Subscription = () => {
               headers: { Authorization: `Bearer ${token}` },
             };
             const response = await axios.get('/api/auth/subscription', config);
-            setCurrentSubscription(response.data.subscription);
+            setCurrentSubscription({
+              subscription: response.data.subscription,
+            });
             setSelectedSubscription({
                 subscription: response.data.subscription,
               });
@@ -48,37 +53,38 @@ const Subscription = () => {
       };
 
   return (
-    <div>
-      <h1>Select a subscription plan:</h1>
+    <div className={styles.form}>
       <form onSubmit={handleSubmit}>
-      <div>
+      <h3>Current Plan: {currentSubscription.subscription}</h3>
+      <h1>Select a subscription plan:</h1>
+      <div className={styles.wrap}>
         <input
           type="radio"
           name="subscription"
           value='Basic'
           onChange={handlePlanChange}
         />
-        <label htmlFor="basic">Basic Plan</label>
+        <label htmlFor="basic">&nbsp;Basic Plan</label>
       </div>
-      <div>
+      <div className={styles.wrap}>
         <input
           type="radio"
           name="subscription"
           value='Premium'
           onChange={handlePlanChange}
         />
-        <label htmlFor="premium">Premium Plan</label>
+        <label htmlFor="premium">&nbsp;Premium Plan</label>
       </div>
-      <div>
+      <div className={styles.wrap}>
         <input
           type="radio"
           name="subscription"
           value='Business'
           onChange={handlePlanChange}
         />
-        <label htmlFor="business">Business Plan</label>
+        <label htmlFor="business">&nbsp;Business Plan</label>
       </div>
-      <button type="submit">Subscribe</button>
+      <button className={styles.button} type="submit">Subscribe</button>
 
       </form>
     </div>

@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema(
     },
     sex: {
       type: String,
-
+      enum: ['Male', 'Female', 'Other'],
     },
     cardNumber: {
       type: String,
@@ -76,7 +76,18 @@ const UserSchema = new mongoose.Schema(
       default: null,
     },
     savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
-    subscribedTo: [String],
+    emergencyFirstName: {
+      type: String,
+    },
+    emergencyLastName: {
+      type: String,
+    },
+    emergencyEmail: {
+      type: String,
+    },
+    emergencyPhone: {
+      type: String,
+    },
   },
   {
     timestamps: true,

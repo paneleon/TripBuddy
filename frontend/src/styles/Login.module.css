@@ -1,16 +1,22 @@
 form {
-    /* background-color: rgb(227, 227, 227); */
+    background-color: rgb(243, 243, 243);
     margin-left: auto;
     margin-right: auto;
     width: 50%;
     padding: 30px;
     border: 1px solid #000;
+    height: auto;
 }
 
-.usernameInput{
+.form {
+    text-align: center;
+}
+
+.username {
     font-size: 18px;
-    width: 50%;
-    height: 35px;
+    width: 15vw;
+    height: 4vh;
+    margin: 30px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -20,14 +26,14 @@ form {
     border-bottom: 1px solid #000;
 }
 
-.usernameInput:hover {
-    border-bottom: 1px solid #2eff4a;
+.username:hover {
+    border-bottom: 1px solid #ffff00;
 }
 
-.passwordInput {
+.password {
     font-size: 18px;
-    width: 50%;
-    height: 35px;
+    width: 15vw;
+    height: 4vh;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -37,8 +43,8 @@ form {
     border-bottom: 1px solid #000;
 }
 
-.passwordInput:hover {
-    border-bottom: 1px solid #2eff4a;
+.password:hover {
+    border-bottom: 1px solid #ffff00;
 }
 
 .loginButton {
@@ -51,16 +57,48 @@ form {
     color: #d3ef35;
 }
 
-button {
-    width: 80px;
-    height: 40px;
-}
+.button {
+    background-color: #FFFFFF;
+    border: 1px solid #222222;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #222222;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    width: auto;
+    height: auto;
+  }
 
-.login {
-    position: absolute;
-    right: 15px;
-}
+  .button:focus-visible {
+    box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+    transition: box-shadow .2s;
+  }
+  
+  .button:active {
+    background-color: #F7F7F7;
+    border-color: #000000;
+    transform: scale(.96);
+  }
+  
+  .button:disabled {
+    border-color: #DDDDDD;
+    color: #DDDDDD;
+    cursor: not-allowed;
+    opacity: 1;
+  }
+  
 
-.navbar {
-    width: 1100px;
-}
