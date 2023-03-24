@@ -53,3 +53,22 @@ exports.getUserPayment = async (req, res) => {
       }
 
   };
+
+exports.deletePayment = async (req, res) => {
+    try {
+      const paymentId = req.params.id;
+      const userId = res.locals.userId;
+  
+      const payment = await Payment.findById(paymentId);
+      if (!payment) {
+        return res.status(404).send({ success: false, message: `Invalid payment ID` });
+      }
+  
+      await Payment.deleteOne({ _id: paymentId });
+  
+      return res.status(200).json({ success: true, message: `Successfully deleted payment information` });
+    } catch (error) {
+      return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
+    }
+  }
+  
