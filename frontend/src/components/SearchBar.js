@@ -15,7 +15,7 @@ const SearchBar = ({categories, selectedCategory, setSelectedCategory, setKeywor
               onChange={(e) => setKeyword(e.target.value)}
               value={keyword}
             />
-          <Button variant="outline-success">Search</Button>
+          <Button variant="success">Search</Button>
 
           <select className="form-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
             <option value={""}>Categories</option>
