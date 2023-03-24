@@ -69,28 +69,26 @@ exports.getOtherUsersPosts = async (req, res) => {
   }
 };
 
-exports.deletePost = async (req, res) => {
-  try {
-    const postId = req.params.id;
-    const oldPost = await Post.findById(postId);
-    const postedBy = oldPost.postedBy;
-    const userId = res.locals.userId; // get user id from authentication middleware
-    if (userId == postedBy) {
-      const result = await Post.findByIdAndRemove(postId);
-      await User.updateOne(
-        { _id: res.locals.userId },
-        { $pull: { posts: postId } }
-      );
-      return res.status(200).json(result);
-    } else {
-      return res
-        .status(400)
-        .json({ error: "The post is not posted by this user" });
-    }
-  } catch (error) {
-    return res.status(500).send({ message: `Server error: ${error.message}` });
+exports.deletePost = async (req, res) =>{
+  try{
+      const postId = req.params.id;
+      const oldPost = await Post.findById(postId)
+      const postedBy = oldPost.postedBy;
+      const userId = res.locals.userId // get user id from authentication middleware
+      if(userId == postedBy)
+      {
+          const result = await Post.findByIdAndRemove(postId);          
+          return res.status(200).json(result); 
+      }
+      else
+      {
+          return res.status(400).json({error: "The post is not posted by this user"});
+      }
+            
+  }catch (error) {
+  return res.status(500).send({message: `Server error: ${error.message}`})
   }
-};
+}
 
 exports.editPost = async (req, res) => {
   try {
@@ -194,6 +192,21 @@ exports.getSavedPostsForUser = async (req, res) => {
     const posts = await Post.find({ _id: { $in: user.savedPosts } }).populate('postedBy', 'username')
     return res.status(200).json(posts);
   } catch (error) {
-    return res.status(500).send({ message: `Server error: ${error.message}` });
+    return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
+  }
+};
+
+exports.deletePostFromSaved = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    await User.updateOne(
+      { _id: res.locals.userId },
+      { $pull: { savedPosts: postId } }
+    );
+    const user = await User.findById(res.locals.userId)
+    console.log("user posts", user.savedPosts)
+      return res.status(200).json({ success: true, message: `Post was successfully removed from saved` });
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
 };
