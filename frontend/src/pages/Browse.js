@@ -9,25 +9,6 @@ import NotFound from '../components/NotFound'
 import { useNavigate } from 'react-router-dom'
 
 
-const sampleContentProviders = [
-  {
-      id: "6414b57dc06b4508f6ba7512",
-      username: "paneleon"
-  },
-  {
-      id: "6414b67f443e853b13c0e89b",
-      username: "joe"
-  },
-  {
-      id: "64167b5ce5ddd47be70b28f2",
-      username: "chandlerbing"
-  },
-  {
-      id: "6413d579b97c5ac5f24cef22",
-      username: "eleonora"
-  }
-]
-
 const Browse = () => {
 
   const [posts, setPosts] = useState([])

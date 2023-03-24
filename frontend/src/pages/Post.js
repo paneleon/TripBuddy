@@ -7,53 +7,38 @@ import cn from 'classnames'
 import { useAuth } from '../context/authContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
+import { SavedPost } from '../components/Icons'
 
-const samplePost = {
-    title: "Grazzie Restaurant",
-    description: "The him father parish looked has sooner. Attachment frequently terminated son. You greater nay use prudent placing. Passage to so distant behaved natural between do talking. Friends off her windows painful. ",
-    postedByUsername: "gilbert.dic",
-    category: "Restaurant",
-    country: "USA",
-    city: "New York",
-    rating: 4.2,
-    createdAt:"2016-05-18T16:00:00Z",
-    image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011",
-    comments: [
-        {
-            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", 
-            date: new Date().toDateString(), 
-            postedBy: "ewewewe" 
-        },
-        {
-            body: "At vero eos et accusamus et iusto odio dignissimos ducimus qui dignissimos ducimus", 
-            date: new Date().toDateString(),
-            postedBy: "tyrtyrty" 
-        },
-        {
-            body: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit", 
-            date: new Date().toDateString(),
-            postedBy: "jkjkjkk" 
-        },
-    ],
-    likes: ["dskdjlsjfd", "djsldjkslf", "djklsdjsl", "lsjdlskjd"]
-}
-
-
-const Post = () => {
+const Post = ({mainUrl, showSaved}) => {
 
     // get the id from query paramaters and make the request
     const { postId } = useParams()
-    const {token} = useAuth()
+    const {token, user} = useAuth()
     const url = process.env.REACT_APP_SERVER_URL
     const [post, setPost] = useState(null)
     const [liked, setLiked] = useState(false)
     const [newCommentBody, setNewCommentBody] = useState(null)
+    const [saved, setSaved] = useState(false)
 
     const getPost = async () => {
         const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
             'Authorization': 'Bearer ' + token
         }})
         setPost(response.data)
+    }
+
+    const savePost = async () => {
+        if (!saved){
+            await axios.put(`${url}/posts/save/${postId}`, {}, { headers: {
+                'Authorization': 'Bearer ' + token
+            }})
+            setSaved(true)
+        } else {
+            await axios.put(`${url}/posts/removeSaved/${postId}`, {}, { headers: {
+                'Authorization': 'Bearer ' + token
+            }})
+            setSaved(false)
+        }
     }
 
     const addNewComment = () => {
@@ -68,13 +53,14 @@ const Post = () => {
     }
 
     useEffect(() => {
-        getPost(samplePost)
-    }, [])
+        setSaved(user?.savedPosts?.includes(postId))
+        getPost()
+    }, [user])
 
     return (
         <div>
             <div className={styles['back-button-div']}>
-                <Button variant='light' href="/my-posts">Back to posts</Button>
+                <Button variant='light' href={mainUrl || "/my-posts"}>Back to posts</Button>
             </div>
             
             <div className={styles['post-grid']}>
@@ -97,8 +83,12 @@ const Post = () => {
             </div>
 
             <div className={styles['post-footer-div']}>
+                <div>
                 <a><img className={styles['comment-like']} src={liked ? "/like-filled.png" : "/like-empty.png"} onClick={() => setLiked(!liked)} /></a>
                 <a><img className={styles['comment-like']} src={"/comment.png"}/></a>
+                </div>
+                
+                {showSaved && <SavedPost saved={saved} saveAction={savePost}/>}
             </div>
 
             

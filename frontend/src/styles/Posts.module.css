@@ -131,6 +131,8 @@
     min-height: 100px;
     width: auto;
     margin: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .post-comments-div {
