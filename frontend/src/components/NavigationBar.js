@@ -29,7 +29,6 @@ const NavigationBar = () => {
             />{' '}
             <span className='col my-auto'>TripBuddy</span>
           </NavbarBrand>
-
           {!isLoggedIn() && (
             <Nav className={styles.navbar}>
             <Nav.Link href="/home">Home</Nav.Link>
