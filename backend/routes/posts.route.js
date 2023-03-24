@@ -13,5 +13,5 @@ router.delete('/deleteById/:id', authUtils.isAuthenticated, PostsController.dele
 router.put('/editById/:id', authUtils.isAuthenticated, PostsController.editPost)// post route to edit post by id
 router.put('/search', PostsController.searchForPosts) // fetch posts with filters (use put to provide body)
 router.put('/save/:id', authUtils.isAuthenticated, PostsController.savePost)
-
+router.get('/getSavedPostsForUser', authUtils.isAuthenticated, PostsController.getSavedPostsForUser) // get to delete post by id
 module.exports = router;
