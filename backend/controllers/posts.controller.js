@@ -188,3 +188,14 @@ exports.deleteAllPostsByUserId = async (req, res) => {
     return res.status(500).send({ message: `Server error: ${error.message}` });
   }
 };
+
+exports.getSavedPostsForUser = async (req, res) => {
+  try {
+    const userId = res.locals.userId;
+    const user = await User.findOne({ _id: userId });
+    const posts = await Post.find({ _id: { $in: user.posts } });
+    return res.status(200).json({ success: true, data: posts });
+  } catch (error) {
+    return res.status(500).send({ message: `Server error: ${error.message}` });
+  }
+};
