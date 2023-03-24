@@ -24,6 +24,7 @@ const sampleRoute = require('../routes/sample.route');
 const userRoute = require('../routes/user.route');
 const postsRoute = require('../routes/posts.route');
 const profileRoute = require('../routes/profile.route');
+const emergencyRoute = require('../routes/emergency.route.js');
 const paymentRoute = require('../routes/payment.route');
 const subscriptionRoute = require('../routes/subscription.route');
 
@@ -92,6 +93,7 @@ module.exports = () => {
   app.use('/api/user', userRoute);
   app.use('/api/posts', postsRoute)
   app.use('/api/auth', profileRoute);
+  app.use('/api/auth', emergencyRoute);
   app.use('/api/auth', paymentRoute);
   app.use('/api/auth', subscriptionRoute);
 

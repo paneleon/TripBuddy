@@ -4,21 +4,13 @@ exports.getUserPayment = async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select('-password');
       if (user.BOD) {
-        user.BOD = formatDate(user.BOD);
+        user.BOD = user.BOD;
       }
       res.json(user);
     } catch (err) {
       console.error(err);
       res.status(500).send('Server error');
     }
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${year}-${month}`;
-      }
-
   };
   
   exports.updatePayment = async (req, res) => {
@@ -36,7 +28,7 @@ exports.getUserPayment = async (req, res) => {
       if (country) user.country = country;
       if (city) user.city = city;
       if (postalCode) user.postalCode = postalCode;
-      if (BOD) user.BOD = formatDate(BOD);
+      if (BOD) user.BOD = BOD;
   
       await user.save();
       res.json(user);
@@ -44,12 +36,4 @@ exports.getUserPayment = async (req, res) => {
       console.error(err);
       res.status(500).send('Server error');
     }
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${year}-${month}`;
-      }
-
   };
