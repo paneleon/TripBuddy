@@ -15,6 +15,7 @@ import MyPosts from './MyPosts'
 import NewPost from './NewPost';
 import EditPost from './EditPost';
 import SavedPosts from './SavedPosts'
+import Emergency from '../components/Emergency';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/browse" element={<Browse /> } />
         <Route path="/payment" Component={Payment} />
         <Route path="/subscription" Component={Subscription} />
+        <Route path="/emergency" Component={Emergency} />
         <Route path="/sample" element={<Sample /> } />
         <Route path="/my-posts" element={<MyPosts /> } />
         <Route path="/my-posts/:postId" element={<Post mainUrl="/my-posts" showSaved={false}/> } />
