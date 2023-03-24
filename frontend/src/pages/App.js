@@ -2,8 +2,8 @@ import '../styles/App.css';
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from './Home';
-import Register from '../components/Register';
-import Login from '../components/Login';
+import Register from './Register';
+import Login from './Login';
 import Post from './Post';
 import Profile from '../components/Profile';
 import Browse from './Browse';
@@ -14,6 +14,7 @@ import Sample from './Sample';
 import MyPosts from './MyPosts'
 import NewPost from './NewPost';
 import EditPost from './EditPost';
+import SavedPosts from './SavedPosts'
 
 const App = () => {
   return (
@@ -32,9 +33,11 @@ const App = () => {
         <Route path="/subscription" Component={Subscription} />
         <Route path="/sample" element={<Sample /> } />
         <Route path="/my-posts" element={<MyPosts /> } />
-        <Route path="/my-posts/:postId" element={<Post /> } />
-        <Route path="/browse/:postId" element={<Post /> } />
+        <Route path="/my-posts/:postId" element={<Post mainUrl="/my-posts" showSaved={false}/> } />
+        <Route path="/browse/:postId" element={<Post mainUrl="/browse" showSaved={true}/> } />
         <Route path="/my-posts/edit/:postId" element={<EditPost /> } />
+        <Route path="/saved" element={<SavedPosts /> } />
+        <Route path="/saved/:postId" element={<Post mainUrl="/saved" showSaved={true}/>  } />
        </Routes>
     </>
   );

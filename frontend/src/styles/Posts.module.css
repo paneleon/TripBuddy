@@ -21,6 +21,7 @@
 .date-tag {
     color: #CFD2CF;
     align-self: baseline;
+    max-width: 50%;
 }
 
 .post-preview {
@@ -34,15 +35,21 @@
 .horizontal-card {
     display: flex;
     flex-direction: row;
-    width: 70%;
+    width: 50vw;
     margin-bottom: 2rem;
     border: #73777B 1px solid;
     padding: 20px;
     border-radius: 20px;
+    margin-right: 20px;
+}
+
+.details-div {
+    width: 50%;
+    margin-top: 20px;
 }
 
 .horizontal-card img {
-    width: 70%;
+    max-width: 60%;
     margin: 20px;
 }
 
@@ -124,6 +131,8 @@
     min-height: 100px;
     width: auto;
     margin: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .post-comments-div {
@@ -176,7 +185,7 @@
 }
 
 .image-date-div {
-    align-content: space-between;
+    max-width: 50%;
 }
 
 .rating-tag {
@@ -192,4 +201,22 @@
     height: 3rem;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.post-horizontal-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.remove-btn {
+    margin-top: 20px;
+    width: 40px;
+    height: 40px;
+    display: block;
+}
+
+.remove-btn img {
+    max-width: 100%;
+    max-height: 100%;
 }

@@ -19,10 +19,9 @@ require('dotenv').config()
 // import routers
 const sampleRoute = require('../routes/sample.route');
 const userRoute = require('../routes/user.route');
-const postsRoute = require('../routes/posts.route');
-const profileRoute = require('../routes/profile.route');
-const paymentRoute = require('../routes/payment.route');
-const subscriptionRoute = require('../routes/subscription.route');
+const postsRoute = require('../routes/posts.route')
+const categoryRoute = require('../routes/category.route')
+const profileRoute = require('../routes/profile.route')
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -88,8 +87,7 @@ module.exports = () => {
   app.use('/api/user', userRoute);
   app.use('/api/posts', postsRoute)
   app.use('/api/profile', profileRoute);
-  app.use('/api/payment', paymentRoute);
-  app.use('/api/subscription', subscriptionRoute);
+  app.use('/api/category', categoryRoute)
 
   return app;
 }

@@ -8,35 +8,6 @@ import { useAuth } from '../context/authContext'
 import NotFound from '../components/NotFound'
 import { useNavigate } from 'react-router-dom'
 
-const sampleCategories = [
-  "Restaurant",
-  "Residence",
-  "Attractions",
-  "Educational",
-  "Outdoors",
-  "Cultural",
-  "Religious",
-  "Other"
-]
-
-const sampleContentProviders = [
-  {
-      id: "6414b57dc06b4508f6ba7512",
-      username: "paneleon"
-  },
-  {
-      id: "6414b67f443e853b13c0e89b",
-      username: "joe"
-  },
-  {
-      id: "64167b5ce5ddd47be70b28f2",
-      username: "chandlerbing"
-  },
-  {
-      id: "6413d579b97c5ac5f24cef22",
-      username: "eleonora"
-  }
-]
 
 const Browse = () => {
 
@@ -54,14 +25,11 @@ const Browse = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setCategories(sampleCategories)
-    setFollowedContentProviders(sampleContentProviders)
+    getContentProviders()
+    getCategories()
   }, [])
 
   useEffect(() => {
-      console.log("selectedContentProviders", selectedContentProviders)
-      console.log("selectedCategory", selectedCategory)
-      console.log("keyword", keyword)
       if (selectedCategory == ""){
         setSelectedCategory(null)
       }
@@ -84,7 +52,29 @@ const Browse = () => {
     } catch (error) {
         setError(true)
     }
-}
+    }
+
+    const getCategories = async () => {
+        try {
+            const response = await axios.get(`${url}/category/getAll`)
+            setCategories(response.data)
+            setError(false)
+        } catch (error) {
+            setError(true)
+        }
+    }
+    
+    const getContentProviders = async () => {
+        try {
+            const response = await axios.get(`${url}/profile/getSubscribedTo`, { headers: {
+                'Authorization': 'Bearer ' + token
+            }})
+            setFollowedContentProviders(response.data)
+            setError(false)
+        } catch (error) {
+            setError(true)
+        }
+    }
 
   return (
       <div className={styles['browsing-posts-layout']}>

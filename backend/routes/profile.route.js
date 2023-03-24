@@ -3,7 +3,8 @@ const router = express.Router();
 const authUtils = require('../utils/auth.js');
 const ProfileController = require('../controllers/profile.controller.js');
 
-router.get('/profile', authUtils.isAuthenticated, ProfileController.getUserProfile);
-router.put('/profile', authUtils.isAuthenticated, ProfileController.updateProfile);
+router.get('/', authUtils.isAuthenticated, ProfileController.getUserProfile);
+router.put('/', authUtils.isAuthenticated, ProfileController.updateProfile);
+router.get('/getSubscribedTo', authUtils.isAuthenticated, ProfileController.getSubscribedTo);
 
 module.exports = router;

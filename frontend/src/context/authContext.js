@@ -1,20 +1,24 @@
 // context.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 const AuthContext = React.createContext();
 
 // USE THIS CREDENTIALS TO UPDATE HARDCODED TOKEN: 
 // username: chandler123
 // password: 123
 const AuthContextProvider = ({children}) => {
-    const [token, setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTY3YjVjZTVkZGQ0N2JlNzBiMjhmMiIsImlhdCI6MTY3OTE5Nzc3NSwiZXhwIjoxNjgxNzg5Nzc1fQ.Z5amVlx4ZXlWozbDT2igKqxLj8k6mStl1jCWlFSXsUw") // TODO: update after login and save to local storage
-    const [userId, setUserId] = useState("64167b5ce5ddd47be70b28f2") // TODO: update after login and save to local storage
-    const [user, setUser] = useState({
-        // hardcoded user, fetch info from the db and save to local storage after
-        firstName: "Chandler",
-        lastName: "Bing",
-        email: "cbing@gmail.com",
-        username: "chandler123"
-    })
+    const [token, setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTY3YjVjZTVkZGQ0N2JlNzBiMjhmMiIsImlhdCI6MTY3OTY3NTI4MSwiZXhwIjoxNjgyMjY3MjgxfQ.pXDhws4F18x1VA3oajrY7J18Shke1oQzRyOouotQyqg") // TODO: update after login and save to local storage
+    const [userId, setUserId] = useState("")
+    const [user, setUser] = useState({})
+    const url = process.env.REACT_APP_SERVER_URL
+
+    const getUserProfile = async () => {
+      const response = await axios.get(`${url}/profile`, { headers: {
+          'Authorization': 'Bearer ' + token
+      }})
+      setUser(response?.data)
+      setUserId(response?.data?._id)
+    }
 
     const value = { 
         userId: userId,
@@ -24,6 +28,10 @@ const AuthContextProvider = ({children}) => {
         user: user, 
         setUser: setUser
     }
+
+    useEffect(() => {
+      getUserProfile()
+    }, [])
 
     return (
         <AuthContext.Provider value={value}>
