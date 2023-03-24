@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/Payment.module.css';
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -28,9 +29,13 @@ const Payment = () => {
         };
         const response = await axios.get('/api/auth/payment', config);
         setUserData(response.data);
+        const expirationDate = new Date(response.data.expirationDate);
+        const formattedExpirationDate = expirationDate.toISOString().slice(0, 7);
+        const BOD = new Date(response.data.BOD);
+        const formattedBOD = BOD.toISOString().slice(0, 10);
         setUpdateData({
             cardNumber: response.data.cardNumber,
-            expirationDate: response.data.expirationDate,
+            expirationDate: formattedExpirationDate,
             CVC: response.data.CVC,
             firstName: response.data.firstName,
             lastName: response.data.lastName,
@@ -39,7 +44,7 @@ const Payment = () => {
             country: response.data.country,
             city: response.data.city,
             postalCode: response.data.postalCode,
-            BOD: response.data.BOD,
+            BOD: formattedBOD,
         });
       } catch (err) {
         console.error(err);
@@ -68,92 +73,114 @@ const Payment = () => {
   };
 
   return (
-    <div>
-      <h1>Payment Info</h1>
+    <div className={styles.form}>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="cardNumber"
-          placeholder="Debit/Credit Card Number"
-          value={updateData.cardNumber}
-          onChange={handleChange}
-        />
-        <input
-          type="month"
-          name="expirationDate"
-          placeholder="MM/YY"
-          value={updateData.expirationDate}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="CVC"
-          placeholder="CVC"
-          value={updateData.CVC}
-          onChange={handleChange}
-        />
+      <h1>Payment Info</h1>
+        <div className={styles.wrap}>
+          <input
+            className={styles.cardNumber}
+            type="text"
+            name="cardNumber"
+            placeholder="Debit/Credit Card Number"
+            value={updateData.cardNumber}
+            onChange={handleChange}
+          />
+          <input
+            className={styles.expirationDate}
+            type="month"
+            name="expirationDate"
+            placeholder="MM/YY"
+            value={updateData.expirationDate}
+            onChange={handleChange}
+          />
+          <input
+            className={styles.CVC}
+            maxLength="3"
+            type="text"
+            name="CVC"
+            placeholder="CVC"
+            value={updateData.CVC}
+            onChange={handleChange}
+          />
+          </div>
         <br />
-        <input
-          type="text"
-          name="firstName"
-          placeholder="First Name"
-          value={updateData.firstName}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last Name"
-          value={updateData.lastName}
-          onChange={handleChange}
-        />
+          <div className={styles.wrap}>
+            <input
+              className={styles.firstName}
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              value={updateData.firstName}
+              onChange={handleChange}
+            />
+            <input
+              className={styles.lastName}
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value={updateData.lastName}
+              onChange={handleChange}
+            />
+          </div>
         <br />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={updateData.phone}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={updateData.address}
-          onChange={handleChange}
-        />
+          <div className={styles.wrap}>
+            <input
+              className={styles.phone}
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              value={updateData.phone}
+              onChange={handleChange}
+            />
+            <input
+              className={styles.address}
+              type="text"
+              name="address"
+              placeholder="Address"
+              value={updateData.address}
+              onChange={handleChange}
+            />
+          </div>
         <br />
-        <input
-          type="text"
-          name="country"
-          placeholder="Country"
-          value={updateData.country}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={updateData.city}
-          onChange={handleChange}
-        />
+        <div className={styles.wrap}>
+            <input
+              className={styles.country}
+              type="text"
+              name="country"
+              placeholder="Country"
+              value={updateData.country}
+              onChange={handleChange}
+            />
+            <input
+              className={styles.city}
+              type="text"
+              name="city"
+              placeholder="City"
+              value={updateData.city}
+              onChange={handleChange}
+            />
+          </div>
         <br />
-        <input
-          type="text"
-          name="postalCode"
-          placeholder="Postal Code"
-          value={updateData.postalCode}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="BOD"
-          placeholder="YYYY/MM/DD"
-          value={updateData.BOD}
-          onChange={handleChange}
-        />
+          <div className={styles.wrap}>
+            <input
+              className={styles.postalCode}
+              type="text"
+              name="postalCode"
+              placeholder="Postal Code"
+              value={updateData.postalCode}
+              onChange={handleChange}
+            />
+            <input
+              className={styles.BOD}
+              type="Date"
+              name="BOD"
+              placeholder="YYYY/MM/DD"
+              value={updateData.BOD}
+              onChange={handleChange}
+            />
+            </div>
         <br />
-        <button type="submit">Save</button>
+        <button className={styles.button} type="submit">Save</button>
       </form>
     </div>
   );

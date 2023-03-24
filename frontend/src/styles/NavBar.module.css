@@ -1,0 +1,30 @@
+.login {
+    position: absolute;
+    right: 5vw;
+    width: auto;
+}
+  
+  .login {
+    font-family: system-ui, sans-serif;
+    font-weight: bold;
+    font-size: 4rem;
+    cursor: pointer;
+    border: none;
+    margin: .1em;
+  }
+
+.logout {
+    position: absolute;
+    right: 5vw;
+    width: auto;
+}
+
+.setting {
+    position: absolute;
+    right: 3vw;
+    width: auto;
+}
+
+.navbar {
+    width: 70vw; 
+}

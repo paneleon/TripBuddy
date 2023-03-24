@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/Login.module.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,10 +28,11 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className={styles.form}>
       <form onSubmit={handleSubmit}>
+      <h1>Login</h1>
         <input
+          className={styles.username}
           type="text"
           name="username"
           placeholder="Username"
@@ -38,15 +40,19 @@ const Login = () => {
           onChange={handleChange}
         />
         <input
+          className={styles.password}
           type="password"
           name="password"
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
         />
-        <button type="submit">Login</button>
+        <br />
+        <button className={styles.button} type="submit">Login</button>
+        <br />
+        <br />
         <p id="create" className="text-center text-muted small">
-        Don't have an account? 
+        Don't have an account?&nbsp;
         <a className="link" href="/register">Register Here!</a>
         </p>
       </form>
