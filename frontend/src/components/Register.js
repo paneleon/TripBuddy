@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/Register.module.css';
 
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
     username: '',
     email: '',
     password: '',
@@ -26,31 +30,73 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className={styles.form}>
       <form onSubmit={handleSubmit}>
+      <h1>Register</h1>
+      <div className={styles.wrap}>
         <input
+          className={styles.firstName}
           type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
           onChange={handleChange}
+          required
         />
         <input
+          className={styles.lastName}
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
+          onChange={handleChange}
+          required
+        />
+        </div>
+        <br />
+        <div className={styles.wrap}>
+        <input
+          className={styles.email}
           type="email"
           name="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          required
         />
+          <input
+          className={styles.phone}
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          value={formData.phone}
+          onChange={handleChange}
+          required
+        />
+        </div>
+        <br />
+        <div className={styles.wrap}>
         <input
+          className={styles.username}
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+          <input
+          className={styles.password}
           type="password"
           name="password"
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          required
         />
-        <button type="submit">Register</button>
+        </div>
+        <br />
+        <button className={styles.button} type="submit">Register</button>
       </form>
     </div>
   );

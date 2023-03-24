@@ -17,7 +17,6 @@
     "dotenv": "^16.0.3",
     "express": "~4.16.1",
     "express-session": "^1.17.3",
-    "flash": "^1.1.0",
     "http-errors": "~1.6.3",
     "imagekit": "^4.1.2",
     "jade": "~1.11.0",

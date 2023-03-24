@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/Profile.module.css';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ const Profile = () => {
         };
         const response = await axios.get('/api/auth/profile', config);
         setUserData(response.data);
+        const date = new Date(response.data.BOD);
+        const formattedDate = date.toISOString().slice(0, 10);
         setUpdateData({
           firstName: response.data.firstName,
           lastName: response.data.lastName,
@@ -35,7 +38,7 @@ const Profile = () => {
           country: response.data.country,
           city: response.data.city,
           postalCode: response.data.postalCode,
-          BOD: response.data.BOD,
+          BOD: formattedDate,
           sex: response.data.sex,
           email: response.data.email,
         });
@@ -66,10 +69,12 @@ const Profile = () => {
   };
 
   return (
-    <div>
-      <h1>Profile</h1>
+    <div className={styles.form}>
       <form onSubmit={handleSubmit}>
+      <h1>Profile</h1>
+      <div className={styles.wrap}>
         <input
+          className={styles.firstName}
           type="text"
           name="firstName"
           placeholder="First Name"
@@ -77,14 +82,18 @@ const Profile = () => {
           onChange={handleChange}
         />
           <input
+          className={styles.lastName}
           type="text"
           name="lastName"
           placeholder="Last Name"
           value={updateData.lastName}
           onChange={handleChange}
         />
+        </div>
         <br />
+        <div className={styles.wrap}>
         <input
+          className={styles.address}
           type="text"
           name="address"
           placeholder="Address"
@@ -92,14 +101,18 @@ const Profile = () => {
           onChange={handleChange}
         />
           <input
+          className={styles.phone}
           type="text"
           name="phone"
           placeholder="Phone"
           value={updateData.phone}
           onChange={handleChange}
         />
+        </div>
         <br />
+        <div className={styles.wrap}>
         <input
+          className={styles.country}
           type="text"
           name="country"
           placeholder="Country"
@@ -107,14 +120,18 @@ const Profile = () => {
           onChange={handleChange}
         />
           <input
+          className={styles.city}
           type="text"
           name="city"
           placeholder="City"
           value={updateData.city}
           onChange={handleChange}
         />
+        </div>
         <br />
+        <div className={styles.wrap}>
         <input
+          className={styles.postalCode}
           type="text"
           name="postalCode"
           placeholder="Postal Code"
@@ -122,38 +139,39 @@ const Profile = () => {
           onChange={handleChange}
         />
           <input
+          className={styles.BOD}
           type="Date"
           name="BOD"
           placeholder="YYYY/MM/DD"
           value={updateData.BOD}
           onChange={handleChange}
         />
+        </div>
         <br />
-        <input
-          type="radio"
-          name="sex"
-          placeholder="Male"
-          value={updateData.sex}
-          onChange={handleChange}
-        />
-        <label>Male</label>
+        <div className={styles.wrap}>
+          <div className={styles.sex}>
+            <label>Sex &nbsp;</label>
+            <select
+              name="sex"
+              value={updateData.sex}
+              onChange={handleChange}>
+                <option value="" disabled hidden >Select&nbsp;</option>
+                <option value="Male">Male&nbsp;</option>
+                <option value="Female">Female&nbsp;</option>
+                <option value="Other">Hide&nbsp;</option>
+          </select>
+          </div>
           <input
-          type="radio"
-          name="sex"
-          placeholder="Female"
-          value={updateData.sex}
-          onChange={handleChange}
-        />
-        <label>Female</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={updateData.email}
-          onChange={handleChange}
-        />
+            className={styles.email}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={updateData.email}
+            onChange={handleChange}
+          />
+        </div>
         <br />
-        <button type="submit">Save</button>
+        <button className={styles.button} type="submit">Save</button>
       </form>
     </div>
   );

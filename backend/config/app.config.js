@@ -7,8 +7,6 @@ const morgan = require('morgan');
 const compress = require('compression');
 const methodOverride = require('method-override');
 const passport = require('passport');
-const passportLocal = require('passport-local');
-const flash = require('flash');
 const session = require('express-session');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -23,7 +21,10 @@ const sampleRoute = require('../routes/sample.route');
 const userRoute = require('../routes/user.route');
 const postsRoute = require('../routes/posts.route')
 const categoryRoute = require('../routes/category.route')
-const profileRoute = require('../routes/profile.route')
+const profileRoute = require('../routes/profile.route');
+const emergencyRoute = require('../routes/emergency.route.js');
+const paymentRoute = require('../routes/payment.route');
+const subscriptionRoute = require('../routes/subscription.route');
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -83,14 +84,16 @@ module.exports = () => {
   app.use(passport.session());
   app.use(methodOverride());
   app.use(methodOverride('_method'));
-  app.use(flash());
 
   // configure and use routes
   app.use('/api/sample', sampleRoute);
   app.use('/api/user', userRoute);
   app.use('/api/posts', postsRoute)
+  app.use('/api/profile', profileRoute);
   app.use('/api/category', categoryRoute)
-  app.use('/api/profile', profileRoute)
+  app.use('/api/payment', paymentRoute);
+  app.use('/api/subscription', subscriptionRoute);
+  app.use('/api/emergency', emergencyRoute);
 
   return app;
 }

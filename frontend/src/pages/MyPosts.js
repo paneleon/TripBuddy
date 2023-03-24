@@ -54,7 +54,7 @@ const MyPosts = () => {
                     <div className={styles["post-horizontal-container"]}>
                         <PostCardHorizontal post={post} mainPage={'my-posts'} deletePost={(id) => deletePost(id)}/>
                         <div className={styles['buttons-div']}>
-                            <Button variant='outline-secondary' onClick={() => navigate(`/my-posts/edit/${post?._id}`)}> Update </Button>
+                            <Button variant='secondary' onClick={() => navigate(`/my-posts/edit/${post?._id}`)}> Update </Button>
                             <Button variant='outline-danger' onClick={() => deletePost(post?._id)}> Delete </Button>
                         </div>
                         
