@@ -33,10 +33,11 @@ const App = () => {
         <Route path="/subscription" Component={Subscription} />
         <Route path="/sample" element={<Sample /> } />
         <Route path="/my-posts" element={<MyPosts /> } />
-        <Route path="/my-posts/:postId" element={<Post /> } />
-        <Route path="/browse/:postId" element={<Post /> } />
+        <Route path="/my-posts/:postId" element={<Post mainUrl="/my-posts"/> } />
+        <Route path="/browse/:postId" element={<Post mainUrl="/browse"/> } />
         <Route path="/my-posts/edit/:postId" element={<EditPost /> } />
         <Route path="/saved" element={<SavedPosts /> } />
+        <Route path="/saved/:postId" element={<Post mainUrl="/saved"/>  } />
        </Routes>
     </>
   );

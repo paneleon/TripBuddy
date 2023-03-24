@@ -8,38 +8,7 @@ import { useAuth } from '../context/authContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
 
-const samplePost = {
-    title: "Grazzie Restaurant",
-    description: "The him father parish looked has sooner. Attachment frequently terminated son. You greater nay use prudent placing. Passage to so distant behaved natural between do talking. Friends off her windows painful. ",
-    postedByUsername: "gilbert.dic",
-    category: "Restaurant",
-    country: "USA",
-    city: "New York",
-    rating: 4.2,
-    createdAt:"2016-05-18T16:00:00Z",
-    image: "/posts/cafe_tsSN1NUTbp.jpeg?updatedAt=1679179541011",
-    comments: [
-        {
-            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", 
-            date: new Date().toDateString(), 
-            postedBy: "ewewewe" 
-        },
-        {
-            body: "At vero eos et accusamus et iusto odio dignissimos ducimus qui dignissimos ducimus", 
-            date: new Date().toDateString(),
-            postedBy: "tyrtyrty" 
-        },
-        {
-            body: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit", 
-            date: new Date().toDateString(),
-            postedBy: "jkjkjkk" 
-        },
-    ],
-    likes: ["dskdjlsjfd", "djsldjkslf", "djklsdjsl", "lsjdlskjd"]
-}
-
-
-const Post = () => {
+const Post = ({mainUrl}) => {
 
     // get the id from query paramaters and make the request
     const { postId } = useParams()
@@ -68,13 +37,13 @@ const Post = () => {
     }
 
     useEffect(() => {
-        getPost(samplePost)
+        getPost()
     }, [])
 
     return (
         <div>
             <div className={styles['back-button-div']}>
-                <Button variant='light' href="/my-posts">Back to posts</Button>
+                <Button variant='light' href={mainUrl || "/my-posts"}>Back to posts</Button>
             </div>
             
             <div className={styles['post-grid']}>
