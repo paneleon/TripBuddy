@@ -54,21 +54,30 @@ exports.getUserPayment = async (req, res) => {
 
   };
 
-exports.deletePayment = async (req, res) => {
+  exports.deletePayment = async (req, res) => {
     try {
-      const paymentId = req.params.id;
-      const userId = res.locals.userId;
-  
-      const payment = await Payment.findById(paymentId);
-      if (!payment) {
-        return res.status(404).send({ success: false, message: `Invalid payment ID` });
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
       }
+
+      user.cardNumber = undefined;
+      user.expirationDate = undefined;
+      user.CVC = undefined;
+      user.firstName = undefined;
+      user.lastName = undefined;
+      user.phone = undefined;
+      user.address = undefined;
+      user.country = undefined;
+      user.city = undefined;
+      user.postalCode = undefined;
+      user.BOD = undefined;
   
-      await Payment.deleteOne({ _id: paymentId });
+      await user.save();
   
-      return res.status(200).json({ success: true, message: `Successfully deleted payment information` });
-    } catch (error) {
-      return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
     }
-  }
-  
+  };
