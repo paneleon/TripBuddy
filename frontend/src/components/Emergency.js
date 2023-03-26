@@ -8,6 +8,7 @@ import { useAuth } from '../context/authContext'
 const Emergency = () => {
   const [email, setEmail] = useState(null)
   const [contacts, setContacts] = useState([]);
+  const [message, setMessage] = useState("");
   const [updated, setUpdated] = useState(false);
   const {token} = useAuth()
   const url = process.env.REACT_APP_SERVER_URL
@@ -83,7 +84,10 @@ const Emergency = () => {
                 <h6>{contact.username}</h6>
                 <h6>{contact.email}</h6>
                 <h6>{contact.phone}</h6>
-                <Button variant='danger' className='mt-4' onClick={() => removeEmergencyContact(contact._id)}>Remove</Button>
+                <Button variant='danger' className='mt-4 mb-2' onClick={() => removeEmergencyContact(contact._id)}>Remove</Button>
+              
+                <textarea className='my-4 w-75 mx-auto form-control' placeholder='Enter your message here' value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+                <Button variant='success' className=''>Send Message</Button>
               </div>)
             })
               
