@@ -156,7 +156,7 @@ const Profile = () => {
         />
         <br />
         <button type="submit"onClick={() => setShowPopup(true)}>Save</button>
-        <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this information ?"} show={showPopup} setShow={setShowPopup}/>
+        <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user information ?"} show={showPopup} setShow={setShowPopup}/>
       </form>
     </div>
   );
