@@ -75,19 +75,7 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
-    emergencyFirstName: {
-      type: String,
-    },
-    emergencyLastName: {
-      type: String,
-    },
-    emergencyEmail: {
-      type: String,
-    },
-    emergencyPhone: {
-      type: String,
-    },
+    emergencyContacts: [mongoose.Schema.Types.ObjectId],
   },
   {
     timestamps: true,
