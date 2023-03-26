@@ -9,8 +9,7 @@ import cn from 'classnames';
 const Payment = () => {
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false)
-  const [userData, setUserData] = useState({});
-  const [updateData, setUpdateData] = useState({
+  const [userData, setUserData] = useState({
     cardNumber: '',
     expirationDate: '',
     CVC: '',
@@ -67,7 +66,7 @@ const Payment = () => {
   }, []);
 
   const handleChange = (e) => {
-    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -76,9 +75,7 @@ const Payment = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/payment', updateData, config);
-      alert('Payment Info updated successfully');
-      // navigate('/');
+      await axios.put('/api/payment', userData, config);
     } catch (err) {
       console.error(err);
     }
@@ -90,7 +87,7 @@ const Payment = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Payment info removed successfully');
-      // navigate('/');
+      navigate('/');
     } catch (err) {
       console.error(err);
     }
