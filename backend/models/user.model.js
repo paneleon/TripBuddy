@@ -23,14 +23,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: { 
-      type: String, 
-      required: true 
-    },
     phone: {
       type: String,
-
-
     },
     BOD: {
       type: Date,
@@ -76,6 +70,7 @@ const UserSchema = new mongoose.Schema(
       default: null,
     },
     emergencyContacts: [mongoose.Schema.Types.ObjectId],
+    savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],  
   },
   {
     timestamps: true,

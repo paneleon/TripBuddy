@@ -1,15 +1,21 @@
 const User = require('../models/user.model.js');
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  return `${year}-${month}`;
+}
+
 exports.getUserPayment = async (req, res) => {
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const user = await User.findById(res.locals.userId);
       if (user.BOD) {
         user.BOD = user.BOD;
       }
-      res.json(user);
+      return res.status(200).json(user);
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error');
     }
   };
   
@@ -17,7 +23,7 @@ exports.getUserPayment = async (req, res) => {
     const { cardNumber, expirationDate, CVC, firstName, lastName, phone, address, country, city, postalCode, BOD } = req.body;
   
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(res.locals.userId);
       if (cardNumber) user.cardNumber = cardNumber;
       if (expirationDate) user.expirationDate = expirationDate;
       if (CVC) user.CVC = CVC;
@@ -31,24 +37,15 @@ exports.getUserPayment = async (req, res) => {
       if (BOD) user.BOD = BOD;
   
       await user.save();
-      res.json(user);
+      return res.status(200).json(user);
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error ' + err);
     }
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${year}-${month}`;
-      }
-
   };
 
   exports.deletePayment = async (req, res) => {
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(res.locals.userId);
       if (!user) {
         return res.status(404).json({ msg: 'User not found' });
       }
@@ -56,20 +53,11 @@ exports.getUserPayment = async (req, res) => {
       user.cardNumber = undefined;
       user.expirationDate = undefined;
       user.CVC = undefined;
-      user.firstName = undefined;
-      user.lastName = undefined;
-      user.phone = undefined;
-      user.address = undefined;
-      user.country = undefined;
-      user.city = undefined;
-      user.postalCode = undefined;
       user.BOD = undefined;
   
       await user.save();
-  
-      res.json(user);
+      return res.status(200).json(user);
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Server error');
+      return res.status(500).send('Server error ' + err);
     }
   };
