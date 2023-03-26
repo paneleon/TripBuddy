@@ -13,6 +13,7 @@ const Emergency = () => {
   const {token} = useAuth()
   const url = process.env.REACT_APP_SERVER_URL
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
 
   const getEmergencyContacts = async () => {
     try {
@@ -27,13 +28,15 @@ const Emergency = () => {
   }
 
   const addEmergencyContact = async () => {
+    const confirmtoadd = window.confirm("Are you sure you want to add this email as your emergency contact ?")
+    if (confirmtoadd)
+    {
     try {
       if (email){
         setError(null)
       } else {
         return setError("Please provide a valid email")
       }
-  
       await axios.put(`${url}/emergency/add/${email}`, {}, { headers: {
         'Authorization': 'Bearer ' + token
       }})
@@ -43,8 +46,12 @@ const Emergency = () => {
       setError(error.response?.data?.message)
     }
   }
+  }
 
   const removeEmergencyContact = async (id) => {
+    const confirmationfordelete = window.confirm("Are you sure you want to remove this emergency contact information ?")
+    if (confirmationfordelete)
+    {
     try {
       await axios.put(`${url}/emergency/remove/${id}`, {}, { headers: {
         'Authorization': 'Bearer ' + token
@@ -53,6 +60,7 @@ const Emergency = () => {
       setError(null)
     } catch (error) {
       setError(error.response?.data?.message)
+    }
     }
   }
 
@@ -95,8 +103,9 @@ const Emergency = () => {
           
           
         </Container>
-        
+    
     </div>
+    
   );
 };
 
