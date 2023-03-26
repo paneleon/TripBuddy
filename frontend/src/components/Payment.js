@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Payment.module.css';
 import  ConfirmationPopup from '../components/ConfirmationPopup';
+import { useAuth } from '../context/authContext';
+import cn from 'classnames';
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -22,20 +24,29 @@ const Payment = () => {
     BOD: '',
   });
 
+  const {token} = useAuth()
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await axios.get('/api/auth/payment', config);
-        setUserData(response.data);
-        const expirationDate = new Date(response.data.expirationDate);
-        const formattedExpirationDate = expirationDate.toISOString().slice(0, 7);
-        const BOD = new Date(response.data.BOD);
-        const formattedBOD = BOD.toISOString().slice(0, 10);
-        setUpdateData({
+        const response = await axios.get('/api/payment', config);
+        let expirationDate, BOD = null
+        let formattedExpirationDate, formattedBOD = null;
+
+        if (response.data.expirationDate) {
+          expirationDate = new Date(response.data.expirationDate);
+          formattedExpirationDate = expirationDate && expirationDate.toISOString().slice(0, 7);
+        }
+        
+        if (response.data.BOD) {
+          BOD = new Date(response.data.BOD);
+          formattedBOD = BOD && BOD.toISOString().slice(0, 10);
+        }
+        
+        setUserData({
             cardNumber: response.data.cardNumber,
             expirationDate: formattedExpirationDate,
             CVC: response.data.CVC,
@@ -62,17 +73,28 @@ const Payment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/auth/payment', updateData, config);
+      await axios.put('/api/payment', updateData, config);
       alert('Payment Info updated successfully');
-      navigate('/home');
+      // navigate('/');
     } catch (err) {
       console.error(err);
     }
   };
+
+  const deletePayment = async () => {
+    try {
+      await axios.delete('/api/payment', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('Payment info removed successfully');
+      // navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div className={styles.form}>
@@ -84,7 +106,7 @@ const Payment = () => {
             type="text"
             name="cardNumber"
             placeholder="Debit/Credit Card Number"
-            value={updateData.cardNumber}
+            value={userData.cardNumber}
             onChange={handleChange}
           />
           <input
@@ -92,7 +114,7 @@ const Payment = () => {
             type="month"
             name="expirationDate"
             placeholder="MM/YY"
-            value={updateData.expirationDate}
+            value={userData.expirationDate}
             onChange={handleChange}
           />
           <input
@@ -101,7 +123,7 @@ const Payment = () => {
             type="text"
             name="CVC"
             placeholder="CVC"
-            value={updateData.CVC}
+            value={userData.CVC}
             onChange={handleChange}
           />
           </div>
@@ -112,7 +134,7 @@ const Payment = () => {
               type="text"
               name="firstName"
               placeholder="First Name"
-              value={updateData.firstName}
+              value={userData.firstName}
               onChange={handleChange}
             />
             <input
@@ -120,7 +142,7 @@ const Payment = () => {
               type="text"
               name="lastName"
               placeholder="Last Name"
-              value={updateData.lastName}
+              value={userData.lastName}
               onChange={handleChange}
             />
           </div>
@@ -131,7 +153,7 @@ const Payment = () => {
               type="text"
               name="phone"
               placeholder="Phone"
-              value={updateData.phone}
+              value={userData.phone}
               onChange={handleChange}
             />
             <input
@@ -139,7 +161,7 @@ const Payment = () => {
               type="text"
               name="address"
               placeholder="Address"
-              value={updateData.address}
+              value={userData.address}
               onChange={handleChange}
             />
           </div>
@@ -150,7 +172,7 @@ const Payment = () => {
               type="text"
               name="country"
               placeholder="Country"
-              value={updateData.country}
+              value={userData.country}
               onChange={handleChange}
             />
             <input
@@ -158,7 +180,7 @@ const Payment = () => {
               type="text"
               name="city"
               placeholder="City"
-              value={updateData.city}
+              value={userData.city}
               onChange={handleChange}
             />
           </div>
@@ -169,7 +191,7 @@ const Payment = () => {
               type="text"
               name="postalCode"
               placeholder="Postal Code"
-              value={updateData.postalCode}
+              value={userData.postalCode}
               onChange={handleChange}
             />
             <input
@@ -177,13 +199,15 @@ const Payment = () => {
               type="Date"
               name="BOD"
               placeholder="YYYY/MM/DD"
-              value={updateData.BOD}
+              value={userData.BOD}
               onChange={handleChange}
             />
             </div>
         <br />
         <button className={styles.button} type="submit" onClick={() => setShowPopup(true)}>Save</button>
         <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user's payment information ?"} show={showPopup} setShow={setShowPopup}/>
+      
+        <button className={cn(styles.deleteButton, "mx-2")} type="button" onClick={() => deletePayment()}>Delete</button>
       </form>
     </div>
   );
