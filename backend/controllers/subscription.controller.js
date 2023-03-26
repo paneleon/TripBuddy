@@ -2,11 +2,11 @@ const User = require('../models/user.model.js');
 
 exports.getSubscription = async (req, res) => {
     try {
-      const user = await User.findById(req.user.id);
-      res.json({subscription: user.subscription});
+      const user = await User.findById(res.locals.userId);
+      return res.status(200).send({subscription: user.subscription});
     } catch (err) {
       console.error(err);
-      res.status(500).send('Server error');
+      res.status(500).send('Server error ' + err);
     }
   };
 
@@ -18,13 +18,11 @@ exports.updateSubscription = async (req, res) => {
       }
 
     try {
-        const user = await User.findById(req.user.id);
-        user.subscription = subscription;
-        
-        await user.save();
-        res.json({subscription: user.subscription});
-    } catch (err) {
+        await User.updateOne({_id: res.locals.userId}, {subscription: subscription});
+        const user = await User.findById(res.locals.userId);
+        return res.status(200).send({subscription: user.subscription});    
+      } catch (err) {
         console.error(err);
-        res.status(500).send('Server error');
+        res.status(500).send('Server error ' + err);
     }
 };

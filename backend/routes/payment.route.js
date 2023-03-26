@@ -5,5 +5,5 @@ const PaymentController = require('../controllers/payment.controller.js');
 
 router.get('/payment', authUtils.isAuthenticated, PaymentController.getUserPayment);
 router.put('/payment', authUtils.isAuthenticated, PaymentController.updatePayment);
-
+router.delete('/payment', authUtils.isAuthenticated, PaymentController.deletePayment);
 module.exports = router;

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Payment.module.css';
+import  ConfirmationPopup from '../components/ConfirmationPopup';
 
 const Payment = () => {
   const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false)
   const [userData, setUserData] = useState({});
   const [updateData, setUpdateData] = useState({
     cardNumber: '',
@@ -180,7 +182,8 @@ const Payment = () => {
             />
             </div>
         <br />
-        <button className={styles.button} type="submit">Save</button>
+        <button className={styles.button} type="submit" onClick={() => setShowPopup(true)}>Save</button>
+        <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user's payment information ?"} show={showPopup} setShow={setShowPopup}/>
       </form>
     </div>
   );
