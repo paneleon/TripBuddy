@@ -36,4 +36,40 @@ exports.getUserPayment = async (req, res) => {
       console.error(err);
       res.status(500).send('Server error');
     }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        return `${year}-${month}`;
+      }
+
+  };
+
+  exports.deletePayment = async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+      }
+
+      user.cardNumber = undefined;
+      user.expirationDate = undefined;
+      user.CVC = undefined;
+      user.firstName = undefined;
+      user.lastName = undefined;
+      user.phone = undefined;
+      user.address = undefined;
+      user.country = undefined;
+      user.city = undefined;
+      user.postalCode = undefined;
+      user.BOD = undefined;
+  
+      await user.save();
+  
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
   };
