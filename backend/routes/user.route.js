@@ -8,6 +8,5 @@ router.post('/register', UserController.processRegistration);
 router.get('/logout', UserController.processLogout);
 router.get('/auth', UserController.getAuthImageUploadData);
 router.post('/subscribeTo/:id', authUtils.isAuthenticated, UserController.subscribeToContentProvider);
-router.delete('/deleteUserById/:id', authUtils.isAuthenticated, UserController.deleteUser);
 
 module.exports = router;

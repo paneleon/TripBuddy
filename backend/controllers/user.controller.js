@@ -103,20 +103,3 @@ exports.subscribeToContentProvider = async (req, res) => {
   }
 }
 
-exports.deleteUser = async (req, res) => {
-  try {
-    const Id = req.params.id;
-    const userId = res.locals.userId;
-
-    const userDelete = await User.findById(Id);
-    if (!userDelete) {
-      return res.status(404).send({ success: false, message: `Invalid user ID` });
-    }
-
-    await User.deleteOne({ _id: Id });
-
-    return res.status(200).json({ success: true, message: `Successfully deleted user` });
-  } catch (error) {
-    return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
-  }
-}
