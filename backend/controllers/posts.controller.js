@@ -210,3 +210,39 @@ exports.deletePostFromSaved = async (req, res) => {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
 };
+
+exports.addComment = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = res.locals.userId; 
+    const date = new Date();
+    const post = await Post.findById(postId);
+      if (!post){
+          return res.status(404).send({success: false, message: `Post with this id is not found`})
+      }
+    const newComment = {
+      body: req.body.commentBody,
+      date: date,
+      postedBy: userId
+    }; 
+      await Post.updateOne({ _id: postId},  {$push: { comments: newComment } });
+      return res.status(200).json({ success: true, message: `Comment was successfully added` });
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+  }
+};
+
+exports.getComments = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const date = new Date();
+    const post = await Post.findById(postId);
+      if (!post){
+          return res.status(404).send({success: false, message: `Post with this id is not found`})
+      }
+    const comments = post.comments;
+      return res.status(200).json(comments);
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+  }
+};
