@@ -236,7 +236,10 @@ exports.getComments = async (req, res) => {
   try {
     const postId = req.params.id;
     const date = new Date();
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).populate(
+      "comments.postedBy",
+      "username"
+    ); // include the author's username;
       if (!post){
           return res.status(404).send({success: false, message: `Post with this id is not found`})
       }
