@@ -13,12 +13,13 @@ const Post = ({mainUrl, showSaved}) => {
 
     // get the id from query paramaters and make the request
     const { postId } = useParams()
-    const {token, user} = useAuth()
+    const {token, user, userId} = useAuth()
     const url = process.env.REACT_APP_SERVER_URL
     const [post, setPost] = useState(null)
     const [liked, setLiked] = useState(false)
     const [newCommentBody, setNewCommentBody] = useState(null)
     const [saved, setSaved] = useState(false)
+    const [comments, setComments] = useState([])
 
     const getPost = async () => {
         const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
@@ -41,19 +42,30 @@ const Post = ({mainUrl, showSaved}) => {
         }
     }
 
-    const addNewComment = () => {
-        const newComment = {
-            body: newCommentBody,
-            postedBy: "dsjdfs", //TODO: change to userid
-            date: new Date().toDateString
+    const addNewComment = async () => {
+        if (newCommentBody){
+            const newComment = {
+                commentBody: newCommentBody,
+                postedBy: userId,
+                date: new Date().toDateString
+            }
+            await axios.put(`${url}/posts/addComment/${postId}`, newComment, { headers: {
+                'Authorization': 'Bearer ' + token
+            }})
+            setNewCommentBody("")
+            await getComments()
         }
-        setNewCommentBody("")
-        setPost({...post, comments: [...post?.comments, newComment]}) // TODO: connect to API to add a new comment to post
         
+    }
+
+    const getComments = async () => {
+        const response = await axios.get(`${url}/posts/getComments/${postId}`)
+        setComments(response.data)
     }
 
     useEffect(() => {
         setSaved(user?.savedPosts?.includes(postId))
+        getComments()
         getPost()
     }, [user])
 
@@ -102,10 +114,11 @@ const Post = ({mainUrl, showSaved}) => {
                     <Button variant="light" onClick={() => addNewComment()}> + </Button>
                 </div>
                 
-                <>{post?.comments?.map((comment) => {
+                {comments.length > 0 && <>
+                {comments?.map((comment) => {
                     return <Comment comment={comment} />
                 })}
-                </>
+                </>}
             </div>
         </div>
     )
