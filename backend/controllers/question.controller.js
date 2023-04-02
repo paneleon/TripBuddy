@@ -6,7 +6,7 @@ exports.deleteQuestion = async (req, res) =>{
         const userId = res.locals.userId;
         const user = await User.findById(userId);
 
-        if (user && userId.isAdmin) {
+        if (user && user.isAdmin) {
             const id  = req.params;
             const result = await Question.findByIdAndRemove(id);
             if (result) {
