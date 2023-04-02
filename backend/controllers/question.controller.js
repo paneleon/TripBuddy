@@ -2,23 +2,22 @@ const Question = require("../models/question.model");
 const User = require("../models/user.model");
 
 exports.deleteQuestion = async (req, res) =>{
-    try{
-        const Id = req.params.id;
-        const questions = await Question.findById(Id)
-        const questionBy = questions.questionBy;
-        const userId = res.locals.userId
-        
-        if(userId == questionBy)
-        {
-            const result = await Question.findByIdAndRemove(Id);          
-            return res.status(200).json(result); 
+    try {
+        const userId = res.locals.userId;
+        const user = await User.findById(userId);
+
+        if (user && userId.isAdmin) {
+            const id  = req.params;
+            const result = await Question.findByIdAndRemove(id);
+            if (result) {
+                return res.status(200).json({message: "Question is deleted sucessfully"});
+            } else {
+                return res.status(404).json({error: "Question not found"});
+            }
+        } else {
+            return res.status(403).json({error: "User does not have the premission to perform this action"});
         }
-        else
-        {
-            return res.status(400).json({error: "Question not found"});
-        }
-              
-    }catch (error) {
-    return res.status(500).send({message: `Server error: ${error.message}`})
+    } catch (error) {
+        return res.status(500).json({error: `Server error: ${error.message}`});
     }
-  }
+ }
