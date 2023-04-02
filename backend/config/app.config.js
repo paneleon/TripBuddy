@@ -25,6 +25,7 @@ const profileRoute = require('../routes/profile.route');
 const emergencyRoute = require('../routes/emergency.route.js');
 const paymentRoute = require('../routes/payment.route');
 const subscriptionRoute = require('../routes/subscription.route');
+const questionRoute = require('../routes/question.route');
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -94,6 +95,7 @@ module.exports = () => {
   app.use('/api/payment', paymentRoute);
   app.use('/api/subscription', subscriptionRoute);
   app.use('/api/emergency', emergencyRoute);
+  app.use('/api/question', questionRoute);
 
   return app;
 }
