@@ -249,3 +249,33 @@ exports.getComments = async (req, res) => {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
 };
+
+exports.addlikes = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = res.locals.userId; 
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).send({ success: false, message: `Post with this id is not found` })
+    }
+    await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+    return res.status(200).json({ success: true, message: `Post was successfully liked` });
+  } catch (error) {
+    return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
+  }
+}
+
+exports.getlikes = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId).populate('likes')
+    if (!post){
+          return res.status(404).send({success: false, message: `Post with this id is not found`})
+      }
+      const likes = post.likes
+      //const likeCount = post.likes.length; Count likes
+      return res.status(200).json({ success: true, likes});
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+  }
+};
