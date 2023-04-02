@@ -7,7 +7,7 @@ exports.deleteQuestion = async (req, res) =>{
         const user = await User.findById(userId);
 
         if (user && user.isAdmin) {
-            const id  = req.params;
+            const id  = req.params.id;
             const result = await Question.findByIdAndRemove(id);
             if (result) {
                 return res.status(200).json({message: "Question is deleted sucessfully"});
