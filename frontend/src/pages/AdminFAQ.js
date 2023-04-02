@@ -3,53 +3,62 @@ import { Container, Accordion, Button } from 'react-bootstrap'
 import CreateFAQ from '../components/CreateFAQ'
 import EditFAQ from '../components/EditFAQ'
 import ViewFAQ from '../components/ViewFAQ'
-
-const sampleQuestions = [  
-  {    question: "What is the capital of France?",    answer: "Paris" , },  
-  {    question: "What is the largest mammal on Earth?",    answer: "Blue Whale"  },  
-  {    question: "What is the boiling point of water?",    answer: "100 degrees Celsius"  },  
-  {    question: "What is the chemical symbol for gold?",    answer: "Au"  },  
-  {    question: "What is the tallest mountain in the world?",    answer: "Mount Everest"  },  
-  {    question: "What is the largest organ in the human body?",    answer: "Skin"  },  
-  {    question: "What is the currency of Japan?",    answer: "Yen"  },  
-  {    question: "What is the largest desert in the world?",    answer: "Sahara"  },  
-  {    question: "What is the distance around a circle called?",    answer: "Circumference"  },  
-  {    question: "What is the smallest country in the world?",    answer: "Vatican City"  }]
+import axios from 'axios'
+import { useAuth } from '../context/authContext'
 
 const AdminFAQ = () => {
 
   const [questions, setQuestions] = useState([])
   const [editQuestion, setEditQuestion] = useState(null)
+  const [createQuestion, setCreateQuestion] = useState(null)
+  const {token} = useAuth()
+  const url = process.env.REACT_APP_SERVER_URL
 
-    const getQuestions = () => {
-        setQuestions(sampleQuestions)
+    const getQuestions = async () => {
+      const response = await axios.get(`${url}/question/getQuestions`, { headers: {
+        'Authorization': 'Bearer ' + token
+      }})
+      setQuestions(response.data)
     }
 
-    const updateQuestion = () => {
-
+    const updateQuestion = async () => {
+      const response = await axios.put(`${url}/question/editById/${editQuestion?._id}`, editQuestion, { headers: {
+        'Authorization': 'Bearer ' + token
+      }})
+      getQuestions()
+      setEditQuestion(null)
     }
 
-    const deleteQuestion = () => {
+    const deleteQuestion = async (id) => {
+      const response = await axios.delete(`${url}/question/deleteById/${id}`, { headers: {
+        'Authorization': 'Bearer ' + token
+      }})
+      getQuestions()
+    }
 
+    const createNewQuestion = async () => {
+      const response = await axios.post(`${url}/question/addQuestion`, 
+      createQuestion,
+      { headers: {
+        'Authorization': 'Bearer ' + token
+      }})
+      getQuestions()
+      setCreateQuestion(null)
     }
     
     useEffect(() => {
       getQuestions()
     }, [])
 
-    useEffect(() => {
-      console.log(editQuestion)
-    }, [editQuestion])
-
   return (
     <div>
       <Container>
         <h3>Manage Frequently Asked Questions</h3>
 
-        <CreateFAQ />
+        <CreateFAQ createQuestion={createNewQuestion} newQuestion={createQuestion} setNewQuestion={setCreateQuestion}/>
 
         {/* {editQuestion && <EditFAQ id={editQuestion?.id} question={editQuestion?.question} answer={editQuestion?.answer}/> } */}
-        {editQuestion && <EditFAQ question={editQuestion} setQuestion={setEditQuestion}/> }
+        {editQuestion && <EditFAQ question={editQuestion} setQuestion={setEditQuestion} updateQuestion={updateQuestion}/> }
 
         <Accordion>
             {
@@ -59,7 +68,7 @@ const AdminFAQ = () => {
                       <div className='d-flex flex-row justify-content-start align-items-center'>
                       <ViewFAQ question={q.question} answer={q.answer} eventKey={i}/>
                       <Button variant="secondary" className='ms-3' onClick={() => setEditQuestion(q)}>Edit</Button>
-                      <Button variant="danger" className='ms-3' onClick={() => deleteQuestion()}>Delete</Button>
+                      <Button variant="danger" className='ms-3' onClick={() => deleteQuestion(q._id)}>Delete</Button>
                     </div>
 
                     </div>

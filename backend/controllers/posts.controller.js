@@ -258,7 +258,13 @@ exports.addlikes = async (req, res) => {
     if (!post) {
       return res.status(404).send({ success: false, message: `Post with this id is not found` })
     }
-    await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+    if (post.likes.includes(userId)){
+      await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+      return res.status(200).json({ success: true, message: `Like was removed`, liked: false });
+    } else {
+      await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+      return res.status(200).json({ success: true, message: `Like was added`, liked: true });
+    }
     return res.status(200).json({ success: true, message: `Post was successfully liked` });
   } catch (error) {
     return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
