@@ -1,8 +1,16 @@
 import React from 'react'
+import Suggestions from '../components/Suggestions'
+import styles from '../styles/Home.module.css'
 
 const Home = () => {
   return (
-    <div>Home page for Trip Buddy</div>
+    <div className={styles.homeLayout}>
+      <h2 className={styles.title}>Welcome to Trip Buddy</h2>
+      <div className={styles.suggestions}><Suggestions /></div>
+      <div className={styles.notifications}>Notifications</div>
+      <div className={styles.checklist}>Checklist</div>
+
+    </div>
   )
 }
 
