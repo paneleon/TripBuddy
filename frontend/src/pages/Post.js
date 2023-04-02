@@ -20,6 +20,7 @@ const Post = ({mainUrl, showSaved}) => {
     const [newCommentBody, setNewCommentBody] = useState(null)
     const [saved, setSaved] = useState(false)
     const [comments, setComments] = useState([])
+    const [commentAdded, setCommentAdded] = useState(false)
 
     const getPost = async () => {
         const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
@@ -54,6 +55,7 @@ const Post = ({mainUrl, showSaved}) => {
             }})
             setNewCommentBody("")
             await getComments()
+            setCommentAdded(!commentAdded)
         }
         
     }
@@ -63,11 +65,24 @@ const Post = ({mainUrl, showSaved}) => {
         setComments(response.data)
     }
 
+    const likePost = async () => {
+        const response = await axios.put(`${url}/posts/addLike/${postId}`, {}, { headers: {
+            'Authorization': 'Bearer ' + token
+          }})
+
+        setLiked(response?.data?.liked)
+    }
+
     useEffect(() => {
         setSaved(user?.savedPosts?.includes(postId))
+        setLiked(post?.likes?.includes(userId))
         getComments()
         getPost()
     }, [user])
+
+    useEffect(() => {
+        getPost()
+    }, [liked, commentAdded])
 
     return (
         <div>
@@ -96,8 +111,8 @@ const Post = ({mainUrl, showSaved}) => {
 
             <div className={styles['post-footer-div']}>
                 <div>
-                <a><img className={styles['comment-like']} src={liked ? "/like-filled.png" : "/like-empty.png"} onClick={() => setLiked(!liked)} /></a>
-                <a><img className={styles['comment-like']} src={"/comment.png"}/></a>
+                <a><span className={styles['like-comment-count']}>{post?.likes?.length}</span><img className={styles['comment-like']} src={liked ? "/like-filled.png" : "/like-empty.png"} onClick={() => likePost()} /></a>
+                <a><span className={styles['like-comment-count']}>{post?.comments?.length}</span><img className={styles['comment-like']} src={"/comment.png"}/></a>
                 </div>
                 
                 {showSaved && <SavedPost saved={saved} saveAction={savePost}/>}
