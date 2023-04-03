@@ -253,7 +253,7 @@ exports.getComments = async (req, res) => {
 exports.addlikes = async (req, res) => {
   try {
     const postId = req.params.id;
-    const userId = res.locals.userId; 
+    const userId = req.body.userId; 
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).send({ success: false, message: `Post with this id is not found` })
