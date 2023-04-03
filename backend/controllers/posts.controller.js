@@ -259,10 +259,10 @@ exports.addlikes = async (req, res) => {
       return res.status(404).send({ success: false, message: `Post with this id is not found` })
     }
     if (post.likes.includes(userId)){
-      await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+      await Post.updateOne({ _id: postId }, { $pull: { likes: userId },$inc: { likes_count: -1 }, });
       return res.status(200).json({ success: true, message: `Like was removed`, liked: false });
     } else {
-      await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+      await Post.updateOne({ _id: postId }, { $push: { likes: userId },$inc: { likes_count: 1 } });
       return res.status(200).json({ success: true, message: `Like was added`, liked: true });
     }
     return res.status(200).json({ success: true, message: `Post was successfully liked` });
@@ -279,8 +279,9 @@ exports.getlikes = async (req, res) => {
           return res.status(404).send({success: false, message: `Post with this id is not found`})
       }
       const likes = post.likes
-      //const likeCount = post.likes.length; Count likes
-      return res.status(200).json({ success: true, likes});
+      const likeCount = post.likes_count
+      // const likeCount = post.likes.lengt; Count likes
+      return res.status(200).json({ success: true, likes,likeCount});
   } catch (error) {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
