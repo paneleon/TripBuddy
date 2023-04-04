@@ -15,5 +15,10 @@ router.put('/search', PostsController.searchForPosts) // fetch posts with filter
 router.put('/save/:id', authUtils.isAuthenticated, PostsController.savePost)
 router.get('/saved', authUtils.isAuthenticated, PostsController.getSavedPostsForUser) // get to delete post by id
 router.put('/removeSaved/:id', authUtils.isAuthenticated, PostsController.deletePostFromSaved) // remove posts from saved list
+router.put('/addComment/:id', authUtils.isAuthenticated, PostsController.addComment)// API to add comment to post
+router.get('/getComments/:id',PostsController.getComments)//get post comments by post id
+router.put('/addLike/:id', authUtils.isAuthenticated, PostsController.addlikes)
+router.get('/likes/:id', PostsController.getlikes)
+
 
 module.exports = router;
