@@ -38,7 +38,8 @@ const samplePosts = [
 
 const Suggestions = () => {
 
-    const {token, user, userId} = useAuth()
+    const {getToken, user, userId} = useAuth()
+    const token = getToken()
     const url = process.env.REACT_APP_SERVER_URL
     const [posts, setPosts] = useState([])
     const [index, setIndex] = useState(0);

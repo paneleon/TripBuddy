@@ -3,11 +3,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const AuthContext = React.createContext();
 
-// USE THIS CREDENTIALS TO UPDATE HARDCODED TOKEN: 
-// username: chandler123
-// password: 123
 const AuthContextProvider = ({children}) => {
-    const [token, setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTY3YjVjZTVkZGQ0N2JlNzBiMjhmMiIsImlhdCI6MTY3OTgwNTkxMywiZXhwIjoxNjgyMzk3OTEzfQ.EhCKsGt6nR7SGukmAzX1PBu5CVifTyW_SvZxBeetLzE") // TODO: update after login and save to local storage
+    const [token, setToken] = useState("") 
     const [userId, setUserId] = useState("")
     const [user, setUser] = useState({})
     const url = process.env.REACT_APP_SERVER_URL
@@ -20,18 +17,42 @@ const AuthContextProvider = ({children}) => {
       setUserId(response?.data?._id)
     }
 
+    const saveToken = (token) => {
+      localStorage.setItem('token', token);
+      setToken(token)
+    }
+
+    const getToken = () => {
+      const updatedToken = localStorage.getItem('token');
+      setToken(updatedToken)
+      return updatedToken;
+    }
+
+    const removeToken = () => {
+      localStorage.removeItem('token');
+    }
+
     const value = { 
         userId: userId,
         setUserId: setUserId,
         token: token,
         setToken: setToken,
         user: user, 
-        setUser: setUser
+        setUser: setUser,
+        saveToken: saveToken,
+        getToken: getToken,
+        removeToken: removeToken,
     }
 
     useEffect(() => {
-      getUserProfile()
+      getToken()
     }, [])
+
+    useEffect(() => {
+      if (token){
+        getUserProfile()
+      }
+    }, [token])
 
     return (
         <AuthContext.Provider value={value}>

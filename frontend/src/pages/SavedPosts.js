@@ -13,13 +13,13 @@ const SavedPosts = () => {
     const navigate = useNavigate()
     const [showPopup, setShowPopup] = useState(false)
     const [error, setError] = useState(false)
-    const {token} = useAuth()
+    const {getToken} = useAuth()
+    const token = getToken()
     const url = process.env.REACT_APP_SERVER_URL;
 
     const removeFromSaved = async (id) => {
         const confirmed = window.confirm("Are you sure you want to remove this post from saved?");
         if (confirmed){
-            console.log("token", token)
             try {
             await axios.put(`${url}/posts/removeSaved/${id}`, {}, { headers: {
                 'Authorization': 'Bearer ' + token
