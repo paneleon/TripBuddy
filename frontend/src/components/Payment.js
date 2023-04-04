@@ -22,6 +22,7 @@ const Payment = () => {
     postalCode: '',
     BOD: '',
   });
+  const [updateData, setUpdateData] = useState({})
 
   const {token} = useAuth()
 
