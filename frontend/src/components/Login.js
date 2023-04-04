@@ -21,9 +21,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/user/login', formData);
-      saveToken(response.data.token);
-      alert('Login successful');
-      navigate('/home');
+      if (response.data.token){
+        saveToken(response.data.token);
+        alert('Login successful');
+        navigate('/home');
+      } else {
+        alert('Authentication failed');
+      }
     } catch (error) {
       console.error('Login error:', error);
     }
