@@ -17,7 +17,8 @@ import { getFormattedDate } from '../utils/utilFunctions';
 const EditPost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [category, setCategory] = useState(null);
-  const {token} = useAuth()
+  const {getToken} = useAuth()
+  const token = getToken()
   const url = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate()
   const [error, setError] = useState(null)

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Status.module.css';
+import { useAuth } from '../context/authContext';
 
 const Status = () => {
     const navigate = useNavigate();
@@ -11,11 +12,12 @@ const Status = () => {
     const [selectedStatus, setSelectedStatus] = useState({
         status: '',
     });
+    const {getToken} = useAuth();
+    const token = getToken()
 
     useEffect(() => {
     const fetchStatus = async () => {
         try {
-            const token = localStorage.getItem('token');
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };
@@ -40,7 +42,6 @@ const Status = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };

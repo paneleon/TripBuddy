@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
+import { useAuth } from '../context/authContext';
 
 const Manage = () => {
     const [users, setUsers] = useState([]);
-  
+    const {getToken} = useAuth();
+    const token = getToken()
     useEffect(() => {
         const fetchUsers = async () => {
           try {
-            const token = localStorage.getItem('token');
             const response = await axios.get('/api/manage', {
               headers: { 'Authorization': `Bearer ${token}` },
             });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login.module.css';
+import { useAuth } from '../context/authContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,13 +15,13 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
+  const {saveToken} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/user/login', formData);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('status', response.data.status);
+      saveToken(response.data.token);
       alert('Login successful');
       navigate('/home');
     } catch (error) {
