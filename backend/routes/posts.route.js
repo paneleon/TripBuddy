@@ -17,5 +17,6 @@ router.get('/saved', authUtils.isAuthenticated, PostsController.getSavedPostsFor
 router.put('/removeSaved/:id', authUtils.isAuthenticated, PostsController.deletePostFromSaved) // remove posts from saved list
 router.put('/addComment/:id', authUtils.isAuthenticated, PostsController.addComment)// API to add comment to post
 router.get('/getComments/:id',PostsController.getComments)//get post comments by post id
+router.get('/getUserstats', authUtils.isAuthenticated, PostsController.getUserStats)
 
 module.exports = router;

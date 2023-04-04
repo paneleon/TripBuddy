@@ -279,3 +279,35 @@ exports.getlikes = async (req, res) => {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
 };
+
+exports.getUserStats = async (req, res) => {
+  try {
+    const userId = res.locals.userId;
+    const stats = await Post.aggregate([
+      { $match: { postedBy: mongoose.Types.ObjectId(userId) } },
+      { 
+        $group: { 
+          _id: null,
+          totalLikes: { $sum: { $size: "$likes" } },
+          totalViews: { $sum: "$views" },
+          totalComments: { $sum: { $size: "$comments" } }
+        } 
+      },
+      { 
+        $project: {
+          _id: 0,
+          totalLikes: 1,
+          totalViews: 1,
+          totalComments: 1
+        }
+      }
+    ]);
+    const userStats = stats[0];
+    if (!userStats) {
+      return res.status(404).send({ success: false, message: `No stats found for user ${userId}` });
+    }
+    return res.status(200).json({ success: true, stats: userStats });
+  } catch (error) {
+    return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
+  }
+};
