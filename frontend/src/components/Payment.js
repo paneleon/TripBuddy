@@ -32,22 +32,64 @@ const Payment = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
         const response = await axios.get('/api/payment', config);
-        let expirationDate, BOD = null
-        let formattedExpirationDate, formattedBOD = null;
-
-        if (response.data.expirationDate) {
-          expirationDate = new Date(response.data.expirationDate);
-          formattedExpirationDate = expirationDate && expirationDate.toISOString().slice(0, 7);
+        setUserData(response.data);
+        if(response.data.BOD && response.data.expirationDate){
+          const expirationDate = new Date(response.data.expirationDate);
+          const formattedExpirationDate = expirationDate.toISOString().slice(0, 7);
+          const BOD = new Date(response.data.BOD);
+          const formattedBOD = BOD.toISOString().slice(0, 10);
+          setUpdateData({
+              cardNumber: response.data.cardNumber,
+              expirationDate: formattedExpirationDate,
+              CVC: response.data.CVC,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              phone: response.data.phone,
+              address: response.data.address,
+              country: response.data.country,
+              city: response.data.city,
+              postalCode: response.data.postalCode,
+              BOD: formattedBOD,
+          });
         }
-        
-        if (response.data.BOD) {
-          BOD = new Date(response.data.BOD);
-          formattedBOD = BOD && BOD.toISOString().slice(0, 10);
+        else if(response.data.BOD && !response.data.expirationDate){
+          const BOD = new Date(response.data.BOD);
+          const formattedBOD = BOD.toISOString().slice(0, 10);
+          setUpdateData({
+              cardNumber: response.data.cardNumber,
+              expirationDate: response.data.expirationDate,
+              CVC: response.data.CVC,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              phone: response.data.phone,
+              address: response.data.address,
+              country: response.data.country,
+              city: response.data.city,
+              postalCode: response.data.postalCode,
+              BOD: formattedBOD,
+          });
         }
-        
-        setUserData({
+        else if(!response.data.BOD && response.data.expirationDate){
+          const expirationDate = new Date(response.data.expirationDate);
+          const formattedExpirationDate = expirationDate.toISOString().slice(0, 7);
+          setUpdateData({
+              cardNumber: response.data.cardNumber,
+              expirationDate: formattedExpirationDate,
+              CVC: response.data.CVC,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              phone: response.data.phone,
+              address: response.data.address,
+              country: response.data.country,
+              city: response.data.city,
+              postalCode: response.data.postalCode,
+              BOD: response.data.BOD,
+          });
+        }
+        else {
+          setUpdateData({
             cardNumber: response.data.cardNumber,
-            expirationDate: formattedExpirationDate,
+            expirationDate: response.data.expirationDate,
             CVC: response.data.CVC,
             firstName: response.data.firstName,
             lastName: response.data.lastName,
@@ -56,8 +98,9 @@ const Payment = () => {
             country: response.data.country,
             city: response.data.city,
             postalCode: response.data.postalCode,
-            BOD: formattedBOD,
-        });
+            BOD: response.data.BOD,
+          });
+        }
       } catch (err) {
         console.error(err);
       }
@@ -75,7 +118,9 @@ const Payment = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/payment', userData, config);
+      await axios.put('/api/payment', updateData, config);
+      alert('Payment Info updated successfully');
+      navigate('/home');
     } catch (err) {
       console.error(err);
     }

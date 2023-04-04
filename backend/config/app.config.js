@@ -7,11 +7,13 @@ const morgan = require('morgan');
 const compress = require('compression');
 const methodOverride = require('method-override');
 const passport = require('passport');
+const flash = require('flash');
 const session = require('express-session');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
-const User = require('../models/user.model')
+const User = require('../models/user.model');
+
 
 // load env variables
 require('dotenv').config()
@@ -25,8 +27,11 @@ const profileRoute = require('../routes/profile.route');
 const emergencyRoute = require('../routes/emergency.route.js');
 const paymentRoute = require('../routes/payment.route');
 const subscriptionRoute = require('../routes/subscription.route');
+const statusRoute = require('../routes/status.route.js');
+const manageRoute = require('../routes/manage.route.js');
 const questionRoute = require('../routes/question.route');
 const notificationRoute = require('../routes/notification.route');
+
 
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
@@ -86,6 +91,7 @@ module.exports = () => {
   app.use(passport.session());
   app.use(methodOverride());
   app.use(methodOverride('_method'));
+  app.use(flash());
 
   // configure and use routes
   app.use('/api/sample', sampleRoute);
@@ -96,8 +102,12 @@ module.exports = () => {
   app.use('/api/payment', paymentRoute);
   app.use('/api/subscription', subscriptionRoute);
   app.use('/api/emergency', emergencyRoute);
+
+  app.use('/api/status', statusRoute);
+  app.use('/api/manage', manageRoute);
   app.use('/api/question', questionRoute);
   app.use('/api/notification', notificationRoute);
+
 
   return app;
 }

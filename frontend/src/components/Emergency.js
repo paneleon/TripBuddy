@@ -53,6 +53,7 @@ const Emergency = () => {
     if (confirmationfordelete)
     {
     try {
+      const token = localStorage.getItem('token');
       await axios.put(`${url}/emergency/remove/${id}`, {}, { headers: {
         'Authorization': 'Bearer ' + token
       }})
@@ -61,6 +62,7 @@ const Emergency = () => {
     } catch (error) {
       setError(error.response?.data?.message)
     }
+
     }
   }
 

@@ -20,6 +20,7 @@ const Login = () => {
     try {
       const response = await axios.post('/api/user/login', formData);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('status', response.data.status);
       alert('Login successful');
       navigate('/home');
     } catch (error) {
