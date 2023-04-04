@@ -13,7 +13,8 @@ const Post = ({mainUrl, showSaved}) => {
 
     // get the id from query paramaters and make the request
     const { postId } = useParams()
-    const {token, user, userId} = useAuth()
+    const {getToken, user, userId} = useAuth()
+    const token = getToken()
     const url = process.env.REACT_APP_SERVER_URL
     const [post, setPost] = useState(null)
     const [liked, setLiked] = useState(false)
