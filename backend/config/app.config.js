@@ -30,6 +30,7 @@ const subscriptionRoute = require('../routes/subscription.route');
 const statusRoute = require('../routes/status.route.js');
 const manageRoute = require('../routes/manage.route.js');
 const questionRoute = require('../routes/question.route');
+const notificationRoute = require('../routes/notification.route');
 
 
 const secret = process.env.JWT_SECRET;
@@ -105,6 +106,7 @@ module.exports = () => {
   app.use('/api/status', statusRoute);
   app.use('/api/manage', manageRoute);
   app.use('/api/question', questionRoute);
+  app.use('/api/notification', notificationRoute);
 
 
   return app;
