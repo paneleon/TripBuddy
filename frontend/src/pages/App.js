@@ -18,6 +18,9 @@ import SavedPosts from './SavedPosts';
 import Status from '../components/Status';
 import Manage from '../components/Manage';
 import Emergency from '../components/Emergency';
+import AdminFAQ from './AdminFAQ';
+import FAQ from './FAQ';
+
 
 
 const App = () => {
@@ -45,6 +48,8 @@ const App = () => {
         <Route path="/my-posts/edit/:postId" element={<EditPost /> } />
         <Route path="/saved" element={<SavedPosts /> } />
         <Route path="/saved/:postId" element={<Post mainUrl="/saved" showSaved={true}/>  } />
+        <Route path="/admin/faq" element={<AdminFAQ />  } />
+        <Route path="/faq" element={<FAQ />  } />
        </Routes>
     </>
   );

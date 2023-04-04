@@ -17,7 +17,7 @@ exports.updateProfile = async (req, res) => {
   const { firstName, lastName, email, address, phone, country, city, postalCode, BOD, sex } = req.body;
 
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(res.locals.userId);
         if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }

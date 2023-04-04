@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Subscription.module.css';
+import { useAuth } from '../context/authContext';
 
 const Subscription = () => {
     const navigate = useNavigate();
+    const {token} = useAuth();
     const [currentSubscription, setCurrentSubscription] = useState({
       subscription: '',
     });
@@ -15,8 +17,7 @@ const Subscription = () => {
     useEffect(() => {
     const fetchSubscription = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const config = {
+            const response = await axios.get('/api/subscription', {
               headers: { Authorization: `Bearer ${token}` },
             };
             const response = await axios.get('/api/subscription', config);
@@ -40,8 +41,7 @@ const Subscription = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            const config = {
+            await axios.put('/api/subscription', selectedSubscription, {
               headers: { Authorization: `Bearer ${token}` },
             };
             await axios.put('/api/subscription', selectedSubscription, config);
@@ -62,7 +62,7 @@ const Subscription = () => {
           type="radio"
           name="subscription"
           value='Basic'
-          onChange={handlePlanChange}
+          onChange={(e) => handlePlanChange(e)}
         />
         <label htmlFor="basic">&nbsp;Basic Plan</label>
       </div>
@@ -71,7 +71,7 @@ const Subscription = () => {
           type="radio"
           name="subscription"
           value='Premium'
-          onChange={handlePlanChange}
+          onChange={(e) => handlePlanChange(e)}
         />
         <label htmlFor="premium">&nbsp;Premium Plan</label>
       </div>
@@ -80,7 +80,7 @@ const Subscription = () => {
           type="radio"
           name="subscription"
           value='Business'
-          onChange={handlePlanChange}
+          onChange={(e) => handlePlanChange(e)}
         />
         <label htmlFor="business">&nbsp;Business Plan</label>
       </div>

@@ -13,12 +13,14 @@ const Post = ({mainUrl, showSaved}) => {
 
     // get the id from query paramaters and make the request
     const { postId } = useParams()
-    const {token, user} = useAuth()
+    const {token, user, userId} = useAuth()
     const url = process.env.REACT_APP_SERVER_URL
     const [post, setPost] = useState(null)
     const [liked, setLiked] = useState(false)
     const [newCommentBody, setNewCommentBody] = useState(null)
     const [saved, setSaved] = useState(false)
+    const [comments, setComments] = useState([])
+    const [commentAdded, setCommentAdded] = useState(false)
 
     const getPost = async () => {
         const response = await axios.get(`${url}/posts/getById/${postId}`, { headers: {
@@ -41,21 +43,46 @@ const Post = ({mainUrl, showSaved}) => {
         }
     }
 
-    const addNewComment = () => {
-        const newComment = {
-            body: newCommentBody,
-            postedBy: "dsjdfs", //TODO: change to userid
-            date: new Date().toDateString
+    const addNewComment = async () => {
+        if (newCommentBody){
+            const newComment = {
+                commentBody: newCommentBody,
+                postedBy: userId,
+                date: new Date().toDateString
+            }
+            await axios.put(`${url}/posts/addComment/${postId}`, newComment, { headers: {
+                'Authorization': 'Bearer ' + token
+            }})
+            setNewCommentBody("")
+            await getComments()
+            setCommentAdded(!commentAdded)
         }
-        setNewCommentBody("")
-        setPost({...post, comments: [...post?.comments, newComment]}) // TODO: connect to API to add a new comment to post
         
+    }
+
+    const getComments = async () => {
+        const response = await axios.get(`${url}/posts/getComments/${postId}`)
+        setComments(response.data)
+    }
+
+    const likePost = async () => {
+        const response = await axios.put(`${url}/posts/addLike/${postId}`, {}, { headers: {
+            'Authorization': 'Bearer ' + token
+          }})
+
+        setLiked(response?.data?.liked)
     }
 
     useEffect(() => {
         setSaved(user?.savedPosts?.includes(postId))
+        setLiked(post?.likes?.includes(userId))
+        getComments()
         getPost()
     }, [user])
+
+    useEffect(() => {
+        getPost()
+    }, [liked, commentAdded])
 
     return (
         <div>
@@ -84,8 +111,8 @@ const Post = ({mainUrl, showSaved}) => {
 
             <div className={styles['post-footer-div']}>
                 <div>
-                <a><img className={styles['comment-like']} src={liked ? "/like-filled.png" : "/like-empty.png"} onClick={() => setLiked(!liked)} /></a>
-                <a><img className={styles['comment-like']} src={"/comment.png"}/></a>
+                <a><span className={styles['like-comment-count']}>{post?.likes?.length}</span><img className={styles['comment-like']} src={liked ? "/like-filled.png" : "/like-empty.png"} onClick={() => likePost()} /></a>
+                <a><span className={styles['like-comment-count']}>{post?.comments?.length}</span><img className={styles['comment-like']} src={"/comment.png"}/></a>
                 </div>
                 
                 {showSaved && <SavedPost saved={saved} saveAction={savePost}/>}
@@ -102,10 +129,11 @@ const Post = ({mainUrl, showSaved}) => {
                     <Button variant="light" onClick={() => addNewComment()}> + </Button>
                 </div>
                 
-                <>{post?.comments?.map((comment) => {
+                {comments.length > 0 && <>
+                {comments?.map((comment) => {
                     return <Comment comment={comment} />
                 })}
-                </>
+                </>}
             </div>
         </div>
     )

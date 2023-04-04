@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Profile.module.css';
+import  ConfirmationPopup from '../components/ConfirmationPopup';
+import { useAuth } from '../context/authContext';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({});
-  const [updateData, setUpdateData] = useState({
+  const [showPopup, setShowPopup] = useState(false)
+  const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
     address: '',
@@ -18,11 +20,12 @@ const Profile = () => {
     sex: '',
     email: '',
   });
+  
+  const {token} = useAuth()
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
@@ -66,14 +69,9 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
-  const handleChange = (e) => {
-    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -95,16 +93,16 @@ const Profile = () => {
           type="text"
           name="firstName"
           placeholder="First Name"
-          value={updateData.firstName}
-          onChange={handleChange}
+          value={userData.firstName}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
           <input
           className={styles.lastName}
           type="text"
           name="lastName"
           placeholder="Last Name"
-          value={updateData.lastName}
-          onChange={handleChange}
+          value={userData.lastName}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
         </div>
         <br />
@@ -114,16 +112,16 @@ const Profile = () => {
           type="text"
           name="address"
           placeholder="Address"
-          value={updateData.address}
-          onChange={handleChange}
+          value={userData.address}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
           <input
           className={styles.phone}
           type="text"
           name="phone"
           placeholder="Phone"
-          value={updateData.phone}
-          onChange={handleChange}
+          value={userData.phone}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
         </div>
         <br />
@@ -133,16 +131,16 @@ const Profile = () => {
           type="text"
           name="country"
           placeholder="Country"
-          value={updateData.country}
-          onChange={handleChange}
+          value={userData.country}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
           <input
           className={styles.city}
           type="text"
           name="city"
           placeholder="City"
-          value={updateData.city}
-          onChange={handleChange}
+          value={userData.city}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
         </div>
         <br />
@@ -152,16 +150,16 @@ const Profile = () => {
           type="text"
           name="postalCode"
           placeholder="Postal Code"
-          value={updateData.postalCode}
-          onChange={handleChange}
+          value={userData.postalCode}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
           <input
           className={styles.BOD}
           type="Date"
           name="BOD"
           placeholder="YYYY/MM/DD"
-          value={updateData.BOD}
-          onChange={handleChange}
+          value={userData.BOD}
+          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
         />
         </div>
         <br />
@@ -170,8 +168,8 @@ const Profile = () => {
             <label>Sex &nbsp;</label>
             <select
               name="sex"
-              value={updateData.sex}
-              onChange={handleChange}>
+              value={userData.sex}
+              onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}>
                 <option value="" disabled hidden >Select&nbsp;</option>
                 <option value="Male">Male&nbsp;</option>
                 <option value="Female">Female&nbsp;</option>
@@ -183,12 +181,13 @@ const Profile = () => {
             type="email"
             name="email"
             placeholder="Email"
-            value={updateData.email}
-            onChange={handleChange}
+            value={userData.email}
+            onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
           />
         </div>
         <br />
-        <button className={styles.button} type="submit">Save</button>
+        <button className={styles.button} type="submit" onClick={() => setShowPopup(true)}>Save</button>
+        <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user information ?"} show={showPopup} setShow={setShowPopup}/>
       </form>
     </div>
   );

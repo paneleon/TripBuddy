@@ -7,7 +7,7 @@ const AuthContext = React.createContext();
 // username: chandler123
 // password: 123
 const AuthContextProvider = ({children}) => {
-    const [token, setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTY3YjVjZTVkZGQ0N2JlNzBiMjhmMiIsImlhdCI6MTY3OTY3NTI4MSwiZXhwIjoxNjgyMjY3MjgxfQ.pXDhws4F18x1VA3oajrY7J18Shke1oQzRyOouotQyqg") // TODO: update after login and save to local storage
+    const [token, setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTY3YjVjZTVkZGQ0N2JlNzBiMjhmMiIsImlhdCI6MTY3OTgwNTkxMywiZXhwIjoxNjgyMzk3OTEzfQ.EhCKsGt6nR7SGukmAzX1PBu5CVifTyW_SvZxBeetLzE") // TODO: update after login and save to local storage
     const [userId, setUserId] = useState("")
     const [user, setUser] = useState({})
     const url = process.env.REACT_APP_SERVER_URL

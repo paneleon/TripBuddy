@@ -27,14 +27,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: { 
-      type: String, 
-      required: true 
-    },
     phone: {
       type: String,
-
-
     },
     BOD: {
       type: Date,
@@ -80,19 +74,12 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
-    emergencyFirstName: {
-      type: String,
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
-    emergencyLastName: {
-      type: String,
-    },
-    emergencyEmail: {
-      type: String,
-    },
-    emergencyPhone: {
-      type: String,
-    },
+    emergencyContacts: [mongoose.Schema.Types.ObjectId],
+    savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],  
   },
   {
     timestamps: true,

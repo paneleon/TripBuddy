@@ -34,6 +34,7 @@ exports.subscribeToContentProvider = async (req, res) => {
   }
 }
 
+
 //Sign Up
 exports.register = async (req, res) => {
   const { status, firstName, lastName, email, phone, username, password } = req.body;
