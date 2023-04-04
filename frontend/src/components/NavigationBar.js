@@ -7,7 +7,12 @@ const NavigationBar = () => {
   const navigate = useNavigate();
 
   const isLoggedIn = () => {
-    return true; //TODO: use useAuth when login is implemented
+    return !!localStorage.getItem('token');
+  };
+
+  const isLoggedInStaff = () => {
+    const status = localStorage.getItem('status');
+    return status === "IT" || status === "Security";
   };
 
   const logout = () => {
@@ -53,6 +58,12 @@ const NavigationBar = () => {
                   <NavDropdown.Item href="/emergency">Emergency Contact</NavDropdown.Item>
                   <NavDropdown.Item href="/subscription">Subscriptions</NavDropdown.Item>
                   <NavDropdown.Item href="/payment">Payment Methods</NavDropdown.Item>
+                  {isLoggedIn() && isLoggedInStaff() && (
+                    <>
+                    <NavDropdown.Item href="/status">Status</NavDropdown.Item>
+                    <NavDropdown.Item href="/manage">Management</NavDropdown.Item>
+                    </>
+                  )}
                 </NavDropdown>
                 <Nav.Link className={styles.logout} onClick={logout} to="/logout">Logout</Nav.Link>
               </Nav>

@@ -26,22 +26,39 @@ const Profile = () => {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await axios.get('/api/auth/profile', config);
+        const response = await axios.get('/api/profile', config);
         setUserData(response.data);
-        const date = new Date(response.data.BOD);
-        const formattedDate = date.toISOString().slice(0, 10);
-        setUpdateData({
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          address: response.data.address,
-          phone: response.data.phone,
-          country: response.data.country,
-          city: response.data.city,
-          postalCode: response.data.postalCode,
-          BOD: formattedDate,
-          sex: response.data.sex,
-          email: response.data.email,
-        });
+        if(response.data.BOD){
+          const date = new Date(response.data.BOD);
+          const formattedDate = date.toISOString().slice(0, 10);
+          
+          setUpdateData({
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            address: response.data.address,
+            phone: response.data.phone,
+            country: response.data.country,
+            city: response.data.city,
+            postalCode: response.data.postalCode,
+            BOD: formattedDate,
+            sex: response.data.sex,
+            email: response.data.email,
+          });
+        }
+        else {
+          setUpdateData({
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            address: response.data.address,
+            phone: response.data.phone,
+            country: response.data.country,
+            city: response.data.city,
+            postalCode: response.data.postalCode,
+            BOD: response.data.BOD,
+            sex: response.data.sex,
+            email: response.data.email,
+          });
+        }
       } catch (err) {
         console.error(err);
       }
@@ -60,7 +77,7 @@ const Profile = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/auth/profile', updateData, config);
+      await axios.put('/api/profile', updateData, config);
       alert('Profile updated successfully');
       navigate('/home');
     } catch (err) {

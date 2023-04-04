@@ -19,7 +19,7 @@ const Subscription = () => {
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };
-            const response = await axios.get('/api/auth/subscription', config);
+            const response = await axios.get('/api/subscription', config);
             setCurrentSubscription({
               subscription: response.data.subscription,
             });
@@ -44,7 +44,7 @@ const Subscription = () => {
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };
-            await axios.put('/api/auth/subscription', selectedSubscription, config);
+            await axios.put('/api/subscription', selectedSubscription, config);
             alert('Subscribe successfully');
             navigate('/home');
           } catch (err) {

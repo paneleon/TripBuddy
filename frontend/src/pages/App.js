@@ -2,8 +2,8 @@ import '../styles/App.css';
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from './Home';
-import Register from './Register';
-import Login from './Login';
+import Register from '../components/Register';
+import Login from '../components/Login';
 import Post from './Post';
 import Profile from '../components/Profile';
 import Browse from './Browse';
@@ -11,11 +11,14 @@ import Payment from '../components/Payment';
 import Subscription from '../components/Subscription';
 import NavigationBar from '../components/NavigationBar';
 import Sample from './Sample';
-import MyPosts from './MyPosts'
+import MyPosts from './MyPosts';
 import NewPost from './NewPost';
 import EditPost from './EditPost';
-import SavedPosts from './SavedPosts'
+import SavedPosts from './SavedPosts';
+import Status from '../components/Status';
+import Manage from '../components/Manage';
 import Emergency from '../components/Emergency';
+
 
 const App = () => {
   return (
@@ -31,6 +34,8 @@ const App = () => {
         <Route path="/profile" Component={Profile} />
         <Route path="/browse" element={<Browse /> } />
         <Route path="/payment" Component={Payment} />
+        <Route path="/status" Component={Status} />
+        <Route path="/manage" Component={Manage} />
         <Route path="/subscription" Component={Subscription} />
         <Route path="/emergency" Component={Emergency} />
         <Route path="/sample" element={<Sample /> } />

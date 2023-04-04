@@ -20,7 +20,7 @@ const Emergency = () => {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await axios.get('/api/auth/emergency', config);
+        const response = await axios.get('/api/emergency', config);
         setUserData(response.data);
         setUpdateData({
           emergencyFirstName: response.data.emergencyFirstName,
@@ -46,7 +46,7 @@ const Emergency = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/auth/emergency', updateData, config);
+      await axios.put('/api/emergency', updateData, config);
       alert('Emergency Contact Updated Successfully');
       navigate('/home');
     } catch (err) {

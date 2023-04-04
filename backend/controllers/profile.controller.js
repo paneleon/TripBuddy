@@ -2,11 +2,11 @@ const User = require('../models/user.model.js');
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(res.locals.userId).select('-password');
+    const user = await User.findById(req.user.id).select('-password');
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
-    return res.status(200).json(user);
+    res.json(user);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
