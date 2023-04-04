@@ -77,6 +77,7 @@ const UserSchema = new mongoose.Schema(
     savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],  
     checklist: [{
       content: String,
+      item: String,
       checked: Boolean
     }]
   },
