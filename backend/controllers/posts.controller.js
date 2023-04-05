@@ -226,6 +226,10 @@ exports.addComment = async (req, res) => {
       postedBy: userId
     }; 
       await Post.updateOne({ _id: postId},  {$push: { comments: newComment } });
+      
+      // send notification to the post's author
+      const commenter = await User.findById(res.locals.userId);
+      await createNotification(post.postedBy, `You have a new comment on a post "${post.title}" from ${commenter.username}`)
       return res.status(200).json({ success: true, message: `Comment was successfully added` });
   } catch (error) {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
@@ -263,6 +267,11 @@ exports.addlikes = async (req, res) => {
       return res.status(200).json({ success: true, message: `Like was removed`, liked: false });
     } else {
       await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+
+      // send notification to the post's author
+      const likedBy = await User.findById(res.locals.userId);
+      await createNotification(post.postedBy, `You have a new like on a post "${post.title}" from ${likedBy.username}`)
+
       return res.status(200).json({ success: true, message: `Like was added`, liked: true });
     }
     return res.status(200).json({ success: true, message: `Post was successfully liked` });
@@ -309,6 +318,34 @@ exports.reportPost = async (req, res) => {
     return res
       .status(200)
       .json({ success: true, message: "Post has been reported" });
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ success: true, message: `Server error: ${error.message}` });
+    }
+  };
+
+
+
+exports.getReportedPosts = async (req, res) => {
+  try {
+    const reportedPosts = await Post.find({
+      reported: { $exists: true },
+      $expr: { $gt: [{ $size: "$reported" }, 0] },
+    }).populate({
+      path: "reported",
+      populate: {
+        path: "reportedBy",
+        select: {
+          firstName: 1,
+          lastName: 1,
+          username: 1,
+          email: 1,
+          _id: 1
+        },
+      },
+    });
+    return res.status(200).json({ success: true, data: reportedPosts });
   } catch (error) {
     return res
       .status(500)
@@ -316,3 +353,16 @@ exports.reportPost = async (req, res) => {
   }
 };
 
+
+exports.getSuggestions = async (req, res) => {
+  try {
+      const count = 3
+      // get random sample of documents
+      const suggestions = await Post.aggregate([{ $sample: { size: count } }]);
+      console.log("-----suggestions ", suggestions)
+      return res.status(200).json({ success: true, suggestions});
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+
+  }
+};
