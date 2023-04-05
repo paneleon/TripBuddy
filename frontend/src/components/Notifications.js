@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {getFormattedDateTime} from '../utils/utilFunctions'
 import styles from '../styles/Notification.module.css'
 import { Alert, Button } from 'react-bootstrap'
+import { useAuth } from '../context/authContext'
+import axios from 'axios'
 
 const sampleNotifications = [
     {
@@ -39,9 +41,15 @@ const sampleNotifications = [
 const Notifications = () => {
 
     const [notifications, setNotifications] = useState([])
+    const {getToken, user, userId} = useAuth()
+    const token = getToken()
+    const url = process.env.REACT_APP_SERVER_URL
 
     const getNotifications = async () => {
-        setNotifications(sampleNotifications)
+        const response = await axios.get(`${url}/notification/getNotifications`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        setNotifications(response?.data)
     }
 
     const viewNotification = async () => {
