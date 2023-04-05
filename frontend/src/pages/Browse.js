@@ -19,7 +19,8 @@ const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedContentProviders, setSelectedContentProviders] = useState([])
 
-  const {token} = useAuth()
+  const {getToken} = useAuth()
+  const token = getToken()
   const url = process.env.REACT_APP_SERVER_URL
   const [error, setError] = useState(false)
   const navigate = useNavigate()

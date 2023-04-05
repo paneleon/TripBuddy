@@ -17,6 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const {saveToken} = useAuth();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -25,8 +26,7 @@ const Login = () => {
         saveToken(response.data.token);
         alert('Login successful');
         navigate('/home');
-      } 
-      else {
+      } else {
         alert('Authentication failed');
       }
     } catch (error) {

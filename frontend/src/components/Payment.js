@@ -22,8 +22,10 @@ const Payment = () => {
     postalCode: '',
     BOD: '',
   });
+  const [updateData, setUpdateData] = useState({})
 
-  const {token} = useAuth()
+  const {getToken} = useAuth();
+  const token = getToken()
 
   useEffect(() => {
     const fetchUserData = async () => {

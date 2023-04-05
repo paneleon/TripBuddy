@@ -7,7 +7,8 @@ import axios from 'axios'
 const FAQ = () => {
 
     const [questions, setQuestions] = useState([])
-    const {token} = useAuth()
+    const {getToken} = useAuth()
+    const token = getToken()
     const url = process.env.REACT_APP_SERVER_URL
   
     const getQuestions = async () => {
