@@ -5,38 +5,6 @@ import { Alert, Button } from 'react-bootstrap'
 import { useAuth } from '../context/authContext'
 import axios from 'axios'
 
-const sampleNotifications = [
-    {
-        notification: "You have a new friend request ",
-        email: "john@email.com",
-        notificationBy: "fjdfjldkjfkldjlfd",
-        date: new Date()
-    },
-    {
-        notification: "You've received a new email ",
-        email: "john@email.com",
-        notificationBy: "fjdfjldkjfkldjlfd",
-        date: new Date()
-    },
-    {
-        notification: "A payment of $50 has been received in your account",
-        email: "john@email.com",
-        notificationBy: "fjdfjldkjfkldjlfd",
-        date: new Date()
-    },
-    {
-        notification: "Your subscription is expiring soon",
-        email: "john@email.com",
-        notificationBy: "fjdfjldkjfkldjlfd",
-        date: new Date()
-        },
-    {
-        notification: "You have a new message from Jane ",
-        email: "john@email.com",
-        notificationBy: "fjdfjldkjfkldjlfd",
-        date: new Date()
-    },
-]
 
 const Notifications = () => {
 
@@ -52,8 +20,11 @@ const Notifications = () => {
         setNotifications(response?.data)
     }
 
-    const viewNotification = async () => {
-        
+    const viewNotification = async (id) => {
+        const response = await axios.delete(`${url}/notification/deleteById/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        getNotifications()
     }
 
     useEffect(() => {
@@ -72,7 +43,7 @@ const Notifications = () => {
             {not.notification}
             <span className={styles.notificationDate}>{getFormattedDateTime(not.date)}</span>
             </div>
-            <Button variant="light" onClick={() => viewNotification()}>OK</Button>
+            <Button variant="light" onClick={() => viewNotification(not._id)}>OK</Button>
         </Alert>)
         })
         : <div>
