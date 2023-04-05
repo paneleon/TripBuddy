@@ -1,4 +1,5 @@
 const User = require('../models/user.model.js');
+const { createNotification } = require('./notification.controller.js');
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -37,6 +38,7 @@ exports.getUserPayment = async (req, res) => {
       if (BOD) user.BOD = BOD;
   
       await user.save();
+      await createNotification(res.locals.userId, `Payment method was updated. ${cardNumber && `New card number is ${cardNumber}`}`)
       return res.status(200).json(user);
     } catch (err) {
       return res.status(500).send('Server error ' + err);
@@ -56,6 +58,7 @@ exports.getUserPayment = async (req, res) => {
       user.BOD = undefined;
   
       await user.save();
+      await createNotification(res.locals.userId, `You have no payment method linked to this account!`)
       return res.status(200).json(user);
     } catch (err) {
       return res.status(500).send('Server error ' + err);
