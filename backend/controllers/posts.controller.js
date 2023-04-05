@@ -285,3 +285,34 @@ exports.getlikes = async (req, res) => {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
 };
+
+
+exports.reportPost = async (req, res) => {
+  try {
+    const { postId, report = "" } = req.body;
+    if (!postId) {
+      return res
+        .status(400)
+        .send({ success: true, message: "Post id is required" });
+    }
+    await Post.updateOne(
+      { _id: postId },
+      {
+        $addToSet: {
+          reported: {
+            report,
+            reportedBy: res.locals.userId,
+          },
+        },
+      }
+    );
+    return res
+      .status(200)
+      .json({ success: true, message: "Post has been reported" });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: true, message: `Server error: ${error.message}` });
+  }
+};
+
