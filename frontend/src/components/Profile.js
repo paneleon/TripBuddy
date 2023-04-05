@@ -21,8 +21,6 @@ const Profile = () => {
     sex: '',
     email: '',
   });
-
-  const [updateData, setUpdateData] = useState({})
   
   const {getToken} = useAuth()
   const token = getToken()
