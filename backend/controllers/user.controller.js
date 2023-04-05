@@ -28,6 +28,12 @@ exports.subscribeToContentProvider = async (req, res) => {
 
     await User.updateOne({_id: userId}, {$push: {subscribedTo: contentProviderId}})
 
+    // send notification to the user
+    await createNotification(res.locals.userId, `You are now following ${contentProvider.username} and can view their content`)
+
+    // send notification to the content provider
+    await createNotification(contentProviderId, `You have a new follower ${user.username} and now they can view your content`)
+
     return res.status(200).json({success: true, message: `Successfully subscribed`});
   } catch (error) {
     return res.status(500).send({success: false, message: `Server error: ${error.message}`})

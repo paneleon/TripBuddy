@@ -20,6 +20,10 @@ exports.updateSubscription = async (req, res) => {
     try {
         await User.updateOne({_id: res.locals.userId}, {subscription: subscription});
         const user = await User.findById(res.locals.userId);
+
+        // send notification to the user
+        await createNotification(res.locals.userId, `Your subscription plan is now ${user.subscription}`)
+
         return res.status(200).send({subscription: user.subscription});    
       } catch (err) {
         console.error(err);

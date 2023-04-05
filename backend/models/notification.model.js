@@ -9,10 +9,13 @@ const notificationSchema = new mongoose.Schema({
     email:
     {
         type: String,
-        required: true,
     },
-    notificationBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    notificationFor: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     date: { type: Date, default: Date.now },
+    isRead: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 module.exports = mongoose.model('Notification', notificationSchema);
