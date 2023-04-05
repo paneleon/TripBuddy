@@ -19,6 +19,6 @@ router.put('/addComment/:id', authUtils.isAuthenticated, PostsController.addComm
 router.get('/getComments/:id',PostsController.getComments)//get post comments by post id
 router.put('/addLike/:id', authUtils.isAuthenticated, PostsController.addlikes)
 router.get('/likes/:id', PostsController.getlikes)
-
+router.get('/getReported', authUtils.isAuthenticated, PostsController.getReportedPosts)
 
 module.exports = router;
