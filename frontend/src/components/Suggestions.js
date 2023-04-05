@@ -47,10 +47,15 @@ const Suggestions = () => {
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
+
+    const getSuggestions = async () => {
+        const response = await axios.get(`${url}/posts/suggestions`)
+        setPosts(response?.data?.suggestions)
+    }
   
 
     useEffect(() => {
-        setPosts(samplePosts)
+        getSuggestions()
     }, [])
 
     return (
@@ -61,7 +66,7 @@ const Suggestions = () => {
                 posts.length > 0 && posts?.map((post) => {
                     return (
                         <Carousel.Item interval={2000}>
-                        {post?.image ? <IKImage className={styles.image} path={`posts/${post?.image}`}/> : <img /> }
+                        {post?.image ? <IKImage className={styles.image} path={`posts/${post?.image}`}/> : <img className={styles.image} src='/no-image-yet.jpg'/> }
                         <div className={styles.content}>
                         <h3>{post?.title}</h3>
                         <div className={styles.tags}>

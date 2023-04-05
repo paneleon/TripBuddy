@@ -285,3 +285,15 @@ exports.getlikes = async (req, res) => {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
   }
 };
+
+exports.getSuggestions = async (req, res) => {
+  try {
+      const count = 3
+      // get random sample of documents
+      const suggestions = await Post.aggregate([{ $sample: { size: count } }]);
+      console.log("-----suggestions ", suggestions)
+      return res.status(200).json({ success: true, suggestions});
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+  }
+};
