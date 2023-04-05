@@ -1,10 +1,10 @@
 const Notification = require("../models/notification.model");
 const User = require("../models/user.model");
 
-const createNotification = async (userId) => {
+const createNotification = async (userId, content, email = null) => {
   const notification = new Notification({
-    notification: req.body.notification,
-    email: req.body.email,
+    notification: content,
+    email: email,
     notificationFor: userId
   });
 
@@ -12,10 +12,12 @@ const createNotification = async (userId) => {
   return notification;
 }
 
+exports.createNotification = createNotification
+
 exports.createNewNotification = async (req, res) => {
     try {
         const userId = res.locals.userId; // get user id from authentication middleware
-        const notification = await createNotification(userId)
+        const notification = await createNotification(userId, req.body.notification, req.body.email)
         return res.status(200).json(notification);
       } catch (error) {
         return res
@@ -36,4 +38,3 @@ exports.getNewNotifications = async (req, res) => {
     }
 }
 
-exports.createNewNotification = createNotification

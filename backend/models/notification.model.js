@@ -9,7 +9,6 @@ const notificationSchema = new mongoose.Schema({
     email:
     {
         type: String,
-        required: true,
     },
     notificationFor: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     date: { type: Date, default: Date.now },

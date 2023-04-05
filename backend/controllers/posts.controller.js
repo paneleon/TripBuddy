@@ -226,6 +226,10 @@ exports.addComment = async (req, res) => {
       postedBy: userId
     }; 
       await Post.updateOne({ _id: postId},  {$push: { comments: newComment } });
+      
+      // send notification to the post's author
+      const commenter = await User.findById(res.locals.userId);
+      await createNotification(post.postedBy, `You have a new comment on a post "${post.title}" from ${commenter.username}`)
       return res.status(200).json({ success: true, message: `Comment was successfully added` });
   } catch (error) {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
@@ -263,6 +267,11 @@ exports.addlikes = async (req, res) => {
       return res.status(200).json({ success: true, message: `Like was removed`, liked: false });
     } else {
       await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+
+      // send notification to the post's author
+      const likedBy = await User.findById(res.locals.userId);
+      await createNotification(post.postedBy, `You have a new like on a post "${post.title}" from ${likedBy.username}`)
+
       return res.status(200).json({ success: true, message: `Like was added`, liked: true });
     }
     return res.status(200).json({ success: true, message: `Post was successfully liked` });
