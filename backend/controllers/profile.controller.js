@@ -51,6 +51,8 @@ exports.getSubscribedTo = async (req,res) => {
   }
 }
 
+
+
 exports.updateChecklist = async (req, res) => {
   try {
     const userId =  res.locals.userId;
