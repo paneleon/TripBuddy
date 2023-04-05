@@ -55,7 +55,7 @@ const Suggestions = () => {
 
     return (
     <div>
-        <h4>Suggestions</h4>
+        <h4 className='ms-5'>Suggestions</h4>
         <Carousel activeIndex={index} className={styles.carousel}  onSelect={handleSelect}>
             {
                 posts.length > 0 && posts?.map((post) => {

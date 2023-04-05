@@ -81,6 +81,7 @@ const UserSchema = new mongoose.Schema(
     emergencyContacts: [mongoose.Schema.Types.ObjectId],
     savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],  
     checklist: [{
+      value: String,
       content: String,
       checked: Boolean
     }]
