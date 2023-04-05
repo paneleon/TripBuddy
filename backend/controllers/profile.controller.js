@@ -57,11 +57,22 @@ exports.updateChecklist = async (req, res) => {
 
     const user = await User.findById(userId);
 
-    const newChecklist = req.body.checklist;
+    const newChecklist = req.body;
 
     await user.update({'$set': {'checklist': newChecklist}});
 
     return res.status(200).json({success: true, message: `Successfully updated`});
+  } catch (error) {
+    return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+  }
+}
+
+
+exports.getChecklist = async (req, res) => {
+  try {
+    const userId =  res.locals.userId;
+    const user = await User.findById(userId);
+    return res.status(200).json(user.checklist);
   } catch (error) {
     return res.status(500).send({success: false, message: `Server error: ${error.message}`})
   }
