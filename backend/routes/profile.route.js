@@ -7,5 +7,6 @@ router.get('/', authUtils.isAuthenticated, ProfileController.getUserProfile);
 router.put('/', authUtils.isAuthenticated, ProfileController.updateProfile);
 router.get('/getSubscribedTo', authUtils.isAuthenticated, ProfileController.getSubscribedTo);
 router.put('/updateChecklist', authUtils.isAuthenticated, ProfileController.updateChecklist);
+router.get('/getChecklist', authUtils.isAuthenticated, ProfileController.getChecklist);
 
 module.exports = router;

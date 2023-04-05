@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {getFormattedDateTime} from '../utils/utilFunctions'
 import styles from '../styles/Checklist.module.css'
 import { Form, Button } from 'react-bootstrap'
-
+import axios from 'axios';
+import { useAuth } from '../context/authContext';
 
 const defaultChecklist = [
     {
@@ -87,14 +88,19 @@ const defaultChecklist = [
 
 const Checklist = () => {
     const [checklist, setChecklist] = useState([])
+    const {getToken, user, userId} = useAuth()
+    const token = getToken()
+    const url = process.env.REACT_APP_SERVER_URL
 
     const getUserChecklist = async () => {
-        // get checklist from backend
-        return []
+        const response = await axios.get(`${url}/profile/getChecklist`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+        return response.data
     }
 
-    const initializeChecklist = () => {
-        const completedChecklist = getUserChecklist()
+    const initializeChecklist = async () => {
+        const completedChecklist = await getUserChecklist()
 
         if (completedChecklist.length > 0){
             setChecklist(completedChecklist)
@@ -104,7 +110,9 @@ const Checklist = () => {
     }
 
     const saveChecklist = async () => {
-        
+        await axios.put(`${url}/profile/updateChecklist`, checklist, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
     }
 
     const handleCheckChange = (index) => {
@@ -147,6 +155,7 @@ const Checklist = () => {
             })
             }
         </div>
+        <Button variant="success" type='button' onClick={() => saveChecklist()}>Save Checklist</Button>
         </Form>
     </div>
   )
