@@ -4,6 +4,6 @@ const authUtils = require('../utils/auth.js');
 const ManageController = require('../controllers/manage.controller.js');
 
 
-router.get('/', authUtils.auth, ManageController.getUserData);
+router.get('/', authUtils.isAuthenticated, ManageController.getUserData);
 
 module.exports = router;

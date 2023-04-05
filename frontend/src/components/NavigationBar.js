@@ -62,6 +62,7 @@ const NavigationBar = () => {
                     <>
                     <NavDropdown.Item href="/status">Status</NavDropdown.Item>
                     <NavDropdown.Item href="/manage">Management</NavDropdown.Item>
+                    <NavDropdown.Item href="/security">Security</NavDropdown.Item>
                     </>
                   )}
                 </NavDropdown>

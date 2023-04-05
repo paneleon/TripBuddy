@@ -1,7 +1,7 @@
 body {
     background: radial-gradient(100% 100%, rgb(255, 255, 255), rgb(0, 0, 0));
     background-repeat: repeat-x, no-repeat;
-    height: 150vh;
+    height: 250vh;
 }
 
 form {

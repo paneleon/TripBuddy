@@ -2,7 +2,7 @@ const User = require('../models/user.model.js');
 
 exports.getStatus = async (req, res) => {
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(res.locals.userId);
       res.json({status: user.status});
     } catch (err) {
       console.error(err);
@@ -18,8 +18,8 @@ exports.updateStatus = async (req, res) => {
       }
 
     try {
-        const user = await User.findById(req.user.id);
-        user.status = status;
+      const user = await User.findById(res.locals.userId);
+      user.status = status;
         
         await user.save();
         res.json({status: user.status});
