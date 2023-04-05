@@ -21,9 +21,9 @@ const Profile = () => {
     sex: '',
     email: '',
   });
-
-  const {getToken} = useAuth();
-  const {token} = getToken();
+  
+  const {getToken} = useAuth()
+  const token = getToken()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -82,8 +82,6 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${token}` },
       };
       await axios.put('/api/profile', updateData, config);
-      alert('Profile updated successfully');
-      navigate('/home');
     } catch (err) {
       console.error(err);
     }

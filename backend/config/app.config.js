@@ -16,7 +16,7 @@ const User = require('../models/user.model');
 
 
 // load env variables
-require('dotenv').config()
+require('dotenv').config();
 
 // import routers
 const sampleRoute = require('../routes/sample.route');

@@ -2,21 +2,22 @@ import React from 'react';
 import { Navbar, NavbarBrand, Container, Image, Nav, NavDropdown } from 'react-bootstrap';
 import styles from '../styles/NavBar.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authContext';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
+  const {getToken, removeToken, user} = useAuth();
 
   const isLoggedIn = () => {
-    return !!localStorage.getItem('token');
+    return !!getToken();
   };
 
   const isLoggedInStaff = () => {
-    const status = localStorage.getItem('status');
-    return status === "IT" || status === "Security";
+    return user.status === "IT" || user.status === "Security";
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    removeToken();
     navigate('/home');
     alert('Logged out successfully');
   };
