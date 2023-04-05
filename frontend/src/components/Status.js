@@ -13,7 +13,7 @@ const Status = () => {
         status: '',
     });
     const {getToken} = useAuth();
-    const token = getToken()
+    const token = getToken();
 
     useEffect(() => {
     const fetchStatus = async () => {

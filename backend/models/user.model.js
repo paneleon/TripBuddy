@@ -3,6 +3,9 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
+    disable: {
+      type: Boolean,
+    },
     status: {
       type: String,
       enum: ['User', 'IT', 'Security'],
@@ -48,12 +51,12 @@ const UserSchema = new mongoose.Schema(
     },
     sex: {
       type: String,
-      enum: ['Male', 'Female', 'Other'],
+      enum: ['Male', 'Female', 'Hide'],
     },
     cardNumber: {
       type: String,
-      unique: true,
-      default: 'N/A',
+
+      
     },
     expirationDate: {
       type: Date,

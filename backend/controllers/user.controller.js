@@ -40,8 +40,6 @@ exports.subscribeToContentProvider = async (req, res) => {
   }
 }
 
-//Sign Up
-
 exports.processLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     // are there any server errors?
@@ -52,6 +50,10 @@ exports.processLogin = (req, res, next) => {
     // are there any login errors?
     if (!user) {
       return res.json({ success: false, message: "ERROR: Authentication Failed" });
+    }
+
+    if (user.disable) {
+      return res.json({ success: false, message: "Your account has been restricted" });
     }
 
     // no problems -  we have a good username and password
@@ -76,7 +78,7 @@ exports.processLogin = (req, res, next) => {
       });
     });
   })(req, res, next);
-}
+};
 
 exports.processRegistration = (req, res, next) => {
   //Instantiate a new user object
@@ -99,7 +101,7 @@ exports.processRegistration = (req, res, next) => {
     // all ok - user has been registered
     return res.json({ success: true, message: "User Registered Successfully" });
   });
-}
+};
 
 exports.processLogout = (req, res, next) => {
   req.logOut((err) => {
@@ -112,4 +114,4 @@ exports.processLogout = (req, res, next) => {
   });
 
   res.json({ success: true, message: "User logged out successfully" });
-}
+};

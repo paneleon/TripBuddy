@@ -16,19 +16,20 @@ const User = require('../models/user.model');
 
 
 // load env variables
-require('dotenv').config()
+require('dotenv').config();
 
 // import routers
 const sampleRoute = require('../routes/sample.route');
 const userRoute = require('../routes/user.route');
-const postsRoute = require('../routes/posts.route')
-const categoryRoute = require('../routes/category.route')
+const postsRoute = require('../routes/posts.route');
+const categoryRoute = require('../routes/category.route');
 const profileRoute = require('../routes/profile.route');
 const emergencyRoute = require('../routes/emergency.route.js');
 const paymentRoute = require('../routes/payment.route');
 const subscriptionRoute = require('../routes/subscription.route');
 const statusRoute = require('../routes/status.route.js');
 const manageRoute = require('../routes/manage.route.js');
+const securityRoute = require('../routes/security.route.js');
 const questionRoute = require('../routes/question.route');
 const notificationRoute = require('../routes/notification.route');
 
@@ -102,9 +103,9 @@ module.exports = () => {
   app.use('/api/payment', paymentRoute);
   app.use('/api/subscription', subscriptionRoute);
   app.use('/api/emergency', emergencyRoute);
-
   app.use('/api/status', statusRoute);
   app.use('/api/manage', manageRoute);
+  app.use('/api/security', securityRoute);
   app.use('/api/question', questionRoute);
   app.use('/api/notification', notificationRoute);
 

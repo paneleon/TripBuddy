@@ -7,8 +7,9 @@ import { useAuth } from '../context/authContext';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [showPopup, setShowPopup] = useState(false)
-  const [userData, setUserData] = useState({
+  const [showPopup, setShowPopup] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [updateData, setUpdateData] = useState({
     firstName: '',
     lastName: '',
     address: '',
@@ -72,6 +73,10 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
+  const handleChange = (e) => {
+    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -79,8 +84,6 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${token}` },
       };
       await axios.put('/api/profile', updateData, config);
-      alert('Profile updated successfully');
-      navigate('/home');
     } catch (err) {
       console.error(err);
     }
@@ -97,7 +100,7 @@ const Profile = () => {
           name="firstName"
           placeholder="First Name"
           value={userData.firstName}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
           <input
           className={styles.lastName}
@@ -105,7 +108,7 @@ const Profile = () => {
           name="lastName"
           placeholder="Last Name"
           value={userData.lastName}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
         </div>
         <br />
@@ -116,7 +119,7 @@ const Profile = () => {
           name="address"
           placeholder="Address"
           value={userData.address}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
           <input
           className={styles.phone}
@@ -124,7 +127,7 @@ const Profile = () => {
           name="phone"
           placeholder="Phone"
           value={userData.phone}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
         </div>
         <br />
@@ -135,7 +138,7 @@ const Profile = () => {
           name="country"
           placeholder="Country"
           value={userData.country}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
           <input
           className={styles.city}
@@ -143,7 +146,7 @@ const Profile = () => {
           name="city"
           placeholder="City"
           value={userData.city}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
         </div>
         <br />
@@ -154,7 +157,7 @@ const Profile = () => {
           name="postalCode"
           placeholder="Postal Code"
           value={userData.postalCode}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
           <input
           className={styles.BOD}
@@ -162,7 +165,7 @@ const Profile = () => {
           name="BOD"
           placeholder="YYYY/MM/DD"
           value={userData.BOD}
-          onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+          onChange={handleChange}
         />
         </div>
         <br />
@@ -172,11 +175,11 @@ const Profile = () => {
             <select
               name="sex"
               value={userData.sex}
-              onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}>
+              onChange={handleChange}>
                 <option value="" disabled hidden >Select&nbsp;</option>
                 <option value="Male">Male&nbsp;</option>
                 <option value="Female">Female&nbsp;</option>
-                <option value="Other">Hide&nbsp;</option>
+                <option value="Hide">Hide&nbsp;</option>
           </select>
           </div>
           <input
@@ -185,7 +188,7 @@ const Profile = () => {
             name="email"
             placeholder="Email"
             value={userData.email}
-            onChange={(e) => setUserData({ ...userData, [e.target.name]: e.target.value })}
+            onChange={handleChange}
           />
         </div>
         <br />

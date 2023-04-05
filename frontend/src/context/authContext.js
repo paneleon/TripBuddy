@@ -4,9 +4,9 @@ import axios from 'axios';
 const AuthContext = React.createContext();
 
 const AuthContextProvider = ({children}) => {
-    const [token, setToken] = useState("") 
-    const [userId, setUserId] = useState("")
-    const [user, setUser] = useState({})
+    const [token, setToken] = useState("");
+    const [userId, setUserId] = useState("");
+    const [user, setUser] = useState({});
     const url = process.env.REACT_APP_SERVER_URL
 
     const getUserProfile = async () => {
@@ -33,15 +33,15 @@ const AuthContextProvider = ({children}) => {
     }
 
     const value = { 
-        userId: userId,
-        setUserId: setUserId,
-        token: token,
-        setToken: setToken,
-        user: user, 
-        setUser: setUser,
-        saveToken: saveToken,
-        getToken: getToken,
-        removeToken: removeToken,
+      userId: userId,
+      setUserId: setUserId,
+      token: token,
+      setToken: setToken,
+      user: user, 
+      setUser: setUser,
+      saveToken: saveToken,
+      getToken: getToken,
+      removeToken: removeToken,
     }
 
     useEffect(() => {
