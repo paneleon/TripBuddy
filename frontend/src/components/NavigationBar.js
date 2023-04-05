@@ -6,7 +6,7 @@ import { useAuth } from '../context/authContext';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
-  const {getToken, removeToken, user} = useAuth()
+  const {getToken, removeToken, user} = useAuth();
 
   const isLoggedIn = () => {
     return !!getToken();
@@ -17,7 +17,7 @@ const NavigationBar = () => {
   };
 
   const logout = () => {
-    removeToken()
+    removeToken();
     navigate('/home');
     alert('Logged out successfully');
   };
@@ -63,6 +63,7 @@ const NavigationBar = () => {
                     <>
                     <NavDropdown.Item href="/status">Status</NavDropdown.Item>
                     <NavDropdown.Item href="/manage">Management</NavDropdown.Item>
+                    <NavDropdown.Item href="/security">Security</NavDropdown.Item>
                     </>
                   )}
                 </NavDropdown>

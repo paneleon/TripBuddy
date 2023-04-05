@@ -17,6 +17,7 @@ import EditPost from './EditPost';
 import SavedPosts from './SavedPosts';
 import Status from '../components/Status';
 import Manage from '../components/Manage';
+import Security from '../components/Security';
 import Emergency from '../components/Emergency';
 import AdminFAQ from './AdminFAQ';
 import FAQ from './FAQ';
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/payment" Component={Payment} />
         <Route path="/status" Component={Status} />
         <Route path="/manage" Component={Manage} />
+        <Route path="/security" Component={Security} />
         <Route path="/subscription" Component={Subscription} />
         <Route path="/emergency" Component={Emergency} />
         <Route path="/sample" element={<Sample /> } />

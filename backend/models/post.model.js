@@ -40,6 +40,16 @@ const postSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId], 
         ref: 'User'
     }, //list of user ids
+    reported: [
+      {
+        reportedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        report: {
+          type: String,
+          default: "",
+          required: false,
+        },
+      },
+    ],
 }, { timestamps: true}) // will give properties createdAt and updatedAt
 
 module.exports = mongoose.model('Post', postSchema);

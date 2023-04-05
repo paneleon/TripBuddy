@@ -295,6 +295,65 @@ exports.getlikes = async (req, res) => {
   }
 };
 
+
+exports.reportPost = async (req, res) => {
+  try {
+    const { postId, report = "" } = req.body;
+    if (!postId) {
+      return res
+        .status(400)
+        .send({ success: true, message: "Post id is required" });
+    }
+    await Post.updateOne(
+      { _id: postId },
+      {
+        $addToSet: {
+          reported: {
+            report,
+            reportedBy: res.locals.userId,
+          },
+        },
+      }
+    );
+    return res
+      .status(200)
+      .json({ success: true, message: "Post has been reported" });
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ success: true, message: `Server error: ${error.message}` });
+    }
+  };
+
+
+
+exports.getReportedPosts = async (req, res) => {
+  try {
+    const reportedPosts = await Post.find({
+      reported: { $exists: true },
+      $expr: { $gt: [{ $size: "$reported" }, 0] },
+    }).populate({
+      path: "reported",
+      populate: {
+        path: "reportedBy",
+        select: {
+          firstName: 1,
+          lastName: 1,
+          username: 1,
+          email: 1,
+          _id: 1
+        },
+      },
+    });
+    return res.status(200).json({ success: true, data: reportedPosts });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: true, message: `Server error: ${error.message}` });
+  }
+};
+
+
 exports.getSuggestions = async (req, res) => {
   try {
       const count = 3
@@ -304,5 +363,6 @@ exports.getSuggestions = async (req, res) => {
       return res.status(200).json({ success: true, suggestions});
   } catch (error) {
     return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+
   }
 };

@@ -15,7 +15,8 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
-  const {saveToken} = useAuth()
+  const {saveToken} = useAuth();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +30,12 @@ const Login = () => {
         alert('Authentication failed');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Error logging in:', error);
+      if (error.response && error.response.data.message === 'Your account has been restricted') {
+        alert('Your account has been restricted');
+      } else {
+        alert('Error logging in');
+      }
     }
   };
 

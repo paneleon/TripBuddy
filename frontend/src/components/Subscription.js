@@ -7,7 +7,7 @@ import { useAuth } from '../context/authContext';
 const Subscription = () => {
     const navigate = useNavigate();
     const {getToken} = useAuth();
-    const token = getToken()
+    const token = getToken();
     const [currentSubscription, setCurrentSubscription] = useState({
       subscription: '',
     });
