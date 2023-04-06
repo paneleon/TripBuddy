@@ -111,3 +111,22 @@ div > .search-bar {
     grid-row-end: 3;
     grid-column-start: 1;
 }
+
+.author-tag {
+    color: #539165;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.author-tag:visited {
+    color: #539165;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.author-tag:hover {
+    color: #C3E5AE;
+    text-decoration: none;
+    font-weight: 500;
+}

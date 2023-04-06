@@ -231,3 +231,20 @@ input {
     width: 100%;
     height: 60px;
 }
+
+.bio {
+    width: 70%;
+    min-height: 60px;
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.image {
+    object-fit: cover;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: 0;
+}
