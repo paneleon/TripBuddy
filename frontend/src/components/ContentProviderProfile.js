@@ -4,12 +4,14 @@ import { Modal, Button } from 'react-bootstrap'
 import styles from '../styles/ContentProviderProfile.module.css'
 import { getFormattedDate } from '../utils/utilFunctions'
 import { IKImage } from 'imagekitio-react'
-
+import { useAuth } from '../context/authContext'
 
 const ContentProviderProfile = ({id, setPostedBy}) => {
     const [profile, setProfile] = useState({})
     const [subscribed, setSubscribed] = useState(false)
     const url = process.env.REACT_APP_SERVER_URL
+    const {user, userId, getToken} = useAuth()
+    const token = getToken()
 
     const getProfile = async () => {
         const response = await axios.get(`${url}/profile/getContentProvider/${id}`)
@@ -17,6 +19,13 @@ const ContentProviderProfile = ({id, setPostedBy}) => {
     }
 
     const subscribe = async () => {
+        const response = await axios.post(`${url}/user/subscribeTo/${id}`, {}, { headers: {
+            'Authorization': 'Bearer ' + token
+        }})
+
+        if (response.data.success){
+            setSubscribed(true)
+        }
     }
 
     const unsubscribe = async () => {
@@ -24,6 +33,7 @@ const ContentProviderProfile = ({id, setPostedBy}) => {
 
     useEffect(() => {
         getProfile()
+        setSubscribed(user.subscribedTo?.includes(id))
     }, [])
 
   return (
@@ -32,7 +42,10 @@ const ContentProviderProfile = ({id, setPostedBy}) => {
             
             <Modal.Header className={styles.header}>
                 <Modal.Title>Profile</Modal.Title>
+                
+                {userId != id && <>
                 {!subscribed ? <Button variant="success" onClick={() => subscribe()}>Subscribe</Button> : <Button variant="light" onClick={() => unsubscribe()}>Unsubscribe</Button>}
+                </>}
             </Modal.Header>
 
             <div>
