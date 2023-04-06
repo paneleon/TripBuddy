@@ -132,8 +132,9 @@
     padding: 20px;
     width: 60%;
     margin: 20px auto;
-    background-color: white;
+    background-color:#DDDDDD;
     border-radius: 20px;
+
 }
 
 .addContact {
