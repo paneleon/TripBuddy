@@ -40,6 +40,38 @@ exports.subscribeToContentProvider = async (req, res) => {
   }
 }
 
+exports.cancelSubscribeToContentProvider = async (req, res) => {
+  try {
+    const contentProviderId = req.params.id;
+    const userId =  res.locals.userId;
+
+    const contentProvider = await User.findById(contentProviderId)
+    if (!contentProvider){
+      return res.status(404).send({success: false, message: `Invalid content provider id`})
+    }
+
+    const user = await User.findById(userId)
+    if (!user?.subscribedTo?.includes(contentProviderId)){
+      return res.status(409).send({success: false, message: `User has not subscribed to this content provider`})
+    }
+
+    await User.updateOne(
+      { _id: res.locals.userId },
+      { $pull: { subscribedTo: contentProviderId } }
+    );
+
+    // send notification to the user
+    //await createNotification(res.locals.userId, `You have cancelled following ${contentProvider.username}`)
+
+    // send notification to the content provider
+    //await createNotification(contentProviderId, `${user.username} is no longer your follower`)
+
+    return res.status(200).json({success: true, message: `Successfully cancel subscribed to a user`});
+  } catch (error) {
+    return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+  }
+}
+
 exports.processLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     // are there any server errors?
