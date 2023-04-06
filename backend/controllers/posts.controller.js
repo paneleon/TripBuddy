@@ -366,3 +366,24 @@ exports.getSuggestions = async (req, res) => {
 
   }
 };
+
+exports.recordView = async (req, res) => {
+  try {
+      const postId = req.params.id;
+      const post = await Post.findById(postId);
+      if(post.viewed)
+      {
+        const viewed = post.viewed;
+        viewedPlus = viewed + 1;
+      }
+      else
+      {
+        viewedPlus = 1;
+      }
+      await Post.updateOne({_id:postId},{viewed:viewedPlus});
+      return res.status(200).json({ success: true, viewedPlus});
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+
+  }
+};
