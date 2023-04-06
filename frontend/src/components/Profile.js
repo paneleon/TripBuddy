@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Profile.module.css';
 import  ConfirmationPopup from '../components/ConfirmationPopup';
 import { useAuth } from '../context/authContext';
+import ImageUpload from './ImageUpload';
+import { IKImage } from 'imagekitio-react';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState(null)
   const [showPopup, setShowPopup] = useState(false);
   const [userData, setUserData] = useState({});
   const [updateData, setUpdateData] = useState({
@@ -20,6 +23,8 @@ const Profile = () => {
     BOD: '',
     sex: '',
     email: '',
+    picture: '',
+    bio: ''  
   });
   
   const {getToken} = useAuth()
@@ -48,6 +53,7 @@ const Profile = () => {
             BOD: formattedDate,
             sex: response.data.sex,
             email: response.data.email,
+            bio: response.data.bio,
           });
         }
         else {
@@ -62,8 +68,10 @@ const Profile = () => {
             BOD: response.data.BOD,
             sex: response.data.sex,
             email: response.data.email,
+            bio: response.data.bio,
           });
         }
+        setSelectedImage(response.data.picture)
       } catch (err) {
         console.error(err);
       }
@@ -81,7 +89,7 @@ const Profile = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/profile', updateData, config);
+      await axios.put('/api/profile', {...updateData, picture: selectedImage}, config);
     } catch (err) {
       console.error(err);
     }
@@ -92,6 +100,12 @@ const Profile = () => {
       <form onSubmit={handleSubmit}>
       <h1>Profile</h1>
       <div className={styles.wrap}>
+        {selectedImage && (
+          <div>
+            <IKImage path={`profiles/${selectedImage}`} width={150} height={200} className={styles.image}/>
+            <br />
+          </div>
+        )}
         <input
           className={styles.firstName}
           type="text"
@@ -189,6 +203,15 @@ const Profile = () => {
             onChange={handleChange}
           />
         </div>
+        <textarea
+          className={styles.bio}
+          type="text"
+          name="bio"
+          placeholder="About me"
+          value={userData.bio}
+          onChange={handleChange}
+        />
+        <ImageUpload imageFolder={'profiles'} setImageName={setSelectedImage}/>
         <br />
         <button className={styles.button} type="submit" onClick={() => setShowPopup(true)}>Save</button>
         <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user information ?"} show={showPopup} setShow={setShowPopup}/>

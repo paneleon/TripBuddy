@@ -90,6 +90,9 @@ const UserSchema = new mongoose.Schema(
         checked: Boolean
       }],
       _id: false
+    },
+    bio: {
+      type: String,
     }
   },
   {

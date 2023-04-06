@@ -14,13 +14,18 @@ exports.getUserProfile = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-  const { firstName, lastName, email, address, phone, country, city, postalCode, BOD, sex } = req.body;
+  const { firstName, lastName, email, address, phone, country, city, postalCode, BOD, sex, picture, bio } = req.body;
 
   try {
     const user = await User.findById(res.locals.userId);
         if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
+    // delete old image from cloud storage
+    if (picture && user.picture != picture) {
+      await deleteImage(picture);
+    }
+
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (email) user.email = email;
@@ -31,8 +36,12 @@ exports.updateProfile = async (req, res) => {
     if (postalCode) user.postalCode = postalCode;
     if (BOD) user.BOD = BOD;
     if (sex) user.sex = sex;
+    if (picture) user.picture = picture;
+    if (bio) user.bio = bio;
 
     await user.save();
+
+    
     res.json(user);
   } catch (err) {
     console.error(err);
@@ -76,4 +85,20 @@ exports.getChecklist = async (req, res) => {
   } catch (error) {
     return res.status(500).send({success: false, message: `Server error: ${error.message}`})
   }
+}
+
+exports.getContentProviderProfile = async (req, res) => {
+  try {
+    const userId =  req.params.id;
+    const user = await User.findById(userId).select('_id firstName lastName username createdAt country city bio picture');
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).send({success: false, message: `Server error: ${error.message}`})
+  }
+}
+
+const deleteImage = async (imageName) => {
+  const images = await imageUpload.listFiles({name: imageName})
+  const imageId = images[0].fileId
+  await imageUpload.deleteFile(imageId)
 }
