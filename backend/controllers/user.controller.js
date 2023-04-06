@@ -5,6 +5,7 @@ const imageUpload = require('../config/imageUpload.config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const useNavigate = require('react-router-dom');
+const { createNotification } = require('./notification.controller.js');
 
 exports.getAuthImageUploadData = (req, res) => { // function for uploading images
   const result = imageUpload.getAuthenticationParameters()
@@ -16,6 +17,9 @@ exports.subscribeToContentProvider = async (req, res) => {
     const contentProviderId = req.params.id;
     const userId =  res.locals.userId;
 
+    if (contentProviderId == userId){
+      return res.status(409).send({success: false, message: `Cannot subscribe to one's own account`})
+    }
     const contentProvider = await User.findById(contentProviderId)
     if (!contentProvider){
       return res.status(404).send({success: false, message: `Invalid content provider id`})
