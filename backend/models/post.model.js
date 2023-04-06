@@ -40,7 +40,10 @@ const postSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId], 
         ref: 'User'
     }, //list of user ids
-    viewed: Number,
+    views: {
+        type: Number,
+        default: 0
+    },
     reported: [
       {
         reportedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

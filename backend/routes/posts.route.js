@@ -20,9 +20,9 @@ router.get('/getComments/:id',PostsController.getComments)//get post comments by
 router.put('/addLike/:id', authUtils.isAuthenticated, PostsController.addlikes)
 router.get('/likes/:id', PostsController.getlikes)
 router.post('/report', authUtils.isAuthenticated, PostsController.reportPost)
-
 router.get('/getReported', authUtils.isAuthenticated, PostsController.getReportedPosts)
 router.get('/suggestions', PostsController.getSuggestions)
+router.get('/getUserPostStats', authUtils.isAuthenticated, PostsController.getUserPostStats)
 router.put('/recordViewed/:id',PostsController.recordView)//API to record each view on post
 
 module.exports = router;
