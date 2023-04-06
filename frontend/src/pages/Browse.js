@@ -7,7 +7,7 @@ import axios from 'axios'
 import { useAuth } from '../context/authContext'
 import NotFound from '../components/NotFound'
 import { useNavigate } from 'react-router-dom'
-
+import ContentProviderProfile from '../components/ContentProviderProfile'
 
 const Browse = () => {
 
@@ -24,6 +24,12 @@ const Browse = () => {
   const url = process.env.REACT_APP_SERVER_URL
   const [error, setError] = useState(false)
   const navigate = useNavigate()
+
+  const [postedBy, setPostedBy] = useState(null)
+  
+  useEffect(() => {
+      console.log("postedBy", postedBy)
+  }, [postedBy])
 
   useEffect(() => {
     getContentProviders()
@@ -85,13 +91,15 @@ const Browse = () => {
           <div className={styles['posts-grid']}>
                   {
                       posts?.map((post) => {
-                          return <PostCard post={post} viewPost={() => navigate(`/browse/${post?._id}`)}/>
+                          return <PostCard post={post} viewPost={() => navigate(`/browse/${post?._id}`)} setPostedBy={setPostedBy} />
                       })
                   }
 
           </div>
 
           : <div className={styles['not-found']}><NotFound /></div>}
+
+          {postedBy && <ContentProviderProfile id={postedBy} setPostedBy={setPostedBy}/>}
       </div>
       
   )
