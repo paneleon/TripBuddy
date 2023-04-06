@@ -65,10 +65,10 @@ exports.cancelSubscribeToContentProvider = async (req, res) => {
     );
 
     // send notification to the user
-    //await createNotification(res.locals.userId, `You have cancelled following ${contentProvider.username}`)
+    await createNotification(res.locals.userId, `You have cancelled following ${contentProvider.username}`)
 
     // send notification to the content provider
-    //await createNotification(contentProviderId, `${user.username} is no longer your follower`)
+    await createNotification(contentProviderId, `${user.username} is no longer your follower`)
 
     return res.status(200).json({success: true, message: `Successfully cancel subscribed to a user`});
   } catch (error) {

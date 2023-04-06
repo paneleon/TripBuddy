@@ -29,6 +29,13 @@ const ContentProviderProfile = ({id, setPostedBy}) => {
     }
 
     const unsubscribe = async () => {
+        const response = await axios.put(`${url}/user/cancelSubscribe/${id}`, {}, { headers: {
+            'Authorization': 'Bearer ' + token
+        }})
+
+        if (response.data.success){
+            setSubscribed(false)
+        }
     }
 
     useEffect(() => {
