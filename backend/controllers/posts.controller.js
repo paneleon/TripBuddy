@@ -325,7 +325,65 @@ exports.reportPost = async (req, res) => {
     }
   };
 
+  exports.unreportPostByUser = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      if (!postId) {
+        return res
+          .status(400)
+          .send({ success: true, message: "Post id is required" });
+      }
+      await Post.updateOne(
+        { _id: postId },
+        {
+          $pull: {
+            reported: {
+              reportedBy: res.locals.userId,
+            },
+          },
+        }
+      );
+      return res
+        .status(200)
+        .json({ success: true, message: "Post has been unreported" });
+      } catch (error) {
+        return res
+          .status(500)
+          .send({ success: true, message: `Server error: ${error.message}` });
+      }
+    };
 
+    exports.unreportPostByManager = async (req, res) => {
+      try {
+        const postId = req.params.id;
+        if (!postId) {
+          return res
+            .status(400)
+            .send({ success: true, message: "Post id is required" });
+        }
+        if (res.locals.stats=="User") {
+          return res
+            .status(400)
+            .send({ success: true, message: "Please login with security account" });
+        }
+        await Post.updateOne(
+          { _id: postId },
+          {
+            $pull: {
+              reported: {
+              },
+            },
+          }
+        );
+        return res
+          .status(200)
+          .json({ success: true, message: "Post has been unreported" });
+        } catch (error) {
+          return res
+            .status(500)
+            .send({ success: true, message: `Server error: ${error.message}` });
+        }
+      };
 
 exports.getReportedPosts = async (req, res) => {
   try {
