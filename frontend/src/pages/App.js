@@ -22,6 +22,7 @@ import Emergency from '../components/Emergency';
 import AdminFAQ from './AdminFAQ';
 import FAQ from './FAQ';
 import PostAnalytics from './PostAnalytics';
+import OtherEmergencyContacts from './OtherEmergencyContacts';
 
 
 
@@ -54,6 +55,7 @@ const App = () => {
         <Route path="/admin/faq" element={<AdminFAQ />  } />
         <Route path="/faq" element={<FAQ />  } />
         <Route path="/analytics/:id" element={<PostAnalytics />  } />
+        <Route path="/emergency-info" element={<OtherEmergencyContacts />} />
        </Routes>
     </>
   );
