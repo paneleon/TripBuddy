@@ -437,7 +437,7 @@ exports.getUserPostStats = async (req, res) => {
   }
 };
 
-exports.getAllUserPostsStats = async (req, res) => {
+exports.getUserAllPostsStats = async (req, res) => {
   try {
     const userId = res.locals.userId;
     const stats = await Post.aggregate([{ $match: { postedBy: mongoose.Types.ObjectId(userId) } },
