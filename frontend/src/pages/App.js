@@ -21,6 +21,7 @@ import Security from '../components/Security';
 import Emergency from '../components/Emergency';
 import AdminFAQ from './AdminFAQ';
 import FAQ from './FAQ';
+import PostAnalytics from './PostAnalytics';
 
 
 
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/saved/:postId" element={<Post mainUrl="/saved" showSaved={true}/>  } />
         <Route path="/admin/faq" element={<AdminFAQ />  } />
         <Route path="/faq" element={<FAQ />  } />
+        <Route path="/analytics/:id" element={<PostAnalytics />  } />
        </Routes>
     </>
   );
