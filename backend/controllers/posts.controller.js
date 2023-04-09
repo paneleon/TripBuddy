@@ -367,6 +367,27 @@ exports.getSuggestions = async (req, res) => {
   }
 };
 
+exports.recordView = async (req, res) => {
+  try {
+      const postId = req.params.id;
+      const post = await Post.findById(postId);
+      if(post.views)
+      {
+        const views = post.views;
+        viewsPlus = views + 1;
+      }
+      else
+      {
+        viewsPlus = 1;
+      }
+      await Post.updateOne({_id:postId},{views:viewsPlus});
+      return res.status(200).json({ success: true, viewsPlus});
+  } catch (error) {
+    return res.status(500).send({ success: true, message: `Server error: ${error.message}` });
+
+  }
+};
+
 exports.getUserPostStats = async (req, res) => {
   try {
     const userId = res.locals.userId;
