@@ -1,7 +1,8 @@
 const Post = require("../models/post.model");
 const User = require("../models/user.model");
 const imageUpload = require("../config/imageUpload.config");
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { createNotification } = require("./notification.controller");
 
 exports.createNewPost = async (req, res) => {
   try {
