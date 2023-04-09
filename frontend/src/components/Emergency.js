@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../styles/Emergency.module.css';
-import { Button, Container, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
+import { Button, Container, FormControl, FormGroup, FormLabel, FormSelect } from 'react-bootstrap'
 import { useAuth } from '../context/authContext'
 
 const Emergency = () => {
@@ -14,7 +14,9 @@ const Emergency = () => {
   const token = getToken()
   const url = process.env.REACT_APP_SERVER_URL
   const [error, setError] = useState(null)
+  const [messageError, setMessageError] = useState(null)
   const navigate = useNavigate()
+  const [messageTo, setMessageTo] = useState(null)
 
   const getEmergencyContacts = async () => {
     try {
@@ -25,6 +27,23 @@ const Emergency = () => {
       setError(null)
     } catch (error) {
       setError(error.response?.data?.message)
+    }
+  }
+
+  const sendMessage = async (id) => {
+    try {
+      if (!messageTo){
+        return setMessageError("Please select the contact")
+      }
+      if (!message){
+        return setMessageError("Please enter a message")
+      }
+      const response = await axios.put(`${url}/emergency/sendMessage/${id}`, {message: message}, { headers: {
+          'Authorization': 'Bearer ' + token
+      }})
+      setMessageError(null)
+    } catch (error) {
+      setMessageError(error.response?.data?.message)
     }
   }
 
@@ -71,10 +90,15 @@ const Emergency = () => {
     setUpdated(false)
   }, [updated])
 
+  useEffect(() => {
+    console.log(messageTo)
+  }, [messageTo])
+
   return (
     <div className={styles.form}>
-      <h1>Emergency Contacts</h1>
+      <h1>My Emergency Contacts</h1>
         <Container>
+        <Link className="btn btn-primary" to="/emergency-info">Other users</Link>
           
           <div className={styles.addContact}>
           <FormGroup className='w-75 mx-auto text-start my-5'>
@@ -84,8 +108,7 @@ const Emergency = () => {
           <button className={styles.button} onClick={() => addEmergencyContact()}>Add</button>
           </FormGroup>
           </div>
-          
-          
+               
           {
             contacts.length > 0 && contacts?.map((contact, index) => {
               return (
@@ -95,13 +118,25 @@ const Emergency = () => {
                 <h6>{contact.email}</h6>
                 <h6>{contact.phone}</h6>
                 <Button variant='danger' className='mt-4 mb-2' onClick={() => removeEmergencyContact(contact._id)}>Remove</Button>
-              
-                <textarea className='my-4 w-75 mx-auto form-control' placeholder='Enter your message here' value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
-                <Button variant='success' className=''>Send Message</Button>
               </div>)
             })
-              
           }
+
+          <div className={styles.addContact}>
+          <FormGroup className='w-75 mx-auto text-start my-5'>
+          <FormSelect onChange={(e) => setMessageTo(e.target.value)}>
+          <option disabled selected>Please select the contact</option>
+            {
+              contacts?.map((contact, index) => {
+                 return <option key={index} value={contact._id}>{contact?.username}</option>
+              })
+            }
+          </FormSelect>
+          <textarea className='my-4 w-90 form-control' placeholder='Enter your message here' value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+          <Button variant='success' className='' onClick={() => sendMessage(messageTo)}>Send Message</Button>
+          <span className='text-danger d-block mb-3'>{messageError}</span>
+          </FormGroup>
+          </div>
           
           
         </Container>
