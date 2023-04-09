@@ -1,6 +1,8 @@
 const Post = require("../models/post.model");
 const User = require("../models/user.model");
 const imageUpload = require("../config/imageUpload.config");
+const mongoose = require('mongoose');
+const { createNotification } = require("./notification.controller");
 
 exports.createNewPost = async (req, res) => {
   try {
@@ -447,6 +449,54 @@ exports.recordView = async (req, res) => {
 };
 
 exports.getUserPostStats = async (req, res) => {
+  try {
+    const userId = res.locals.userId;
+    const postId = req.params.id;
+    const stats = await Post.aggregate([{ $match: {postedBy: mongoose.Types.ObjectId(userId), _id:  mongoose.Types.ObjectId(postId)}},
+      { 
+        $group: { 
+          _id: postId,
+          totalLikes: { $sum: { $size: "$likes" } },
+          totalViews: { $sum: "$views" },
+          totalComments: { $sum: { $size: "$comments" } },
+          updatedAt:  { $first: "$updatedAt" },
+          createdAt:{ $first: "$createdAt" },
+          description: { $first: "$description" },
+          title: { $first: "$title" },
+          image: { $first: "$image" },
+          category: { $first: "$category" },
+          city: { $first: "$city" },
+          country: { $first: "$country" }
+          }
+        }, 
+        { 
+          $project: {
+            _id: 1,
+            totalLikes: 1,
+            totalViews: 1,
+            totalComments: 1,
+            updatedAt:  1,
+            createdAt: 1,
+            description: 1,
+            title: 1,
+            image: 1,
+            category: 1,
+            city: 1,
+            country: 1,
+          }
+      }, 
+    ]);
+    const postStats = stats[0];
+    if (!postStats) {
+      return res.status(404).send({ success: false, message: `No post stats found for this post` });
+    }
+    return res.status(200).json({ success: true, stats: postStats });
+  } catch (error) {
+    return res.status(500).send({ success: false, message: `Server error: ${error.message}` });
+  }
+};
+
+exports.getUserAllPostsStats = async (req, res) => {
   try {
     const userId = res.locals.userId;
     const stats = await Post.aggregate([{ $match: { postedBy: mongoose.Types.ObjectId(userId) } },

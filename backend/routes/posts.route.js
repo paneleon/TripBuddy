@@ -24,7 +24,8 @@ router.put('/unreportByUser/:id', authUtils.isAuthenticated, PostsController.unr
 router.put('/unreportByManager/:id', authUtils.isAuthenticated, PostsController.unreportPostByManager)//API for manager to clear report on post
 router.get('/getReported', authUtils.isAuthenticated, PostsController.getReportedPosts)
 router.get('/suggestions', PostsController.getSuggestions)
-router.get('/getUserPostStats', authUtils.isAuthenticated, PostsController.getUserPostStats)
+router.get('/getUserPostStats/:id', authUtils.isAuthenticated, PostsController.getUserPostStats)
+router.get('/getUserAllPostsStats', authUtils.isAuthenticated, PostsController.getUserAllPostsStats)
 router.put('/recordViewed/:id',PostsController.recordView)//API to record each view on post
 
 module.exports = router;

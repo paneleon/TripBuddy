@@ -74,16 +74,25 @@ const Post = ({mainUrl, showSaved}) => {
         setLiked(response?.data?.liked)
     }
 
+    const recordViewed = async () => {
+        const response = await axios.put(`${url}/posts/recordViewed/${postId}`, {}, { headers: {
+            'Authorization': 'Bearer ' + token
+        }})
+    }
+
     useEffect(() => {
         setSaved(user?.savedPosts?.includes(postId))
         setLiked(post?.likes?.includes(userId))
         getComments()
-        getPost()
     }, [user])
 
     useEffect(() => {
         getPost()
     }, [liked, commentAdded])
+
+    useEffect(() => {
+        recordViewed()
+    }, [])
 
     return (
         <div>
