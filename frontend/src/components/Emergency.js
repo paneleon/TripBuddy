@@ -32,6 +32,7 @@ const Emergency = () => {
 
   const sendMessage = async (id) => {
     try {
+      setMessageError(null)
       if (!messageTo){
         return setMessageError("Please select the contact")
       }
@@ -41,7 +42,7 @@ const Emergency = () => {
       const response = await axios.put(`${url}/emergency/sendMessage/${id}`, {message: message}, { headers: {
           'Authorization': 'Bearer ' + token
       }})
-      setMessageError(null)
+      setMessage("")
     } catch (error) {
       setMessageError(error.response?.data?.message)
     }
@@ -98,7 +99,7 @@ const Emergency = () => {
     <div className={styles.form}>
       <h1>My Emergency Contacts</h1>
         <Container>
-        <Link className="btn btn-primary" to="/emergency-info">Other users</Link>
+        <Link className="btn btn-primary mt-4" to="/emergency-info">Other users</Link>
           
           <div className={styles.addContact}>
           <FormGroup className='w-75 mx-auto text-start my-5'>

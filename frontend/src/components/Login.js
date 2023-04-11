@@ -24,14 +24,13 @@ const Login = () => {
       const response = await axios.post('/api/user/login', formData);
       if (response.data.token){
         saveToken(response.data.token);
-        alert('Login successful');
         navigate('/home');
       } else {
         alert('Authentication failed');
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      if (error.response && error.response.data.message === 'Your account has been restricted') {
+      if (error.response && error.response.status === 403) {
         alert('Your account has been restricted');
       } else {
         alert('Error logging in');

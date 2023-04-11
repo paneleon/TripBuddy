@@ -54,3 +54,13 @@ exports.sendMessage = async (req, res) => {
   }
 }
 
+exports.getUsersWithThisEmergencyContact = async (req, res) => {  //gets users with this user as their emergency contact
+  try {
+    const userId = res.locals.userId;
+    
+    const emergencyContacts = await User.find({emergencyContacts: {$elemMatch: {$eq: userId}}}).select('firstName lastName username email address phone');
+    return res.status(200).json(emergencyContacts);
+  } catch (err) {
+    res.status(500).send({message: 'Server error'});
+  }
+};
