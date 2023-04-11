@@ -32,6 +32,7 @@ const Emergency = () => {
 
   const sendMessage = async (id) => {
     try {
+      setMessageError(null)
       if (!messageTo){
         return setMessageError("Please select the contact")
       }
@@ -41,7 +42,7 @@ const Emergency = () => {
       const response = await axios.put(`${url}/emergency/sendMessage/${id}`, {message: message}, { headers: {
           'Authorization': 'Bearer ' + token
       }})
-      setMessageError(null)
+      setMessage("")
     } catch (error) {
       setMessageError(error.response?.data?.message)
     }

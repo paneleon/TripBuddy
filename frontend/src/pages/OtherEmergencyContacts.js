@@ -4,7 +4,7 @@ import { Container, Table, Button, FormSelect } from 'react-bootstrap'
 import { useAuth } from '../context/authContext'
 
 const OtherEmergencyContacts = () => {
-  const [contacts, setContacts] = useState([{hi: "hi"}])
+  const [contacts, setContacts] = useState([])
   const [message, setMessage] = useState(null)
   const [messageTo, setMessageTo] = useState(null)
   const [error, setError] = useState(null)
@@ -26,6 +26,7 @@ const OtherEmergencyContacts = () => {
   
   const sendMessage = async (id) => {
     try {
+      setError(null)
       if (!messageTo){
         return setError("Please select the contact")
       }
@@ -35,8 +36,7 @@ const OtherEmergencyContacts = () => {
       const response = await axios.put(`${url}/emergency/sendMessage/${id}`, {message: message}, { headers: {
           'Authorization': 'Bearer ' + token
       }})
-      setMessageTo(null)
-      setError(null)
+      setMessage("")
     } catch (error) {
       setError(error.response?.data?.message)
     }
