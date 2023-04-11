@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationPopup from '../components/ConfirmationPopup';
 import {Button} from 'react-bootstrap';
 import styles from '../styles/Posts.module.css'
+import NotFound from '../components/NotFound';
 
 const MyPosts = () => {
     const [posts, setPosts] = useState([])
@@ -50,6 +51,7 @@ const MyPosts = () => {
         <h2 className='text-center mb-5'>Past Destinations</h2>
         <div className='posts-list'>
             {
+                posts.length > 0 ? 
                 posts?.map((post) => {
                     return (
                     <div className={styles["post-horizontal-container"]}>
@@ -66,6 +68,7 @@ const MyPosts = () => {
                     </div>
                     )
                 })
+                : <NotFound />
             }
         </div>
 
