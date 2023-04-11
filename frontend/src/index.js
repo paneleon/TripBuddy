@@ -7,10 +7,13 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { IKContext } from 'imagekitio-react'; // for using image upload
 import {AuthContextProvider} from './context/authContext';
+import axios from 'axios';
 
 const IMAGE_UPLOAD_URL = process.env.REACT_APP_IMAGE_KIT_URL
 const IMAGE_UPLOAD_KEY = process.env.REACT_APP_IMAGE_KIT_PUBLIC_KEY;
 const AUTH_ENPOINT = `${process.env.REACT_APP_SERVER_URL}/user/auth`
+
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
