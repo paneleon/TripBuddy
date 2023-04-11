@@ -41,3 +41,16 @@ exports.removeEmergencyContact = async (req, res) => {
   }
 };
 
+exports.sendMessage = async (req, res) => {
+  try {
+    const messageTo = req.params.id;
+    const messageFrom = await User.findById(res.locals.userId);
+    const message = req.body.message;
+  
+    await createNotification(messageTo, `You received a message from ${messageFrom?.username}: ${message}`)
+    return res.status(200).json({success: true, message: "Message sent"});
+  } catch (err){
+    res.status(500).send({message: 'Server error' + err});
+  }
+}
+

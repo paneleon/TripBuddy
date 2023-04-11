@@ -8,6 +8,6 @@ router.get('/', authUtils.isAuthenticated, EmergencyController.getUserEmergency)
 
 router.put('/add/:email', authUtils.isAuthenticated, EmergencyController.addEmergencyContact);
 router.put('/remove/:id', authUtils.isAuthenticated, EmergencyController.removeEmergencyContact);
-
+router.put('/sendMessage/:id', authUtils.isAuthenticated, EmergencyController.sendMessage);
 
 module.exports = router;
