@@ -13,9 +13,16 @@ const OtherEmergencyContacts = () => {
   const url = process.env.REACT_APP_SERVER_URL
 
   const getContacts = async () => {
-
+    try {
+      const response = await axios.get(`${url}/emergency/others`, { headers: {
+          'Authorization': 'Bearer ' + token
+      }})
+      setContacts(response.data)
+      setError(null)
+    } catch (error) {
+      setError(error.response?.data?.message)
+    }
   }
-
   
   const sendMessage = async (id) => {
     try {
@@ -28,6 +35,7 @@ const OtherEmergencyContacts = () => {
       const response = await axios.put(`${url}/emergency/sendMessage/${id}`, {message: message}, { headers: {
           'Authorization': 'Bearer ' + token
       }})
+      setMessageTo(null)
       setError(null)
     } catch (error) {
       setError(error.response?.data?.message)
@@ -41,6 +49,9 @@ const OtherEmergencyContacts = () => {
   return (
     <Container>
         <h4>I am Emergency Contact of: </h4>
+        <>
+        {contacts.length > 0 ? 
+        <>
         <Table striped className='my-4'>
         <thead>
         <tr>
@@ -54,7 +65,7 @@ const OtherEmergencyContacts = () => {
       </thead>
       <tbody>
         {
-          contacts.length > 0 && contacts?.map((contact, i) => {
+          contacts?.map((contact, i) => {
             return (
             <tr>
               <th>{i + 1}</th>
@@ -67,7 +78,6 @@ const OtherEmergencyContacts = () => {
             )
           })
         }
-        
         </tbody>
         </Table>
         <div className="w-75 mx-auto border border-secondary border-2 rounded text-center">
@@ -83,6 +93,15 @@ const OtherEmergencyContacts = () => {
           <Button variant='success' className='mb-3' onClick={() => sendMessage(messageTo)}>Send Message</Button>
           </div>
         <span className='text-danger text-center d-block my-3'>{error}</span>
+        </>
+        : 
+        <div className='w-50 my-5 mx-auto text-center'>
+          <hr className='my-5 w-100 mx-auto' />
+          <h3>You are not an emergency contact of any users</h3>
+          <hr className='my-5 w-100 mx-auto' />
+        </div>
+      }
+      </>
     </Container>
   )
 }

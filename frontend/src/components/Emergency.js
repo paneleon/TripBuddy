@@ -98,7 +98,7 @@ const Emergency = () => {
     <div className={styles.form}>
       <h1>My Emergency Contacts</h1>
         <Container>
-        <Link className="btn btn-primary" to="/emergency-info">Other users</Link>
+        <Link className="btn btn-primary mt-4" to="/emergency-info">Other users</Link>
           
           <div className={styles.addContact}>
           <FormGroup className='w-75 mx-auto text-start my-5'>
