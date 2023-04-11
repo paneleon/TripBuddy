@@ -81,23 +81,22 @@ exports.processLogin = (req, res, next) => {
     // are there any server errors?
     if (err) {
       console.error(err);
-      res.end(err);
+      return res.status(500).send({ success: false, message: err.message });
     }
     // are there any login errors?
     if (!user) {
-      return res.json({ success: false, message: "ERROR: Authentication Failed" });
+      return res.status(401).send({ success: false, message: "ERROR: Authentication Failed" });
     }
 
     if (user.disable) {
-      return res.json({ success: false, message: "Your account has been restricted" });
+      return res.status(403).send({ success: false, message: "Your account has been restricted" });
     }
 
     // no problems -  we have a good username and password
     req.logIn(user, (err) => {
       // are there any db errors?
       if (err) {
-        console.error(err);
-        res.end(err);
+        return res.status(500).send({ success: false, message: err.message });
       }
 
       const authToken = authUtils.GenerateToken(user);
@@ -116,38 +115,30 @@ exports.processLogin = (req, res, next) => {
   })(req, res, next);
 };
 
-exports.processRegistration = (req, res, next) => {
-  //Instantiate a new user object
+exports.processRegistration = async (req, res, next) => {
   let newUser = new User({
-    ...req.body, //Javascript destructing
+    ...req.body,
   });
-
-  User.register(newUser, req.body.password, (err) => {
-    // error validations
-    if (err) {
-      if (err.name === "UserExistsError") {
-        console.error("ERROR: User Already Exists!");
-      }
-
-      console.log(err);
-
-      return res.json({ success: false, message: "ERROR: Registration Failed!" });
+  try {
+    const response = await User.register(newUser, req.body.password)
+    if (response){
+      return res.status(200).send({ success: true, message: "User Registered Successfully" });
     }
-
-    // all ok - user has been registered
-    return res.json({ success: true, message: "User Registered Successfully" });
-  });
+  } catch (err) {
+    if (err.name === "UserExistsError") {
+      console.error("ERROR: User Already Exists!");
+    }
+    return res.status(409).send({ success: false, message: "ERROR: Registration Failed!" });
+  }
 };
 
 exports.processLogout = (req, res, next) => {
   req.logOut((err) => {
     if (err) {
-      console.error(err);
-      res.end(err);
+      return res.status(500).send({ success: false, message: err.message });
     }
-
     console.log("User Logged Out");
   });
 
-  res.json({ success: true, message: "User logged out successfully" });
+  return res.status(200).send({ success: true, message: "User logged out successfully" });
 };

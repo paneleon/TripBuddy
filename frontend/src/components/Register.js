@@ -22,11 +22,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/user/register', formData);
-      alert('Registration successful');
-      navigate('/login');
+      const response = await axios.post('/api/user/register', formData);
+      if (response){
+        navigate('/login');
+      }
     } catch (err) {
-      console.error(err);
+      alert('Registration failed!');
+      console.log(err)
     }
   };
 
