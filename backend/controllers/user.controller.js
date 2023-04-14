@@ -4,7 +4,6 @@ const User = require('../models/user.model');
 const imageUpload = require('../config/imageUpload.config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const useNavigate = require('react-router-dom');
 const { createNotification } = require('./notification.controller.js');
 
 exports.getAuthImageUploadData = (req, res) => { // function for uploading images
