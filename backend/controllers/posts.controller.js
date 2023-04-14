@@ -160,12 +160,12 @@ exports.searchForPosts = async (req, res) => {
 
     let posts = []
     if (conditions?.length > 0){
-      posts = await Post.find({ $and: conditions }).populate(
+      posts = await Post.find({ $and: conditions }).sort({createdAt: 'descending'}).populate(
         "postedBy",
         "username"
       ); // include the author's username
     } else {
-      posts = await Post.find().populate(
+      posts = await Post.find().sort({createdAt: 'descending'}).populate(
         "postedBy",
         "username"
       )
