@@ -154,12 +154,12 @@ exports.searchForPosts = async (req, res) => {
       conditions.push({ category: category });
     }
     // if content provider id is provided
-    if (contentProviders.length > 0) {
+    if (contentProviders?.length > 0) {
       conditions.push({ postedBy: { $in: contentProviders } });
     }
 
     let posts = []
-    if (conditions.length > 0){
+    if (conditions?.length > 0){
       posts = await Post.find({ $and: conditions }).populate(
         "postedBy",
         "username"
