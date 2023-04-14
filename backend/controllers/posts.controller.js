@@ -165,7 +165,10 @@ exports.searchForPosts = async (req, res) => {
         "username"
       ); // include the author's username
     } else {
-      posts = await Post.find()
+      posts = await Post.find().populate(
+        "postedBy",
+        "username"
+      )
     }
    
     return res.status(200).json(posts);
