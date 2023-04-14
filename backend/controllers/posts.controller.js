@@ -158,10 +158,16 @@ exports.searchForPosts = async (req, res) => {
       conditions.push({ postedBy: { $in: contentProviders } });
     }
 
-    const posts = await Post.find({ $and: conditions }).populate(
-      "postedBy",
-      "username"
-    ); // include the author's username
+    let posts = []
+    if (conditions.length > 0){
+      posts = await Post.find({ $and: conditions }).populate(
+        "postedBy",
+        "username"
+      ); // include the author's username
+    } else {
+      posts = await Post.find()
+    }
+   
     return res.status(200).json(posts);
   } catch (error) {
     return res
