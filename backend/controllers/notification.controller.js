@@ -29,7 +29,7 @@ exports.createNewNotification = async (req, res) => {
 exports.getNewNotifications = async (req, res) => {
   try {
       const userId = res.locals.userId; // get user id from authentication middleware
-      const notifications = await Notification.find({notificationFor: userId, isRead: false})
+      const notifications = await Notification.find({notificationFor: userId, isRead: false}).sort({date: 'descending'})
       return res.status(200).json(notifications);
     } catch (error) {
       return res
