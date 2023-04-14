@@ -11,7 +11,7 @@ const Security = () => {
     useEffect(() => {
         const fetchUsers = async () => {
           try {
-            const response = await axios.get('/api/security', {
+            const response = await axios.get('/security', {
               headers: { 'Authorization': `Bearer ${token}` },
             });
             setUsers(response.data);
@@ -25,7 +25,7 @@ const Security = () => {
 
     const handleDisable = async (userId) => {
     try {
-        const response = await axios.put(`/api/security/${userId}`,
+        const response = await axios.put(`/security/${userId}`,
         { disable: true },
         { headers: { Authorization: `Bearer ${token}` } },
         );
@@ -48,7 +48,7 @@ const Security = () => {
 
     const handleEnable = async (userId) => {
         try {
-          const response = await axios.put(`/api/security/${userId}`,
+          const response = await axios.put(`/security/${userId}`,
             { disable: false },
             { headers: { Authorization: `Bearer ${token}` } },
           );

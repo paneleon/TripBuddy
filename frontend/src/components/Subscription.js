@@ -18,7 +18,7 @@ const Subscription = () => {
     useEffect(() => {
     const fetchSubscription = async () => {
         try {
-            const response = await axios.get('/api/subscription', {
+            const response = await axios.get('/subscription', {
               headers: { Authorization: `Bearer ${token}` },
             });
             setCurrentSubscription({
@@ -41,7 +41,7 @@ const Subscription = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put('/api/subscription', selectedSubscription, {
+            await axios.put('/subscription', selectedSubscription, {
               headers: { Authorization: `Bearer ${token}` },
             });
             alert('Subscribe successfully');

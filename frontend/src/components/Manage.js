@@ -10,7 +10,7 @@ const Manage = () => {
     useEffect(() => {
         const fetchUsers = async () => {
           try {
-            const response = await axios.get('/api/manage', {
+            const response = await axios.get('/manage', {
               headers: { 'Authorization': `Bearer ${token}` },
             });
             setUsers(response.data);

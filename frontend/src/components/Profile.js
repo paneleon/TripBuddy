@@ -36,7 +36,7 @@ const Profile = () => {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await axios.get('/api/profile', config);
+        const response = await axios.get('/profile', config);
         setUserData(response.data);
         if(response.data.BOD){
           const date = new Date(response.data.BOD);
@@ -89,7 +89,7 @@ const Profile = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/profile', {...updateData, picture: selectedImage}, config);
+      await axios.put('/profile', {...updateData, picture: selectedImage}, config);
     } catch (err) {
       console.error(err);
     }

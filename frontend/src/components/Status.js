@@ -21,7 +21,7 @@ const Status = () => {
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };
-            const response = await axios.get('/api/status', config);
+            const response = await axios.get('/status', config);
             setCurrentStatus({
                 status: response.data.status,
             });
@@ -45,7 +45,7 @@ const Status = () => {
             const config = {
               headers: { Authorization: `Bearer ${token}` },
             };
-            await axios.put('/api/status', selectedStatus, config);
+            await axios.put('/status', selectedStatus, config);
             alert('Status Change Successfully');
             navigate('/home');
           } catch (err) {

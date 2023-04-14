@@ -33,7 +33,7 @@ const Payment = () => {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await axios.get('/api/payment', config);
+        const response = await axios.get('/payment', config);
         setUserData(response.data);
         if(response.data.BOD && response.data.expirationDate){
           const expirationDate = new Date(response.data.expirationDate);
@@ -120,7 +120,7 @@ const Payment = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/api/payment', updateData, config);
+      await axios.put('/payment', updateData, config);
       alert('Payment Info updated successfully');
       navigate('/home');
     } catch (err) {
@@ -130,7 +130,7 @@ const Payment = () => {
 
   const deletePayment = async () => {
     try {
-      await axios.delete('/api/payment', {
+      await axios.delete('/payment', {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Payment info removed successfully');

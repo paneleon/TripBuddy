@@ -22,7 +22,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/user/register', formData);
+      const response = await axios.post('/user/register', formData);
       if (response){
         navigate('/login');
       }

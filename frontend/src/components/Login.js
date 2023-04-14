@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/user/login', formData);
+      const response = await axios.post('/user/login', formData);
       if (response.data.token){
         saveToken(response.data.token);
         navigate('/home');
