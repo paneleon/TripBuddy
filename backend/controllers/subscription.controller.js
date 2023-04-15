@@ -1,4 +1,5 @@
-const User = require('../models/user.model.js');
+const User = require('../models/user.model.js')
+const { createNotification } = require('./notification.controller.js');
 
 exports.getSubscription = async (req, res) => {
     try {
