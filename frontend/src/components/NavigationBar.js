@@ -59,11 +59,14 @@ const NavigationBar = () => {
                   <NavDropdown.Item href="/emergency">Emergency Contact</NavDropdown.Item>
                   <NavDropdown.Item href="/subscription">Subscriptions</NavDropdown.Item>
                   <NavDropdown.Item href="/payment">Payment Methods</NavDropdown.Item>
+                  <NavDropdown.Item href="/faq">FAQ</NavDropdown.Item>
+                  
                   {isLoggedIn() && isLoggedInStaff() && (
                     <>
                     <NavDropdown.Item href="/status">Status</NavDropdown.Item>
                     <NavDropdown.Item href="/manage">Management</NavDropdown.Item>
                     <NavDropdown.Item href="/security">Security</NavDropdown.Item>
+                    <NavDropdown.Item href="/admin/faq">Manage FAQ</NavDropdown.Item>
                     </>
                   )}
                 </NavDropdown>
