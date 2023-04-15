@@ -23,8 +23,8 @@ describe('Testing categories', () => {
         .get("/api/category/getAll");
 
         expect(res.statusCode).toBe(200);
-        expect(res.body.includes('Restaurant')).toBe(true);
-        expect(res.body.includes('Outdoors')).toBe(true);
-        expect(res.body.includes('Attractions')).toBe(true);
+        expect(res.body).toContain('Restaurant');
+        expect(res.body).toContain('Outdoors');
+        expect(res.body).toContain('Attractions');
     }) 
 });
