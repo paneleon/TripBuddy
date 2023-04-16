@@ -6,11 +6,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createNotification } = require('./notification.controller.js');
 
-exports.getAuthImageUploadData = (req, res) => { // function for uploading images
+ // function for uploading images to cloud storage
+exports.getAuthImageUploadData = (req, res) => {
   const result = imageUpload.getAuthenticationParameters()
   res.send(result);
 }
 
+// subscribe to content provider
 exports.subscribeToContentProvider = async (req, res) => {
   try {
     const contentProviderId = req.params.id;
@@ -29,6 +31,7 @@ exports.subscribeToContentProvider = async (req, res) => {
       return res.status(409).send({success: false, message: `User is already subscribed to this content provider`})
     }
 
+    // add user to list of subscribed to content providers
     await User.updateOne({_id: userId}, {$push: {subscribedTo: contentProviderId}})
 
     // send notification to the user
@@ -43,6 +46,7 @@ exports.subscribeToContentProvider = async (req, res) => {
   }
 }
 
+// cancel subscription to content providers
 exports.cancelSubscribeToContentProvider = async (req, res) => {
   try {
     const contentProviderId = req.params.id;
@@ -54,10 +58,12 @@ exports.cancelSubscribeToContentProvider = async (req, res) => {
     }
 
     const user = await User.findById(userId)
+    // if the user is not subscribed to content provider
     if (!user?.subscribedTo?.includes(contentProviderId)){
       return res.status(409).send({success: false, message: `User has not subscribed to this content provider`})
     }
 
+    // if subscribed, then remove from the list
     await User.updateOne(
       { _id: res.locals.userId },
       { $pull: { subscribedTo: contentProviderId } }
@@ -75,6 +81,7 @@ exports.cancelSubscribeToContentProvider = async (req, res) => {
   }
 }
 
+// process signing into the application using passport library
 exports.processLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     // are there any server errors?
@@ -114,6 +121,7 @@ exports.processLogin = (req, res, next) => {
   })(req, res, next);
 };
 
+// process registration in passport and save user into the database
 exports.processRegistration = async (req, res, next) => {
   let newUser = new User({
     ...req.body,
@@ -131,6 +139,7 @@ exports.processRegistration = async (req, res, next) => {
   }
 };
 
+// logout from the application
 exports.processLogout = (req, res, next) => {
   req.logOut((err) => {
     if (err) {

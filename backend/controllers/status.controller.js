@@ -1,5 +1,6 @@
 const User = require('../models/user.model.js');
 
+// get user role within the application ('User', 'IT', 'Security')
 exports.getStatus = async (req, res) => {
     try {
       const user = await User.findById(res.locals.userId);
@@ -10,9 +11,11 @@ exports.getStatus = async (req, res) => {
     }
   };
 
+// update role of the user
 exports.updateStatus = async (req, res) => {
     const { status } = req.body;
 
+    // check if the status is valid
     if (!['User', 'IT', 'Security'].includes(status)) {
         return res.status(400).send({status});
       }

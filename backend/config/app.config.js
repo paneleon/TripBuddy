@@ -33,12 +33,13 @@ const securityRoute = require('../routes/security.route.js');
 const questionRoute = require('../routes/question.route');
 const notificationRoute = require('../routes/notification.route');
 
-
+// configure passport and JWT athentication
 const secret = process.env.JWT_SECRET;
 let jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = process.env.JWT_SECRET;
 
+// create auth strategy
 let strategy = new JWTStrategy(jwtOptions, (jwt_payload, done) =>{
   User.findById(jwt_payload.id)
   .then(user =>{
@@ -54,10 +55,11 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
+// configure the application
 module.exports = () => {
   const app = express();
 
+  // use auth session
   app.use(session({
     secret: secret,
     saveUninitialized: false, 
@@ -70,6 +72,7 @@ module.exports = () => {
     app.use(compress());
   }
 
+  // use body and cookie parser
   app.use(bodyParser.urlencoded({
     extended: true
   }));

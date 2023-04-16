@@ -1,11 +1,12 @@
 const Question = require("../models/question.model");
 const User = require("../models/user.model");
 
+// delete frequently asked question
 exports.deleteQuestion = async (req, res) =>{
     try {
         const userId = res.locals.userId;
         const user = await User.findById(userId);
-
+        // check if the user is authenticated and has admin role
         if (user && user.isAdmin) {
             const id  = req.params.id;
             const result = await Question.findByIdAndRemove(id);
@@ -22,13 +23,13 @@ exports.deleteQuestion = async (req, res) =>{
     }
  }
 
- exports.addQuestion = async (req, res) =>{
+ // add new frequently asked question
+exports.addQuestion = async (req, res) =>{
     try {
         const userId = res.locals.userId;
         const user = await User.findById(userId);
 
         if (user && user.isAdmin) {
-            const id  = req.params;
             const newQuestion = new Question({
                 question: req.body.question,
                 answer: req.body.answer,
@@ -43,42 +44,41 @@ exports.deleteQuestion = async (req, res) =>{
     } catch (error) {
         return res.status(500).json({error: `Server error: ${error.message}`});
     }
- }
+}
 
- exports.editQuestion = async (req, res) => {
+exports.editQuestion = async (req, res) => {
     try {
-      const questionId = req.params.id;
-      const oldQuestion = await Question.findById(questionId);
-      const questionBy = oldQuestion.questionBy;
-      const userId = res.locals.userId; // get user id from authentication middleware
-      const user = await User.findById(userId);
-      if (user && user.isAdmin) {
-        
+        const questionId = req.params.id;
+        const oldQuestion = await Question.findById(questionId);
+        const questionBy = oldQuestion.questionBy;
+        const userId = res.locals.userId; // get user id from authentication middleware
+        const user = await User.findById(userId);
+        // check if the user is authenticated and has admin role
+        if (user && user.isAdmin) {
             const updatedQuestion = {
                 question: req.body.question,
                 answer: req.body.answer,
                 questionBy: questionBy
             };
 
-  
             await Question.updateOne({ _id: questionId }, updatedQuestion);
             return res.status(200).json(updatedQuestion);
         } else {
             return res.status(403).json({error: "User does not have the premission to perform this action"});
         }
     } catch (error) {
-      return res
+        return res
         .status(500)
         .send({ success: false, message: `Server error: ${error.message}` });
     }
-  };
+};
 
-  exports.getAllQuestions = async (req, res) => {
+exports.getAllQuestions = async (req, res) => {
     try {
-      const questions = await Question.find();
-      return res.status(200).json(questions);
+        const questions = await Question.find();
+        return res.status(200).json(questions);
     } catch (error) {
-      return res.status(500).send({ message: `Server error: ${error.message}` });
+        return res.status(500).send({ message: `Server error: ${error.message}` });
     }
-  };
+};
 

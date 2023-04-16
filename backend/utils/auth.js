@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
+// helper functions to handle authentication
 exports.UserDisplayName = (req, res) => {
   if (req.user) {
     return req.user.displayName;
@@ -14,6 +15,7 @@ exports.UserId = (req) => {
   return "";
 }
 
+// authentication middleware 
 exports.isAuthenticated = (req, res, next) => {
   const authHeader = req.get('authorization')
   if (!authHeader){
@@ -22,13 +24,14 @@ exports.isAuthenticated = (req, res, next) => {
   const token = authHeader.split(' ')[1]
   try {
     const verified = jwt.verify(token, secret)
-    res.locals.userId = verified.id // set id of the user who is authenticated
+    res.locals.userId = verified.id // set id of the user who is authenticated to use in the next request
   } catch (error){
     return res.status(401).json({ success: false, message: 'Token is invalid' });
   }
   return next();
 }
 
+// generate JWT token
 exports.GenerateToken = (user) => {
   const payload = {
     id: user._id,

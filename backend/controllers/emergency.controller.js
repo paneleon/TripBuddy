@@ -1,6 +1,7 @@
 const User = require('../models/user.model.js');
 const { createNotification } = require('./notification.controller.js');
 
+// get users that the authenticated user added as emergency contacts
 exports.getUserEmergency = async (req, res) => {
   try {
     const userId = res.locals.userId;
@@ -12,6 +13,7 @@ exports.getUserEmergency = async (req, res) => {
   }
 };
 
+// add new user to emergency contacts list
 exports.addEmergencyContact = async (req, res) => {
   try {
     const emergencyContact = await User.findOne({email: req.params.email})
@@ -30,6 +32,7 @@ exports.addEmergencyContact = async (req, res) => {
   }
 };
 
+// remove user from emergency contacts
 exports.removeEmergencyContact = async (req, res) => {
   try {
     await User.updateOne({_id: res.locals.userId}, {$pull: {emergencyContacts: req.params.id}})
@@ -41,6 +44,7 @@ exports.removeEmergencyContact = async (req, res) => {
   }
 };
 
+// send message to emergency contact
 exports.sendMessage = async (req, res) => {
   try {
     const messageTo = req.params.id;
@@ -54,7 +58,8 @@ exports.sendMessage = async (req, res) => {
   }
 }
 
-exports.getUsersWithThisEmergencyContact = async (req, res) => {  //gets users with this user as their emergency contact
+//gets list of users with this user as their emergency contact
+exports.getUsersWithThisEmergencyContact = async (req, res) => {  
   try {
     const userId = res.locals.userId;
     

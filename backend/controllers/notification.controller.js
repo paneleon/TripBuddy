@@ -1,6 +1,7 @@
 const Notification = require("../models/notification.model");
 const User = require("../models/user.model");
 
+// method to create a new notification (used within the app)
 const createNotification = async (userId, content, email = null) => {
   const notification = new Notification({
     notification: content,
@@ -14,6 +15,7 @@ const createNotification = async (userId, content, email = null) => {
 
 exports.createNotification = createNotification
 
+// controller function to create a new notification
 exports.createNewNotification = async (req, res) => {
     try {
         const userId = res.locals.userId; // get user id from authentication middleware
@@ -26,6 +28,7 @@ exports.createNewNotification = async (req, res) => {
       }
 }
 
+// get unread notifications
 exports.getNewNotifications = async (req, res) => {
   try {
       const userId = res.locals.userId; // get user id from authentication middleware
@@ -38,6 +41,7 @@ exports.getNewNotifications = async (req, res) => {
     }
 }
 
+// delete notification
 exports.deleteNotification = async (req, res) => {
   try {
     const notificationId = req.params.id;

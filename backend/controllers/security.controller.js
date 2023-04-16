@@ -1,5 +1,6 @@
 const User = require('../models/user.model.js');
 
+// get data of all users for security admin
 exports.getUserData = async (req, res) => {
     try {
         const users = await User.find({ status: 'User' }, 'username email phone disable'); // Retrieve only username, email, and phone fields
@@ -15,6 +16,7 @@ exports.getUserData = async (req, res) => {
     }
   };
 
+// enable or disable the user
 exports.updateUserData = async (req, res) => {
   try {
     const { userId } = req.params;

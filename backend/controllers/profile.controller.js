@@ -21,7 +21,7 @@ exports.updateProfile = async (req, res) => {
         if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
-    // delete old image from cloud storage
+    // delete old image from cloud storage if the image is updated
     if (picture && user.picture != picture) {
       await deleteImage(picture);
     }
@@ -49,6 +49,7 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+// get content providers that the user is subscribed to
 exports.getSubscribedTo = async (req,res) => {
   try{
       const userId = res.locals.userId;
@@ -59,8 +60,6 @@ exports.getSubscribedTo = async (req,res) => {
       return res.status(500).send({success: false, message: `Server error: ${error.message}`})
   }
 }
-
-
 
 exports.updateChecklist = async (req, res) => {
   try {
@@ -89,6 +88,7 @@ exports.getChecklist = async (req, res) => {
   }
 }
 
+// get profile information of the content provider
 exports.getContentProviderProfile = async (req, res) => {
   try {
     const userId =  req.params.id;
@@ -99,6 +99,7 @@ exports.getContentProviderProfile = async (req, res) => {
   }
 }
 
+// method to delete image from cloud storage
 const deleteImage = async (imageName) => {
   const images = await imageUpload.listFiles({name: imageName})
   const imageId = images[0].fileId

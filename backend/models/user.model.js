@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-
     },
     username: {
       type: String,
@@ -55,8 +54,6 @@ const UserSchema = new mongoose.Schema(
     },
     cardNumber: {
       type: String,
-
-      
     },
     expirationDate: {
       type: Date,
