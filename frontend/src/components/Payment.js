@@ -120,7 +120,7 @@ const Payment = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      await axios.put('/payment', updateData, config);
+      await axios.put('/payment', userData, config);
       alert('Payment Info updated successfully');
       navigate('/home');
     } catch (err) {
