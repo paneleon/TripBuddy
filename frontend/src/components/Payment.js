@@ -34,7 +34,6 @@ const Payment = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
         const response = await axios.get('/payment', config);
-        console.log("data", response)
         setUserData(response.data);
         if(response.data.BOD && response.data.expirationDate){
           const expirationDate = new Date(response.data.expirationDate);

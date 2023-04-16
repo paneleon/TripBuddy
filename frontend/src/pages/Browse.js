@@ -26,10 +26,6 @@ const Browse = () => {
   const navigate = useNavigate()
 
   const [postedBy, setPostedBy] = useState(null)
-  
-  useEffect(() => {
-      console.log("postedBy", postedBy)
-  }, [postedBy])
 
   useEffect(() => {
     getContentProviders()

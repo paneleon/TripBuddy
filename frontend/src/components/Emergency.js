@@ -91,10 +91,6 @@ const Emergency = () => {
     setUpdated(false)
   }, [updated])
 
-  useEffect(() => {
-    console.log(messageTo)
-  }, [messageTo])
-
   return (
     <div className={styles.form}>
       <h1>My Emergency Contacts</h1>
