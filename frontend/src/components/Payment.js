@@ -34,6 +34,7 @@ const Payment = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
         const response = await axios.get('/payment', config);
+        console.log("data", response)
         setUserData(response.data);
         if(response.data.BOD && response.data.expirationDate){
           const expirationDate = new Date(response.data.expirationDate);
@@ -248,8 +249,8 @@ const Payment = () => {
             />
             </div>
         <br />
-        <button className={styles.button} type="submit" onClick={() => setShowPopup(true)}>Save</button>
-        <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user's payment information ?"} show={showPopup} setShow={setShowPopup}/>
+        <button className={styles.button} type="submit" >Save</button>
+        {/* <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user's payment information ?"} show={showPopup} setShow={setShowPopup}/> */}
       
         <button className={cn(styles.deleteButton, "mx-2")} type="button" onClick={() => deletePayment()}>Delete</button>
       </form>
