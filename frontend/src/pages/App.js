@@ -24,8 +24,6 @@ import FAQ from './FAQ';
 import PostAnalytics from './PostAnalytics';
 import OtherEmergencyContacts from './OtherEmergencyContacts';
 
-
-
 const App = () => {
   return (
     <>

@@ -58,7 +58,6 @@ const AdminFAQ = () => {
 
         <CreateFAQ createQuestion={createNewQuestion} newQuestion={createQuestion} setNewQuestion={setCreateQuestion}/>
 
-        {/* {editQuestion && <EditFAQ id={editQuestion?.id} question={editQuestion?.question} answer={editQuestion?.answer}/> } */}
         {editQuestion && <EditFAQ question={editQuestion} setQuestion={setEditQuestion} updateQuestion={updateQuestion}/> }
 
         <Accordion>

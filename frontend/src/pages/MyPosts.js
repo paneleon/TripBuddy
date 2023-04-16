@@ -35,7 +35,6 @@ const MyPosts = () => {
                 'Authorization': 'Bearer ' + token
               }})
             setError(null)
-            //setShowPopup(true) - this popup works sometimes and sometimes it doesn't but confirmation is created
             setPosts(posts.filter((post) => post?._id != id))
           } catch (error) {
             setError(error)

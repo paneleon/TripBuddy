@@ -248,9 +248,7 @@ const Payment = () => {
             />
             </div>
         <br />
-        <button className={styles.button} type="submit" >Save</button>
-        {/* <ConfirmationPopup doAction={() => navigate('/home')} title={"Confirmation Action Require "} message={"Are you sure you want to update this user's payment information ?"} show={showPopup} setShow={setShowPopup}/> */}
-      
+        <button className={styles.button} type="submit" >Save</button>      
         <button className={cn(styles.deleteButton, "mx-2")} type="button" onClick={() => deletePayment()}>Delete</button>
       </form>
     </div>

@@ -5,37 +5,6 @@ import { IKImage } from 'imagekitio-react'
 import { useAuth } from '../context/authContext';
 import axios from 'axios';
 
-const samplePosts = [
-    {
-        title: "Pyramids of Giza",
-        description: "The him father parish looked has sooner. Attachment frequently gay terminated son. You greater nay use prudent placing. Passage to so distant behaved natural between do talking. Friends off her windows painful. ",
-        postedByUsername: "gilbert.dic",
-        category: "Restaurant",
-        country: "USA",
-        city: "New York",
-        image: "c5974915_5_DNGtkeLZm.jpg",
-        createdAt:"2016-05-18T16:00:00Z"
-    },
-    {
-        title: "Golden Gate Bridge",
-        description: "Pleased him another was settled for. Moreover end horrible endeavor entrance any families. Income appear extent on of thrown in admire. Stanhill on we if vicinity material in. Saw him smallest you provided ecstatic supplied",
-        postedByUsername: "georgette",
-        category: "Residence",
-        country: "Russia",
-        city: "Moscow",
-        image: "park_sMgYVfgCQ.jpeg?updatedAt=1679179941476"
-    },
-    {
-        title: "Palace of Versailles",
-        description: "Projecting surrounded literature yet delightful alteration but bed men. Open are from long why cold. If must snug by upon sang loud left. ",
-        postedByUsername: "jondoe",
-        category: "Outdoors",
-        country: "Canada",
-        city: "Ottawa",
-        image: "ocean_Ek69y4CzAM.jpg?updatedAt=1679179943857"
-    }
-]
-
 const Suggestions = () => {
 
     const {getToken, user, userId} = useAuth()
