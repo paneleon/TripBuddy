@@ -14,7 +14,6 @@ describe('Testing user profile', () => {
         const res = await request(baseURL)
         .get("/api/profile");
 
-        console.log("profile", res.body)
         expect(res.statusCode).toBe(403); // not authenticated error
 
         // test that the proper error is returned

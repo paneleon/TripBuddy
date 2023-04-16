@@ -14,7 +14,6 @@ describe('Testing posts', () => {
         const res = await request(baseURL)
         .get("/api/posts/suggestions");
 
-        console.log("posts", res.body)
         expect(res.statusCode).toBe(200);
         expect(res.body.suggestions).toBeDefined()     
         expect(res.body.suggestions.length).toBe(3);
