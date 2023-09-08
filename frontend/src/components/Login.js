@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login.module.css';
 import { useAuth } from '../context/authContext';
+import { FormGroup, TextField, Button, Paper } from '@mui/material';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -39,34 +40,41 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.form}>
-      <form onSubmit={handleSubmit}>
-      <h1>Login</h1>
-        <input
-          className={styles.username}
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <input
-          className={styles.password}
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <br />
-        <button className={styles.button} type="submit">Login</button>
-        <br />
-        <br />
-        <p id="create" className="text-center text-muted small">
-        Don't have an account?&nbsp;
-        <a className="link" href="/register">Register Here!</a>
-        </p>
-      </form>
+    <div className={styles.layout}>
+      <img src='/login-image.jpg' className={styles.image}/>
+      <Paper elevation={1} className={styles.form}>
+        <h2 className={styles.centerSpaced}>Login</h2>
+        <FormGroup>
+          <TextField
+            className={styles.input}
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            id="username"
+            label="Username"
+            margin="normal" 
+          />
+
+          <TextField 
+            className={styles.input}
+            type="password"
+            name="password"
+            label="Password"
+            value={formData.password}
+            onChange={handleChange}
+            margin="normal" 
+          />
+
+        <span className={styles.centerSpaced}>
+          <Button type="submit" variant="contained" color="success" size="large" onClick={handleSubmit}>Login</Button>
+        </span>
+
+          <p id="create" className="text-center text-muted small">
+            Don't have an account?&nbsp;
+            <a className="link" href="/register">Register Here!</a>
+          </p>
+        </FormGroup>
+      </Paper>
     </div>
   );
 };
